@@ -1,0 +1,135 @@
+<template>
+  <div id="login">
+    <!--  头部信息 title区分是登录页面还是注册页面  -->
+      <LogisterHeader :title="title"></LogisterHeader>
+    <!--  中间主内容  -->
+      <div class="my-main">
+        <el-row type="flex" justify="center">
+          <el-col :span="10">
+              <h1 style="text-align: center">登 录</h1>
+              <el-form :model="validateForm" ref="validateForm" class="my-form">
+                <el-form-item prop="phone" :rules="[
+                  {required:true,message:'手机号不能为空'},
+                ]">
+                <el-input class="my-input" type="text"
+                          v-model="validateForm.phone"
+                          prefix-icon="el-icon-user-solid"
+                          placeholder="请输入手机号"
+                          autocomplete="off" clearable></el-input>
+                </el-form-item>
+                <el-form-item prop="password" :rules="[
+                  {required:true,message:'密码不能为空'},
+                ]">
+                  <el-input class="my-input" type="password"
+                            v-model="validateForm.password"
+                            prefix-icon="el-icon-lock"
+                            placeholder="请输入密码"
+                            autocomplete="off" show-password></el-input>
+                </el-form-item>
+                <div class="additional">
+                  <el-checkbox v-model="rememberpsw">记住密码</el-checkbox>
+                  <el-link type="danger" style="float: right;" :underline="false">忘记密码?</el-link>
+                </div>
+                <el-form-item class="my-btn-div">
+                  <el-button class="my-btn" @click="submitForm('validateForm')">登 录</el-button>
+                </el-form-item>
+                <div class="additional">
+                  <el-row>
+                    <el-button icon="my-el-icon-qq" circle></el-button>
+                    <el-button icon="my-el-icon-weixin" circle></el-button>
+                    <el-button icon="my-el-icon-weibo" circle></el-button>
+                    <el-link type="info" @click="toSignin" style="float: right;" :underline="false">前往注册</el-link>
+                  </el-row>
+                </div>
+              </el-form>
+          </el-col>
+        </el-row>
+      </div>
+    <!--  底部版权信息  -->
+      <CopyRight></CopyRight>
+  </div>
+</template>
+
+<script>
+// 头脚页面引入
+import LogisterHeader from '@/components/home/ReloginHeader'
+import CopyRight from '@/components/home/CopyRight'
+export default {
+  name: 'LoginView',
+  data () {
+    return {
+      validateForm: {
+        phone: '',
+        password: ''
+      },
+      rememberpsw: false,
+      title: '登录'
+    }
+  },
+  methods: {
+    submitForm (formData) {
+      this.$refs[formData].validate((valid) => {
+        if (valid) {
+          this.$router.push('/admin')
+        } else {
+          this.$message.error('请完整填写登录信息')
+          return false
+        }
+      })
+    },
+    toSignin () {
+      this.$router.push('/signin')
+    }
+  },
+  components: {
+    LogisterHeader,
+    CopyRight
+  }
+}
+</script>
+<style scoped>
+  .my-main{
+    width: 100%;
+    margin: 30px;
+  }
+  .my-form{
+    margin: 33px 50px;
+  }
+  .my-input{
+    font-size: 21px;
+    height: 50px;
+    line-height: 50px;
+  }
+  .additional{
+    height: 30px;
+    line-height: 30px;
+  }
+  /deep/ .el-input__inner{
+    height: 50px;
+    font-size: 16px;
+    padding-left: 50px;
+  }
+  /deep/ .el-input__inner:focus{
+     border: 1px solid #666;
+   }
+  /deep/ .el-input__icon {
+    width: 40px;
+    line-height: 56px;
+  }
+  /deep/ .el-link--inner:hover{
+    color: #e1251b;
+  }
+.my-btn-div{
+  margin-bottom: 10px;
+}
+  .my-btn{
+    height: 50px;
+    font-size: 16px;
+  }
+  .my-btn {
+    background: #e1251b;
+    border: 1px solid #DCDFE6;
+    color: #606266;
+    width: 100%;
+  }
+</style>
