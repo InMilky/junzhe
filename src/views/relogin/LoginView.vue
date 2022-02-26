@@ -34,12 +34,8 @@
                   <el-button class="my-btn" @click="submitForm('validateForm')">登 录</el-button>
                 </el-form-item>
                 <div class="additional">
-                  <el-row>
-                    <el-button icon="my-el-icon-qq" circle></el-button>
-                    <el-button icon="my-el-icon-weixin" circle></el-button>
-                    <el-button icon="my-el-icon-weibo" circle></el-button>
+                    <el-link type="info" style="float: left; font-size: 12px" :underline="false">其他登录</el-link>
                     <el-link type="info" @click="toSignin" style="float: right;" :underline="false">前往注册</el-link>
-                  </el-row>
                 </div>
               </el-form>
           </el-col>
@@ -103,6 +99,8 @@ export default {
   .additional{
     height: 30px;
     line-height: 30px;
+    font-size: 14px;
+    overflow: hidden;
   }
   /deep/ .el-input__inner{
     height: 50px;
@@ -116,7 +114,14 @@ export default {
     width: 40px;
     line-height: 56px;
   }
+  /deep/ .el-link--inner{
+    font-size: 14px;
+    line-height: 1;
+  }
   /deep/ .el-link--inner:hover{
+    color: #e1251b;
+  }
+  /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {
     color: #e1251b;
   }
 .my-btn-div{
