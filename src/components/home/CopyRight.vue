@@ -43,13 +43,6 @@ export default {
   text-align: center;
   margin: auto;
 }
-/deep/ .el-link{
-  font-weight: normal;
-  font-size: 12px;
-}
-.el-link:hover{
-  color: #e1251b;
-}
 .copyright-txt{
   color: #666;
 }

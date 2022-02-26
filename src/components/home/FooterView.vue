@@ -1,110 +1,176 @@
 <template>
     <div id="footer">
-      <div class="service">
-        <div class="service-inner">
-          <ul class="service-list">
-            <li class="service-item">
-              <div class="service-unit">
-                <h5 class="service-tit service-mode-duo">多</h5>
-                <p class="service-txt">品类齐全，轻松购物</p>
-              </div></li>
-            <li class="service-item">
-              <div class="service-unit">
-                <h5 class="service-tit service-mode-kuai">快</h5>
-                <p class="service-txt">多仓直发，极速配送</p>
-              </div></li>
-            <li class="service-item">
-              <div class="service-unit">
-                <h5 class="service-tit service-mode-hao">好</h5>
-                <p class="service-txt">正品行货，精致服务</p>
-              </div></li>
-            <li class="service-item">
-              <div class="service-unit">
-                <h5 class="service-tit service-mode-sheng">省</h5>
-                <p class="service-txt">天天低价，畅选无忧</p>
-              </div></li>
+      <el-row type="flex" justify="center">
+        <el-col :span="20">
+          <el-row type="flex" justify="space-between">
+            <el-col :span="5" class="service-item">
+                <div class="service-tit service-mode-duo">多</div>
+                <div class="service-txt">品类齐全，轻松购物</div>
+              </el-col>
+            <el-col :span="5" class="service-item">
+                <div class="service-tit service-mode-kuai">快</div>
+                <div class="service-txt">多仓直发，极速配送</div>
+                </el-col>
+            <el-col :span="5" class="service-item">
+                <div class="service-tit service-mode-hao">好</div>
+                <div class="service-txt">正品行货，精致服务</div>
+            </el-col>
+            <el-col :span="5" class="service-item">
+                  <div class="service-tit service-mode-sheng">省</div>
+                  <div class="service-txt">天天低价，畅选无忧</div>
+                  </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center" style="border-top: 1px solid #d4d4d4;">
+        <el-col :span="20">
+          <el-row type="flex" justify="space-between">
+            <el-col :span="4" class="help-nav" v-for="list in helpLists" :key="list">
+              <el-card class="help-nav-tit" shadow="never">
+                <div slot="header" class="clearfix">
+                  <span>{{list.key}}</span>
+                </div>
+                <el-link v-for="item in list.data" :key="item" class="help-nav-link" :underline="false">
+                  {{ item }}
+                </el-link>
+              </el-card>
 
-          </ul>
-        </div>
-      </div>
-      <div class="help">
-        <div class="help-inner">
-          <div class="help-list">
-            <div class="help-nav">
-              <h5 class="help-nav-tit">购物指南</h5>
-              <ul class="help-nav-con">
-                <li><a href="javascript:void(0)">免费注册</a></li>
-                <li><a href="javascript:void(0)">购物流程</a></li>
-                <li><a href="javascript:void(0)">会员介绍</a></li>
-                <li><a href="javascript:void(0)">常见问题</a></li>
-                <li><a href="javascript:void(0)">联系客服</a></li>
-              </ul>
-            </div>
-            <div class="help-nav">
-              <h5 class="help-nav-tit">支付方式</h5>
-              <ul class="help-nav-con">
-                <li><a href="javascript:void(0)">货到付款</a></li>
-                <li><a href="javascript:void(0)">快捷支付</a></li>
-                <li><a href="javascript:void(0)">分期付款</a></li>
-                <li><a href="javascript:void(0)">公司转账</a></li>
-              </ul>
-            </div>
-            <div class="help-nav">
-              <h5 class="help-nav-tit">售后保障</h5>
-              <ul class="help-nav-con">
-                <li><a href="javascript:void(0)">发票保障</a></li>
-                <li><a href="javascript:void(0)">售后策略</a></li>
-                <li><a href="javascript:void(0)">价格保护</a></li>
-                <li><a href="javascript:void(0)">退款说明</a></li>
-                <li><a href="javascript:void(0)">缺货赔付</a></li>
-                <li><a href="javascript:void(0)">返修换货</a></li>
-              </ul></div>
-            <div class="help-nav">
-              <h5 class="help-nav-tit">特色服务</h5>
-              <ul class="help-nav-con">
-                <li><a href="javascript:void(0)">延保服务</a></li>
-                <li><a href="javascript:void(0)">物流服务</a></li>
-                <li><a href="javascript:void(0)">运营服务</a></li>
-                <li><a href="javascript:void(0)">商家中心</a></li>
-                <li><a href="javascript:void(0)">藏宝阁</a></li>
-              </ul>
-            </div>
-            <div class="help-cover">
-              <h5 class="help-nav-tit">关于我们</h5>
-              <div class="erweima">
-                <img src="/src/assets/img/index/erweima.png" alt="erweima">
-                <img src="/src/assets/img/index/erweima.png" alt="erweima">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="copyright">
-        <div class="copyright-inner">
-          <p>
-            <a href="javascript:void(0)">关于我们</a><span class="split">|</span>
-            <a href="javascript:void(0)">联系我们</a><span class="split">|</span>
-            <a href="javascript:void(0)">服务大厅</a><span class="split">|</span>
-            <a href="javascript:void(0)">合作招商</a><span class="split">|</span>
-            <a href="javascript:void(0)">商家帮助</a><span class="split">|</span>
-            <a href="javascript:void(0)">法律声明</a><span class="split">|</span>
-            <a href="javascript:void(0)">友情链接</a><span class="split">|</span>
-            <a href="javascript:void(0)">橘栀社区</a><span class="split">|</span>
-            <a href="javascript:void(0)">隐私政策</a><span class="split">|</span>
-            <a href="javascript:void(0)">意见征集</a><span class="split">|</span>
-            <a href="javascript:void(0)">廉正举报</a><span class="split">|</span>
-            <a href="javascript:void(0)">English Site</a></p>
-          <p class="copyright-txt">Copyright © 2020-2021 SOUTH CHINA NORMAL UNIVERSITY | MILKY NUMBER20210405</p>
-        </div>
-      </div>
+            </el-col>
+            <el-col :span="7" class="help-nav">
+              <el-card class="help-code-tit" shadow="never">
+                <div slot="header" class="clearfix"><span>关于我们</span></div>
+                <el-link class="erweima" :underline="false">
+                  <img src="../../assets/img/index/erweima.png" alt="erweima">
+                </el-link>
+              </el-card>
+              <el-card class="help-code-tit" shadow="never">
+                <div slot="header" class="clearfix"><span>关注公众号</span></div>
+                <el-link class="erweima" :underline="false">
+                  <img src="../../assets/img/index/erweima.png" alt="erweima">
+                </el-link>
+              </el-card>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+      <CopyRight></CopyRight>
     </div>
 </template>
 <script>
+import CopyRight from '@/components/home/CopyRight'
 export default {
-  name: 'FooterView'
+  name: 'FooterView',
+  data () {
+    return {
+      helpLists: [
+        { key: '购物指南', data: ['免费注册', '购物流程', '会员介绍', '常见问题', '联系客服'] },
+        { key: '售后保障', data: ['发票保障', '价格保护', '退款说明', '缺货赔付', '返修换货'] },
+        { key: '支付方式', data: ['货到付款', '快捷支付', '分期付款', '公司转账'] },
+        { key: '特色服务', data: ['延保服务', '物流服务', '运营服务', '商家中心', '藏宝阁'] }
+      ]
+    }
+  },
+  components: {
+    CopyRight
+  }
 }
 </script>
 
 <style scoped>
+#footer{
+  width: 100%;
+  height: 1000px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #dddddd;
+}
+/deep/ .el-row{
+  margin: 20px 0;
+}
+/deep/ .el-card{
+  background: transparent;
+  border: none;
+  margin: 20px 0 0;
+}
+/deep/ .el-card__header{
+  padding:0 0 8px;
+  border: none;
+  font-size: 14px;
+  color: #666;
+}
+/deep/ .el-card__body{
+  padding: 0;
+}
+.help-nav-link{
+  display: block;
+  padding: 2px 0;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+/deep/ .el-link{
+  font-weight: normal;
+  font-size: 12px;
+}
+/deep/ .el-link.el-link--default:hover{
+  color: #e1251b;
+}
+.service-item{
+height: 42px;
+display: flex;
+justify-content: space-around;
+}
+.service-tit,.service-txt{
+margin: auto;
+}
+.service-txt{
+font-size: 18px;
+font-weight: 700;
+text-align: center;
+}
+.service-tit{
+width: 38px;
+height: 42px;
+text-indent: -999px;
+overflow: hidden;
+}
+#footer .service-mode-duo,.service-mode-kuai,.service-mode-hao,.service-mode-sheng{
+background-size: 113px 86.5px;
+background-image: url("../../assets/img/index/footer-service.png");
+background-repeat: no-repeat;
+}
+.service-mode-duo{
+background-position: 0 0;
+}
+.service-mode-kuai{
+background-position: -38.5px 0;
+}
+.service-mode-hao{
+background-position: -77px 0;
+}
+.service-mode-sheng{
+background-position: 0 -44.5px;
+}
 
+.help-nav{
+  text-align: center;
+  margin-bottom: 10px;
+}
+.help-nav-tit,.help-code-tit{
+  font-weight: bold;
+}
+.help-code-tit{
+  display: inline-block;
+  width: 30%;
+}
+.erweima{
+  width: 100%;
+  display: inline-block;
+}
+.erweima img{
+  width: 90%;
+  height: auto;
+  margin-top: 10px;
+  display: inline;
+}
 </style>
