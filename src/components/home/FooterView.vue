@@ -25,10 +25,10 @@
       <el-row type="flex" justify="center" style="border-top: 1px solid #d4d4d4;">
         <el-col :span="20">
           <el-row type="flex" justify="space-between">
-            <el-col :span="4" class="help-nav" v-for="list in helpLists" :key="list">
+            <el-col :span="4" class="help-nav" v-for="list in helpLists" :key="list.key">
               <el-card class="help-nav-tit" shadow="never">
                 <div slot="header" class="clearfix">
-                  <span>{{list.key}}</span>
+                  <span>{{list.title}}</span>
                 </div>
                 <el-link v-for="item in list.data" :key="item" class="help-nav-link" :underline="false">
                   {{ item }}
@@ -63,10 +63,10 @@ export default {
   data () {
     return {
       helpLists: [
-        { key: '购物指南', data: ['免费注册', '购物流程', '会员介绍', '常见问题', '联系客服'] },
-        { key: '售后保障', data: ['发票保障', '价格保护', '退款说明', '缺货赔付', '返修换货'] },
-        { key: '支付方式', data: ['货到付款', '快捷支付', '分期付款', '公司转账'] },
-        { key: '特色服务', data: ['延保服务', '物流服务', '运营服务', '商家中心', '藏宝阁'] }
+        { key: 1, title: '购物指南', data: ['免费注册', '购物流程', '会员介绍', '常见问题', '联系客服'] },
+        { key: 1, title: '售后保障', data: ['发票保障', '价格保护', '退款说明', '缺货赔付', '返修换货'] },
+        { key: 1, title: '支付方式', data: ['货到付款', '快捷支付', '分期付款', '公司转账'] },
+        { key: 1, title: '特色服务', data: ['延保服务', '物流服务', '运营服务', '商家中心', '藏宝阁'] }
       ]
     }
   },

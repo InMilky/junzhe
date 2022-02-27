@@ -31,6 +31,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
+    meta: { title: '欢迎登录' },
     component: () => import('../views/relogin/LoginView')
   },
   {
@@ -43,14 +44,17 @@ const routes = [
       {
         path: 'person1',
         name: 'getotp',
+        meta: { title: '欢迎注册' },
         component: () => import('../components/home/GetOtp')
       }, {
         path: 'person2',
         name: 'register',
+        meta: { title: '欢迎注册' },
         component: () => import('../components/home/RegisterMain')
       }, {
         path: 'person/signin_success',
         name: 'signin_success',
+        meta: { title: '欢迎注册' },
         component: () => import('../components/home/SigninSuccess')
       }
     ]
@@ -58,16 +62,19 @@ const routes = [
   {
     path: '/cart',
     name: 'cart',
+    meta: { title: '购物车' },
     component: () => import('../views/home/cart/CartView')
   },
   {
     path: '/order',
     name: 'order',
+    meta: { title: '个人订单' },
     component: () => import('../views/home/order/OrderView')
   },
   {
     path: '/seckill',
     name: 'seckill',
+    meta: { title: '商品秒杀' },
     component: () => import('../views/home/seckill/IndexView')
   },
   {
@@ -76,30 +83,23 @@ const routes = [
     component: () => import('../views/home/goods/GoodsView')
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
     path: '/admin',
     name: 'admin',
     alwaysShow: true,
-    meta: { title: '首页', role: ['admin'] },
+    meta: { title: '首页' },
     component: () => import('../views/admin/IndexView'),
     children: [
       {
         path: 'goods',
         name: 'goods',
         meta: { title: '商品管理' },
+        redirect: '/admin/goods/lists',
         component: () => import('../views/admin/goods/IndexView'),
         children: [
           {
             path: '/admin/goods/lists',
             name: 'goodslist',
-            meta: { title: '全部商品', icon: 'el-icon-present ', activeMenu: '/admin/goods' },
+            meta: { title: '全部商品', activeMenu: '/admin/goods' },
             component: () => import('../views/admin/goods/ListView')
           }, {
             path: '/admin/goods/add',
@@ -123,6 +123,7 @@ const routes = [
         path: '/admin/seckill',
         name: 'seckill',
         meta: { title: '秒杀管理' },
+        redirect: '/admin/seckill/event',
         component: () => import('../views/admin/seckill/IndexView'),
         children: [
           {
@@ -142,6 +143,7 @@ const routes = [
         path: '/admin/order',
         name: 'order',
         meta: { title: '订单管理' },
+        redirect: '/admin/order/list',
         component: () => import('../views/admin/order/IndexView'),
         children: [
           {
@@ -157,7 +159,7 @@ const routes = [
           }, {
             path: '/admin/order/aftersales',
             name: 'order_aftersales',
-            meta: { title: '订单售后' },
+            // meta: { title: '订单售后' },
             component: () => import('../views/admin/order/AftersalesView')
           }
         ]
@@ -170,10 +172,26 @@ const routes = [
       }
     ]
   }
+  // {
+  //   path: '*',
+  //   redirect: '/error_request/404',
+  //   component: () => import('../error/ErrorPage404'),
+  //   hidden: true
+  // }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+// 每个页面的title改变
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  } else {
+    document.title = 'JZ.COM'
+  }
+  next()
 })
 
 export default router

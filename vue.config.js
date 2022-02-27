@@ -1,5 +1,12 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
-  runtimeCompiler: true
+  runtimeCompiler: true,
+
+  pluginOptions: {
+    express: {
+      shouldServeApp: true,
+      serverDir: './srv'
+    }
+  }
 })

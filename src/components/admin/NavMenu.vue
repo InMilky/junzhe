@@ -1,6 +1,14 @@
 <template>
   <el-aside>
-    <el-menu default-active="2" class="el-menu-vertical-demo" router>
+    <!--             background-color="#e1251b"-->
+    <el-menu text-color="#fff"
+             active-text-color="#e1251b"
+             mode="vertical"
+             unique-opened
+             @open="handleOpen"
+             @close="handleClose"
+             @select="handleSelect"
+             class="el-menu-vertical-demo" router>
       <el-menu-item index="/admin">
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>
@@ -40,7 +48,23 @@
 
 <script>
 export default {
-  name: 'navMenu'
+  name: 'navMenu',
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    handleOpen () {
+
+    },
+    handleClose () {
+
+    },
+    handleSelect () {
+
+    }
+  }
 }
 </script>
 
