@@ -26,7 +26,7 @@
     <el-row class="headerarea" type="flex" justify="center">
       <el-col :span="20">
         <el-row type="flex">
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="logo">
             <img src="../../assets/logo.png">
           </div></el-col>
@@ -35,20 +35,21 @@
               <el-row class="search-div">
                 <el-col :span="18">
                   <el-input type="text" placeholder="搜索"
-                            v-model="search">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                            v-model="search" @keyup.enter="searchGoods">
+                    <el-button slot="append" icon="el-icon-search" @click="searchGoods"></el-button>
                   </el-input>
                 </el-col>
                 <el-col :span="4" :push="1">
-                  <el-button class="mycart">
+                  <el-button class="mycart" @click="toCart">
                   <i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&nbsp;
                     <div style="display: inline-block; font-size: 12px; position:relative; top:-2px">我的购物车</div>
                 </el-button></el-col>
               </el-row>
               <el-row class="nav-menu">
                 <el-menu mode="horizontal" style="color: #333333">
-                  <el-menu-item index="/miaosha" class="menu-active">秒杀</el-menu-item>
-                  <el-menu-item v-for="(item,index) in navmenu" :key="index" index="/">{{item.title}}</el-menu-item>
+                  <el-menu-item class="menu-active">
+                    <el-link href="/miaosha" target="_blank" :underline="false" class="miaosha">秒杀</el-link></el-menu-item>
+                  <el-menu-item v-for="(item,index) in navmenu" :key="index" index="/" class="menu-item">{{item.title}}</el-menu-item>
                 </el-menu>
               </el-row>
             </div>
@@ -76,6 +77,14 @@ export default {
         { title: '服装饰品', url: '/' },
         { title: '家居家具', url: '/' },
         { title: '图书文具', url: '/' }]
+    }
+  },
+  methods: {
+    toCart () {
+      this.$router.push('/cart')
+    },
+    searchGoods () {
+
     }
   }
 }
@@ -140,7 +149,7 @@ export default {
   height: 100%;
 }
 .logo>img{
-  max-width: 100%;
+  max-width: 90%;
   display: block;
   height: auto;
   margin: auto;
@@ -204,9 +213,25 @@ export default {
   color: #333333;
   font-size: 16px;
 }
-/deep/ .el-menu--horizontal>.el-menu-item:hover {
-  color: #e1251b;
+/deep/ .el-menu--horizontal>.menu-item:hover {
+  color: #e1251b !important;
   pointer-events: none;
+}
+/deep/ .el-menu--horizontal>.menu-active{
+  color: red;
+  font-weight: bold;
+}
+/deep/ .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+/deep/ .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+  outline: 0;
+  color: #e1251b;
+}
+/deep/ .el-menu--horizontal>.el-menu-item.is-active {
+  border-bottom: none;
+  color: #e1251b;
+}
+/deep/ .el-menu--horizontal>.menu-active:hover{
+  color: #e1251b;
 }
 .search-div{
   padding: 12px 0 0;
@@ -223,12 +248,10 @@ color: #e1251b !important;
   margin-top: 20px;
   color: #333;
 }
-.el-menu--horizontal>.menu-active{
-  color: red;
+.miaosha{
   font-weight: bold;
-  pointer-events: auto;
-}
-.el-menu--horizontal>.menu-active:hover{
-  color: #e1251b !important;
+  position: relative;
+  top: -2px;
+  font-size: 16px;
 }
 </style>

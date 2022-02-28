@@ -1,18 +1,7 @@
 <template>
   <div class="home">
-    <HeaderView></HeaderView>
+<!--    <HeaderView></HeaderView>-->
     <MainView></MainView>
-<!--    <el-container>-->
-<!--      <el-main>-->
-<!--        <div class="carousel">-->
-<!--          <el-carousel height="100%">-->
-<!--            <el-carousel-item v-for="item in 4" :key="item">-->
-<!--              <h3 class="small">{{ item }}</h3>-->
-<!--            </el-carousel-item>-->
-<!--          </el-carousel>-->
-<!--        </div>-->
-<!--      </el-main>-->
-<!--    </el-container>-->
 <!--    <FooterView></FooterView>-->
   </div>
 </template>
@@ -20,13 +9,13 @@
 <script>
 
 // import FooterView from '@/components/home/FooterView'
-import HeaderView from '@/components/home/HeaderView'
+// import HeaderView from '@/components/home/HeaderView'
 import MainView from '@/components/home/MainView'
 export default {
   components: {
-    HeaderView,
+    // HeaderView,
+    // FooterView,
     MainView
-    // FooterView
   }
 }
 </script>
