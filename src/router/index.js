@@ -21,10 +21,10 @@ VueRouter.prototype.replace = function push (location, onResolve, onReject) {
 const routes = [
   {
     path: '/',
-    redirect: '/index'
+    redirect: '/seckill'
   },
   {
-    path: '/index',
+    path: '/seckill',
     name: 'index',
     component: IndexView
   },
@@ -45,17 +45,17 @@ const routes = [
         path: 'person1',
         name: 'getotp',
         meta: { title: '欢迎注册' },
-        component: () => import('@/components/home/GetOtp')
+        component: () => import('@/components/home/relogin/GetOtp')
       }, {
         path: 'person2',
         name: 'register',
         meta: { title: '欢迎注册' },
-        component: () => import('@/components/home/RegisterMain')
+        component: () => import('@/components/home/relogin/RegisterMain')
       }, {
         path: 'person/signin_success',
         name: 'signin_success',
         meta: { title: '欢迎注册' },
-        component: () => import('@/components/home/SigninSuccess')
+        component: () => import('@/components/home/relogin/SigninSuccess')
       }
     ]
   },

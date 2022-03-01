@@ -48,8 +48,8 @@
 
 <script>
 // 头脚页面引入
-import LogisterHeader from '@/components/home/ReloginHeader'
-import CopyRight from '@/components/home/CopyRight'
+import LogisterHeader from '@/components/home/relogin/ReloginHeader'
+import CopyRight from '@/components/home/topfooter/CopyRight'
 export default {
   name: 'LoginView',
   data () {

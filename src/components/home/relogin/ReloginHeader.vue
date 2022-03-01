@@ -37,7 +37,7 @@ export default {
 .container{
   width: 100%;
   height: 100px;
-  background: url(../../assets/img/headbg.jpg) repeat-x left bottom;
+  background: url(../../../assets/img/headbg.jpg) repeat-x left bottom;
 }
 .my-col{
   overflow: hidden;
@@ -52,7 +52,7 @@ export default {
 .logo{
   height: 100%;
   width: 180px;
-   background: url("../../assets/img/full_logo.png") no-repeat;
+   background: url("../../../assets/img/full_logo.png") no-repeat;
    background-size: contain;
   margin: 0 auto;
  }

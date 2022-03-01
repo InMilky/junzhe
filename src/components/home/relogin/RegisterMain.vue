@@ -117,7 +117,7 @@ export default {
 }
 </script>
 <style scoped>
-@import "../../assets/css/signin.css";
+@import "../../../assets/css/signin.css";
 /deep/ .el-step__icon {
   width: 22px;
   height: 22px;

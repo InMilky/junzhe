@@ -40,13 +40,13 @@
               <el-card class="help-code-tit" shadow="never">
                 <div slot="header" class="clearfix"><span>关于我们</span></div>
                 <el-link class="erweima" :underline="false">
-                  <img src="../../assets/img/index/erweima.png" alt="erweima">
+                  <img src="../../../assets/img/index/erweima.png" alt="erweima">
                 </el-link>
               </el-card>
               <el-card class="help-code-tit" shadow="never">
                 <div slot="header" class="clearfix"><span>关注公众号</span></div>
                 <el-link class="erweima" :underline="false">
-                  <img src="../../assets/img/index/erweima.png" alt="erweima">
+                  <img src="../../../assets/img/index/erweima.png" alt="erweima">
                 </el-link>
               </el-card>
             </el-col>
@@ -57,7 +57,7 @@
     </div>
 </template>
 <script>
-import CopyRight from '@/components/home/CopyRight'
+import CopyRight from '@/components/home/topfooter/CopyRight'
 export default {
   name: 'FooterView',
   data () {
@@ -136,7 +136,7 @@ overflow: hidden;
 }
 #footer .service-mode-duo,.service-mode-kuai,.service-mode-hao,.service-mode-sheng{
 background-size: 113px 86.5px;
-background-image: url("../../assets/img/index/footer-service.png");
+background-image: url("../../../assets/img/index/footer-service.png");
 background-repeat: no-repeat;
 }
 .service-mode-duo{
