@@ -60,6 +60,32 @@
         </el-row>
       </el-col>
     </el-row>
+    <el-row v-show="isScroll" class="fix-top" type="flex" justify="center">
+        <el-col :span="20" style="height: 100%">
+          <el-row type="flex" style="height: 100%">
+            <el-col :span="3" style="height: 100%"><div class="logo">
+              <img src="../../../assets/logo.png">
+            </div></el-col>
+            <el-col :span="12" :push="1">
+              <el-input type="text" placeholder="搜索"
+                         v-model="search" @keyup.enter="searchGoods">
+              <el-button slot="append" icon="el-icon-search" @click="searchGoods"></el-button>
+            </el-input></el-col>
+            <el-col :span="3" :push="2">
+              <el-button class="mycart" @click="toCart">
+                <i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&nbsp;
+                <div style="display: inline-block; font-size: 12px; position:relative; top:-2px">我的购物车</div>
+              </el-button>
+            </el-col>
+            <el-col :span="3" :push="2" style="margin-left: 10px">
+              <el-button class="myorder" @click="toOrder">
+                <i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&nbsp;
+                <div style="display: inline-block; font-size: 12px; position:relative; top:-2px">我的订单</div>
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
   </div>
 </template>
 
@@ -71,6 +97,7 @@ export default {
       isLogin: true,
       username: 'Milky',
       search: '',
+      isScroll: false,
       navmenu: [{ title: '优惠券', url: '/' },
         { title: '品牌闪购', url: '/' },
         { title: '美妆护肤', url: '/' },
@@ -82,6 +109,9 @@ export default {
   methods: {
     toCart () {
       this.$router.push('/cart')
+    },
+    toOrder () {
+      this.$router.push('/order')
     },
     searchGoods () {
 
@@ -236,11 +266,11 @@ export default {
 .search-div{
   padding: 12px 0 0;
 }
-.mycart{
+.mycart,.myorder{
 color: #e1251b !important;
 /*box-shadow: 0 1px 2px #a9a9a9;*/
 }
-.mycart:hover{
+.mycart:hover,.myorder:hover{
   border: 1px solid #e1251b;
   background: transparent;
 }
@@ -253,5 +283,24 @@ color: #e1251b !important;
   position: relative;
   top: -2px;
   font-size: 16px;
+}
+
+/* 固定顶部搜索框 */
+.fix-top{
+  width: 100%;
+  height: 56px;
+  border-bottom: 2px solid #e1251b;
+  background: white;
+  color: #333333;
+}
+.fix-top .logo{
+  height: 100%;
+  width: 100%;
+}
+.fix-top .logo>img{
+  height: 80%;
+  width: auto;
+  display: block;
+  margin-left: 0;
 }
 </style>

@@ -79,7 +79,6 @@ export default {
 <style scoped>
 #footer{
   width: 100%;
-  height: 1000px;
   overflow: hidden;
   margin: 0;
   padding: 0;

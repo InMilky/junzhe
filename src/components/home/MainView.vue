@@ -11,6 +11,7 @@
               </el-carousel-item>
             </el-carousel>
           </div>
+        <!--  秒杀专区  -->
         <div class="miaosha-zone">
             <div class="seckill-area">
               <a href="/seckill" target="_blank" class="seckill-link">
@@ -41,6 +42,7 @@
               </div>
             </div>
         </div>
+        <!--  每日推荐  -->
         <div class="special-offer">
             <div class="offer-item">
               <div class="sbox-title">
@@ -98,7 +100,8 @@
                 </div>
               </div>
         </div>
-        <div class="nicegoods">
+        <!--  发现好货  -->
+        <div class="nicegoods" v-for="i in 2" :key="i">
           <div class="nice-nav nice-title">
             <a href="javascript:void(0)" class="nicegoods-link">
               <div class="nicegoods-tit">
@@ -107,9 +110,38 @@
                   <i class="el-icon-arrow-right"></i> </el-button>
               </div></a>
           </div>
-          <div class="nice-nav" v-for="i in 4" :key="i">{{i}}</div>
+          <div class="nice-nav" v-for="(item,index) in niceList" :key="index">
+            <a href="javascript:void(0)" target="_blank" class="nice-item-link">
+              <div class="nice-item">
+                <div class="nice-item-img">
+                  <img :src="item.imgurl" :alt="item.name"></div>
+                <p class="nice-item-name">{{ item.name }}</p>
+                <div class="nice-item-price">￥{{ item.price }}</div>
+              </div>
+            </a>
+          </div>
         </div>
-        <div class="recommand"></div>
+        <!--  为你推荐  -->
+        <div class="recommand">
+          <div class="recommandtit"><h3>为你推荐</h3></div>
+          <div class="re-more">
+            <div class="re-item" v-for="(item,index) in recommondList" :key="index">
+              <a href="javascript:void(0)" class="re-link">
+                <div class="re-img">
+                  <img :src="item.imgurl" :alt="item.title">
+                </div>
+                <div class="re-info">
+                  <p class="re-info-name">{{ item.title }}</p>
+                  <div class="re-info-price">
+                    <i>￥</i>
+                    <span class="re-info-price-txt">{{ item.price }}.<span class="re-info-price-decimal">00</span></span>
+                    <span class="re-sales">已售{{ item.soldnum }}件</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
         <el-divider> END </el-divider>
       </el-col>
     </el-row>
@@ -187,6 +219,30 @@ export default {
         { name: '奢品大牌闪购', imgurl: require('@/assets/img/index/brand01.webp') },
         { name: '奢品大牌闪购', imgurl: require('@/assets/img/index/brand00.webp') },
         { name: '奢品大牌闪购', imgurl: require('@/assets/img/index/brand01.webp') }
+      ],
+      niceList: [
+        { name: '你身上有光我抓来看看阿絮是老温的光', price: '16.40', imgurl: require('@/assets/img/seckill/seckill-item01.png') },
+        { name: '你身上有光我抓来看看你是我永远的月光，温柔且强大', price: '511.91', imgurl: require('@/assets/img/seckill/seckill-item09.png') },
+        { name: '你身上有光我抓来看看你身上有光我抓来看看', price: '21.46', imgurl: require('@/assets/img/seckill/seckill-item03.png') },
+        { name: '无论有多少双手想拉你共沉沦我希望我们山人会一直相信光，永远都在', price: '51.29', imgurl: require('@/assets/img/seckill/seckill-item04.png') }
+      ],
+      recommondList: [
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1640', soldnum: '99', imgurl: require('@/assets/img/recommond/re01.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '511', soldnum: '99', imgurl: require('@/assets/img/recommond/re02.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1129', soldnum: '99', imgurl: require('@/assets/img/recommond/re03.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '2146', soldnum: '99', imgurl: require('@/assets/img/recommond/re04.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '5129', soldnum: '99', imgurl: require('@/assets/img/recommond/re05.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1929', soldnum: '99', imgurl: require('@/assets/img/recommond/re06.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '330', soldnum: '99', imgurl: require('@/assets/img/recommond/re07.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '15', soldnum: '99', imgurl: require('@/assets/img/recommond/re08.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '327', soldnum: '99', imgurl: require('@/assets/img/recommond/re09.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '54', soldnum: '99', imgurl: require('@/assets/img/recommond/re10.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '222', soldnum: '99', imgurl: require('@/assets/img/recommond/re11.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '324', soldnum: '99', imgurl: require('@/assets/img/recommond/re12.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '528', soldnum: '99', imgurl: require('@/assets/img/recommond/re01.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '603', soldnum: '99', imgurl: require('@/assets/img/recommond/re02.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '603', soldnum: '99', imgurl: require('@/assets/img/recommond/re04.png'), href: '/' },
+        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1640', soldnum: '99', imgurl: require('@/assets/img/recommond/re03.png'), href: '/' }
       ]
     }
   },

@@ -1,21 +1,21 @@
 <template>
   <div class="home">
-<!--    <HeaderView></HeaderView>-->
-    <MainView></MainView>
+    <HeaderView></HeaderView>
+<!--    <MainView></MainView>-->
 <!--    <FooterView></FooterView>-->
   </div>
 </template>
 
 <script>
 
-// import FooterView from '@/components/home/FooterView'
-// import HeaderView from '@/components/home/HeaderView'
-import MainView from '@/components/home/MainView'
+import HeaderView from '@/components/home/topfooter/HeaderView'
+// import FooterView from '@/components/home/topfooter/FooterView'
+// import MainView from '@/components/home/MainView'
 export default {
   components: {
-    // HeaderView,
+    HeaderView
     // FooterView,
-    MainView
+    // MainView
   }
 }
 </script>

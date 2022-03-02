@@ -13,6 +13,7 @@ p{
     width: 100%;
     height: 100%;
     background: #f4f4f4;
+    padding-top: 21px;
 }
 /* 轮播图 */
 .carousel{
@@ -24,7 +25,7 @@ p{
 /* 秒杀专区 */
 .miaosha-zone{
     width: 100%;
-    height: 280px;
+    height: 260px;
     background-color: white;
     margin: 36px 0;
     display: flex;;
@@ -105,7 +106,7 @@ p{
 }
 .miaosha-zone .slide-list{
     width: 100%;
-    height: 260px;
+    height: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     position: relative;
@@ -150,7 +151,7 @@ p{
 }
 .miaosha-zone .slide-wrapper .seckill-item{
     width: 200px;
-    height: 260px;
+    height: 100%;
     display: inline-block;
     position: relative;
 }
@@ -454,7 +455,7 @@ p{
 }
 .brand-list{
     width: 32%;
-    height: 50%;
+    height: 45%;
 }
 .brand-nav{
     width: 100%;
@@ -492,7 +493,7 @@ p{
 .nicegoods{
     width: 100%;
     height: 280px;
-    margin: 21px 0;
+    margin: 15px 0;
     display: flex;
     justify-content: space-between;
 }
@@ -528,10 +529,170 @@ p{
     border: 1px solid #e1251b !important;
     color: #FFFFFF !important;
 }
-/* 推荐 */
-#recommand{
+.nice-item{
     width: 100%;
-    height: 510px;
-    margin: 30px auto;
-    background-color: white;
+    height: 100%;
+    position: relative;
+    margin: 0 auto;
+    border: 1px solid white;
+}
+.nice-item-link{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.nice-item-img{
+    width: 100%;
+    height: 72%;
+    margin: 0 auto;
+    display: flex;
+}
+.nice-item-img>img{
+    width: 90%;
+    height: auto;
+    margin: auto;
+    display: block;
+}
+.nice-item-name{
+    font-size: 14px;
+    display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;
+    overflow: hidden;
+    padding: 0 12px;
+    margin-bottom: 10px;
+}
+.nice-item-price{
+    color: #e1251b;
+}
+.nice-item-link:hover .nice-item{
+    opacity: 0.8;
+    border: 1px solid #e1251b;
+}
+/* 推荐 */
+.recommand{
+    width: 100%;
+    /*height: 510px;*/
+    margin: 50px auto;
+}
+.recommand .recommandtit{
+    height: 60px;
+    margin: 10px auto;
+}
+.recommand .recommandtit h3{
+    position: relative;
+    width: 128px;
+    height: 45px;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 45px;
+    padding: 0 30px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    color: #333;
+}
+.recommand .recommandtit h3:after,.recommandtit h3:before {
+    width: 20px;
+    height: 20px;
+    content: "";
+    position: absolute;
+    top: 50%;
+    margin-top: -7px;
+    background-image: url("../img/index/index_icon.png");
+    transform: scale(1.2);
+}
+.recommand .recommandtit h3:before{
+    background-position: 0 -60px;
+    left: 0;
+}
+.recommand .recommandtit h3:after{
+    background-position: -20px -60px;
+    right: 0;
+}
+
+.recommand .re-more{
+    width: 100%;
+    height: auto;
+    margin: 0 auto 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.re-item{
+    width: 24%;
+    height: 320px;
+    margin-bottom: 12px;
+    background-color: #FFFFFF;
+}
+.re-link{
+    width: 100%;
+    height: 100%;
+}
+.re-img{
+    width: 80%;
+    height: 58%;
+    margin: 10%;
+    position: relative;
+    overflow: hidden;
+    transition: background .2s linear,opacity .2s linear!important;
+}
+.re-img>img{
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform .2s linear,opacity .2s linear!important;
+}
+.re-item .re-info{
+     padding: 0 18px;
+     clear: both;
+ }
+.re-item .re-info-name{
+    font-size: 12px;
+    line-height: 20px;
+    height: 40px;
+    text-align: left;
+    color: #666;
+    -webkit-transition: color .2s ease;
+    transition: color .2s ease;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.re-item .re-info-price{
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    display: inline-block;
+    line-height: 18px;
+    height: 18px;
+    color: #e1251b;
+    overflow: hidden;
+}
+.re-item .re-info-price i{
+    vertical-align: middle;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+}
+.re-item .re-info-price-txt{
+    margin-left: -3px;
+    font-weight: 700;
+}
+.re-item .re-info-price-decimal{
+    font-size: 12px;
+}
+.re-item .re-sales{
+    color: #d4d4d4;
+    font-size: 12px;
+    float: right;
+}
+.re-link:hover .re-img img{
+    opacity:0.8;
+    transform: scale(1.1,1.1);
+}
+.re-link:hover .re-info-name{
+    color: #e1251b;
 }

@@ -32,6 +32,7 @@ export default {
   font-size: 12px;
   border-top: 1px solid #d4d4d4;
   padding-top: 10px;
+  margin-bottom: 21px;
 }
 .my-row{
   display: flex;
