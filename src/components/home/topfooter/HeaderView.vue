@@ -9,7 +9,7 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item v-else>
           <span class="a-link">欢迎{{ username }}</span>&nbsp;
-          <router-link to="/signout" class="r-link">退出登录</router-link>
+          <el-link class="r-link" @click="signout" :underline="false">退出登录</el-link>
           </el-breadcrumb-item>
           <el-breadcrumb-item>
             <router-link to="/order" class="r-link">我的订单</router-link>
@@ -34,8 +34,7 @@
             <div class="nav">
               <el-row class="search-div">
                 <el-col :span="18">
-                  <el-input type="text" placeholder="搜索"
-                            v-model="search" @keyup.enter="searchGoods">
+                  <el-input type="text" placeholder="搜索" v-model="searchKey">
                     <el-button slot="append" icon="el-icon-search" @click="searchGoods"></el-button>
                   </el-input>
                 </el-col>
@@ -48,8 +47,8 @@
               <el-row class="nav-menu">
                 <el-menu mode="horizontal" style="color: #333333">
                   <el-menu-item class="menu-active">
-                    <el-link href="/miaosha" target="_blank" :underline="false" class="miaosha">秒杀</el-link></el-menu-item>
-                  <el-menu-item v-for="(item,index) in navmenu" :key="index" index="/" class="menu-item">{{item.title}}</el-menu-item>
+                    <router-link to="/seckill" target="_blank" class="miaosha">秒杀</router-link></el-menu-item>
+                  <el-menu-item v-for="(item,index) in navmenu" :key="index" index="/" class="menu-item">{{item}}</el-menu-item>
                 </el-menu>
               </el-row>
             </div>
@@ -60,61 +59,28 @@
         </el-row>
       </el-col>
     </el-row>
-    <el-row v-show="isScroll" class="fix-top" type="flex" justify="center">
-        <el-col :span="20" style="height: 100%">
-          <el-row type="flex" style="height: 100%">
-            <el-col :span="3" style="height: 100%"><div class="logo">
-              <img src="../../../assets/logo.png">
-            </div></el-col>
-            <el-col :span="12" :push="1">
-              <el-input type="text" placeholder="搜索"
-                         v-model="search" @keyup.enter="searchGoods">
-              <el-button slot="append" icon="el-icon-search" @click="searchGoods"></el-button>
-            </el-input></el-col>
-            <el-col :span="3" :push="2">
-              <el-button class="mycart" @click="toCart">
-                <i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&nbsp;
-                <div style="display: inline-block; font-size: 12px; position:relative; top:-2px">我的购物车</div>
-              </el-button>
-            </el-col>
-            <el-col :span="3" :push="2" style="margin-left: 10px">
-              <el-button class="myorder" @click="toOrder">
-                <i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&nbsp;
-                <div style="display: inline-block; font-size: 12px; position:relative; top:-2px">我的订单</div>
-              </el-button>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
   </div>
 </template>
 
 <script>
 export default {
   name: 'HeaderView',
+  props: ['isLogin', 'username'],
   data () {
     return {
-      isLogin: true,
-      username: 'Milky',
-      search: '',
-      isScroll: false,
-      navmenu: [{ title: '优惠券', url: '/' },
-        { title: '品牌闪购', url: '/' },
-        { title: '美妆护肤', url: '/' },
-        { title: '服装饰品', url: '/' },
-        { title: '家居家具', url: '/' },
-        { title: '图书文具', url: '/' }]
+      searchKey: '',
+      navmenu: ['优惠券', '品牌闪购', '美妆护肤', '服装饰品', '家居家具', '图书文具']
     }
   },
   methods: {
     toCart () {
       this.$router.push('/cart')
     },
-    toOrder () {
-      this.$router.push('/order')
-    },
     searchGoods () {
-
+      this.$emit('search', this.searchKey)
+    },
+    signout () {
+      this.$emit('logout')
     }
   }
 }
@@ -149,6 +115,9 @@ export default {
   color: #e1251b;
 }
 .r-link:hover{
+  color: #e1251b;
+}
+/deep/ .el-breadcrumb__inner a:hover, .el-breadcrumb__inner.is-link:hover {
   color: #e1251b;
 }
 /deep/ .el-link.el-link--default:hover {
@@ -245,7 +214,6 @@ export default {
 }
 /deep/ .el-menu--horizontal>.menu-item:hover {
   color: #e1251b !important;
-  pointer-events: none;
 }
 /deep/ .el-menu--horizontal>.menu-active{
   color: red;
@@ -285,22 +253,4 @@ color: #e1251b !important;
   font-size: 16px;
 }
 
-/* 固定顶部搜索框 */
-.fix-top{
-  width: 100%;
-  height: 56px;
-  border-bottom: 2px solid #e1251b;
-  background: white;
-  color: #333333;
-}
-.fix-top .logo{
-  height: 100%;
-  width: 100%;
-}
-.fix-top .logo>img{
-  height: 80%;
-  width: auto;
-  display: block;
-  margin-left: 0;
-}
 </style>

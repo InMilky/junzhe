@@ -21,10 +21,10 @@ VueRouter.prototype.replace = function push (location, onResolve, onReject) {
 const routes = [
   {
     path: '/',
-    redirect: '/seckill'
+    redirect: '/index'
   },
   {
-    path: '/seckill',
+    path: '/index',
     name: 'index',
     component: IndexView
   },

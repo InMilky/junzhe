@@ -107,21 +107,10 @@ p{
 .miaosha-zone .slide-list{
     width: 100%;
     height: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     position: relative;
     margin-right: 15px;
 }
-/*
-滚动条的设置
-::-webkit-scrollbar 滚动条整体部分，可以设置宽度啥的
-::-webkit-scrollbar-button 滚动条两端的按钮
-::-webkit-scrollbar-track  外层轨道
-::-webkit-scrollbar-track-piece  内层滚动槽
-::-webkit-scrollbar-thumb 滚动的滑块
-::-webkit-scrollbar-corner 边角
-::-webkit-resizer 定义右下角拖动块的样式
-*/
 .miaosha-zone ::-webkit-scrollbar {
     height: 8px;
     background: white;
@@ -131,23 +120,18 @@ p{
     border-radius:4px;
     background:#c81623;
 }
-
 .miaosha-zone .slide-wrapper{
     opacity: 1;
-    width: 1842px;
     height: 100%;
     transition: all 1s ease;
-    display: block;
+    display: flex;
     padding-left: 3px;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 .miaosha-zone .slide-wrapper>a{
     color: #333;
     text-decoration: none;
-}
-.miaosha-zone .slide-wrapper,.miaosha-zone .slide-wrapper .seckill-item-link,
-.miaosha-zone .slide-wrapper .seckill-item,
-.seckill-item .seckill-item-img, .seckill-item h6,.seckill-item span{
-    background-color: white;
 }
 .miaosha-zone .slide-wrapper .seckill-item{
     width: 200px;
@@ -284,26 +268,28 @@ p{
 .tab-item-0{
     width: 36%;
     /*flex:1;*/
+    position: relative;
+    height: 100%;
 }
 .tab-item-1{
     width: 60%;
+    height: 100%;
     /*flex:2;*/
     display: flex;
     flex-wrap: wrap;
 }
 .tab-item-list{
     width: 50%;
-    height: 126px;
+    height: 50%;
     position: relative;
     overflow: hidden;
 }
  .tab-item-0 .tab-item-img{
-    width: 74px;
-    height: 74px;
-    margin: 44px auto;
+     width: 64%;
+     margin: 12% auto;
 }
  .tab-item-0 .tab-item-img img{
-    width: 66px;
+    width: 100%;
     height: auto;
     display: block;
 }
@@ -345,14 +331,13 @@ p{
     width: 100%;
     height: 100%;
     overflow: hidden;
-    position: relative;
 }
 .tab-item-0>.tab-item-link:after {
-    height: 170px;
+    height: 66%;
     position: absolute;
     width: 1px;
-    /*right: 0;*/
-    left:176px;
+    margin-top: -50%;
+    right: 0;
     top: 50%;
     background: -webkit-gradient(linear,left top,left bottom,from(white),color-stop(#eeeeee),color-stop(#eeeeee),to(white));
     background: linear-gradient(
@@ -367,22 +352,23 @@ p{
 }
 .tab-item-1 .tab-item-link{
     display: flex;
-    height: 132px;
+    height: 100%;
+    width: 100%;
 }
 .tab-item-1 .tab-item-img{
-    width: 74px;
-    height: 74px;
+    width: 50%;
+    height: 50%;
     float: left;
     margin: auto;
 }
 .tab-item-1 .tab-item-img img{
-    width: 66px;
-    height: auto;
+    width: auto;
+    max-height: 100%;
     display: block;
-    margin: 4px auto;
+    margin: auto;
 }
 .tab-item-1 .tab-item-msg{
-    width: 90px;
+    width: 50%;
     float: left;
     margin: auto;
 }
@@ -461,6 +447,7 @@ p{
     width: 100%;
     height: 100%;
     position: relative;
+    opacity: 1;
 }
 .brand-nav:nth-child(3n - 1):after,
 .brand-nav:nth-child(3n - 2):after{
@@ -474,6 +461,12 @@ p{
     background: linear-gradient(
             180deg, white, #eeeeee, #eeeeee, white);
     content: "";
+}
+.brand-nav:hover{
+    color: #e1251b;
+}
+.brand-nav:hover>.brand-logo{
+    opacity: 0.8;
 }
 .brand-logo{
     width: 100%;

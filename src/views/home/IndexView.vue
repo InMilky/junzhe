@@ -1,21 +1,66 @@
 <template>
   <div class="home">
-    <HeaderView></HeaderView>
-<!--    <MainView></MainView>-->
-<!--    <FooterView></FooterView>-->
+    <FixedTop v-show="showFixedTop" @search="searchGoods"></FixedTop>
+    <FixedRight v-show="showRightnav" @destination="toDestination"></FixedRight>
+    <HeaderView :isLogin="isLogin" :username="username" @search="searchGoods" @logout="logout"></HeaderView>
+    <MainView :dID="destinationID"></MainView>
+    <FooterView></FooterView>
   </div>
 </template>
 
 <script>
 
 import HeaderView from '@/components/home/topfooter/HeaderView'
-// import FooterView from '@/components/home/topfooter/FooterView'
-// import MainView from '@/components/home/MainView'
+import FooterView from '@/components/home/topfooter/FooterView'
+import MainView from '@/components/home/MainView'
+import FixedRight from '@/components/home/topfooter/FixedRight'
+import FixedTop from '@/components/home/topfooter/FixedTop'
+
 export default {
+  data () {
+    return {
+      isLogin: true,
+      username: '小橘子',
+      showFixedTop: false,
+      showRightnav: false,
+      destinationID: ''
+    }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.getScrollTop)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.getScrollTop)
+  },
+  methods: {
+    getScrollTop () {
+      const top = document.body.scrollTop || window.pageYOffset || window.scrollY
+      if (top > 320) {
+        this.showFixedTop = true
+        this.showRightnav = true
+      } else {
+        this.showFixedTop = false
+        this.showRightnav = false
+      }
+    },
+    toDestination (id) {
+      this.destinationID = id
+    },
+    searchGoods (key) {
+      // alert(key)
+      // axios请求
+    },
+    logout () {
+      this.username = ''
+      this.isLogin = false
+    }
+  },
   components: {
-    HeaderView
-    // FooterView,
-    // MainView
+    HeaderView,
+    FooterView,
+    MainView,
+    FixedTop,
+    FixedRight
   }
 }
 </script>

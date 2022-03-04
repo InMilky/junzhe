@@ -47,4 +47,12 @@ export default {
 .copyright-txt{
   color: #666;
 }
+/deep/ .el-link.el-link--default {
+  color: #303133;
+
+}
+/deep/ .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link {
+    font-weight: 500;
+   font-size: 14px;
+ }
 </style>

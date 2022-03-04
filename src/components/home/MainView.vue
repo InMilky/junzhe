@@ -12,7 +12,7 @@
             </el-carousel>
           </div>
         <!--  秒杀专区  -->
-        <div class="miaosha-zone">
+        <div id="seckill" class="miaosha-zone">
             <div class="seckill-area">
               <a href="/seckill" target="_blank" class="seckill-link">
                 <div class="countdown-title">秒杀专区</div>
@@ -43,7 +43,7 @@
             </div>
         </div>
         <!--  每日推荐  -->
-        <div class="special-offer">
+        <div id="special" class="special-offer">
             <div class="offer-item">
               <div class="sbox-title">
                 <a href="javascript:void(0)" class="sbox-link">
@@ -101,7 +101,7 @@
               </div>
         </div>
         <!--  发现好货  -->
-        <div class="nicegoods" v-for="i in 2" :key="i">
+        <div :id="'nicegoods'+i" class="nicegoods" v-for="i in 2" :key="i">
           <div class="nice-nav nice-title">
             <a href="javascript:void(0)" class="nicegoods-link">
               <div class="nicegoods-tit">
@@ -122,7 +122,7 @@
           </div>
         </div>
         <!--  为你推荐  -->
-        <div class="recommand">
+        <div id="recommand" class="recommand">
           <div class="recommandtit"><h3>为你推荐</h3></div>
           <div class="re-more">
             <div class="re-item" v-for="(item,index) in recommondList" :key="index">
@@ -143,6 +143,7 @@
           </div>
         </div>
         <el-divider> END </el-divider>
+        <el-button @click="toDestination">totop</el-button>
       </el-col>
     </el-row>
   </div>
@@ -150,8 +151,11 @@
 
 <script>
 export default {
+  props: ['dID'],
   data () {
     return {
+      destinationID: this.dID,
+      isClick: false,
       banner: [
         { index: 0, src: require('@/assets/img/banner/banner01.png') },
         { index: 1, src: require('@/assets/img/banner/banner02.png') },
@@ -246,10 +250,34 @@ export default {
       ]
     }
   },
+  watch: {
+    dID () {
+      if (this.dID !== 'top' && this.dID) {
+        const des = document.getElementById(this.dID)
+        const y = des.offsetTop + 88
+        window.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        })
+      } else if (this.dID) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+      }
+    }
+  },
   methods: {
     handleClick () {
 
+    },
+    toDestination () {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
     }
+
   },
   components: {
   }
