@@ -9,7 +9,7 @@
           <el-step title="注册成功"></el-step>
         </el-steps>
         <div class="my-card" id="getopt">
-          <el-form class="my-form" :model="data" :rules="rules" ref="data">
+          <el-form class="my-form" :model="data" :rules="rules" ref="data" onsubmit="return false;">
             <el-form-item prop="phone">
               <el-input class="my-input" type="text"
                         v-model="data.phone"
@@ -68,11 +68,10 @@ export default {
           this.$message.error('请输入正确的手机号进行验证')
         }
       })
-      // this.isValidate = true
     },
     toSignin () {
       if (this.isValidate) {
-        this.$router.push('/signin/person2')
+        this.$router.replace('/signup/person2')
       } else {
         this.data.isClick = false
         this.$message.error('请先进行手机号验证')
@@ -83,7 +82,7 @@ export default {
 </script>
 
 <style scoped>
-@import "../../../assets/css/signin.css";
+@import "../../../assets/css/signup.css";
 /deep/ .el-step__icon {
   width: 22px;
   height: 22px;

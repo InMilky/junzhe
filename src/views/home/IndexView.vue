@@ -2,7 +2,8 @@
   <div class="home">
     <FixedTop v-show="showFixedTop" @search="searchGoods"></FixedTop>
     <FixedRight v-show="showRightnav" @destination="toDestination"></FixedRight>
-    <HeaderView :isLogin="isLogin" :username="username" @search="searchGoods" @logout="logout"></HeaderView>
+    <TopNav :isLogin="isLogin" :username="username"  @logout="logout"></TopNav>
+    <HeaderView @search="searchGoods"></HeaderView>
     <MainView :dID="destinationID"></MainView>
     <FooterView></FooterView>
   </div>
@@ -10,6 +11,7 @@
 
 <script>
 
+import TopNav from '@/components/home/topfooter/TopNav'
 import HeaderView from '@/components/home/topfooter/HeaderView'
 import FooterView from '@/components/home/topfooter/FooterView'
 import MainView from '@/components/home/MainView'
@@ -56,6 +58,7 @@ export default {
     }
   },
   components: {
+    TopNav,
     HeaderView,
     FooterView,
     MainView,

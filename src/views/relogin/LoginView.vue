@@ -7,7 +7,8 @@
         <el-row type="flex" justify="center">
           <el-col :span="10">
               <h1 style="text-align: center">登 录</h1>
-              <el-form :model="validateForm" ref="validateForm" class="my-form">
+              <el-form :model="validateForm" ref="validateForm" class="my-form" onsubmit="return false;">
+                <div class="error-msg" v-if="hasError">{{errmsg}}</div>
                 <el-form-item prop="phone" :rules="[
                   {required:true,message:'手机号不能为空'},
                 ]">
@@ -35,7 +36,7 @@
                 </el-form-item>
                 <div class="additional">
                     <el-link type="info" style="float: left; font-size: 12px" :underline="false">其他登录</el-link>
-                    <el-link type="info" @click="toSignin" style="float: right;" :underline="false">前往注册</el-link>
+                    <el-link type="info" to="/signup" style="float: right;" :underline="false">前往注册</el-link>
                 </div>
               </el-form>
           </el-col>
@@ -59,22 +60,23 @@ export default {
         password: ''
       },
       rememberpsw: false,
-      title: '登录'
+      title: '登录',
+      hasError: false,
+      errmsg: '该账号不存在，请前往注册'
     }
   },
   methods: {
     submitForm (formData) {
+      this.hasError = false
       this.$refs[formData].validate((valid) => {
         if (valid) {
-          this.$router.push('/admin')
+          // axios
+          this.$router.push('/index')
         } else {
           this.$message.error('请完整填写登录信息')
           return false
         }
       })
-    },
-    toSignin () {
-      this.$router.push('/signin')
     }
   },
   components: {
@@ -90,6 +92,7 @@ export default {
   }
   .my-form{
     margin: 33px 50px;
+    position: relative;
   }
   .my-input{
     font-size: 21px;
@@ -101,6 +104,16 @@ export default {
     line-height: 30px;
     font-size: 14px;
     overflow: hidden;
+  }
+  /*错误提示*/
+  .error-msg{
+    width: 100%;
+    font-size:14px;
+    color: #e1251b;
+    text-align: center;
+    position: absolute;
+    top: -10%;
+    /*top: -25px*/
   }
   /deep/ .el-input__inner{
     height: 50px;
@@ -116,7 +129,6 @@ export default {
   }
   /deep/ .el-link--inner{
     font-size: 14px;
-    line-height: 1;
   }
   /deep/ .el-link--inner:hover{
     color: #e1251b;

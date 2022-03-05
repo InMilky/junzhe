@@ -9,7 +9,7 @@
           <el-step title="注册成功"></el-step>
         </el-steps>
         <div id="register" class="my-card">
-          <el-form class="my-form" :rules="rules" :model="ruleForm" ref="ruleForm">
+          <el-form class="my-form" :rules="rules" :model="ruleForm" ref="ruleForm" onsubmit="return false;">
             <el-form-item>
               <el-input class="my-input" type="text" v-model="ruleForm.phone" disabled>
                 <template slot="prepend">手机号</template>{{ruleForm.phone}}</el-input>
@@ -106,7 +106,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$router.push('/signin/person/signin_success')
+          this.$router.replace('/signup/person/signin_success')
         } else {
           this.$message.error('请完整填写注册信息，才能完成注册')
           return false
@@ -117,7 +117,7 @@ export default {
 }
 </script>
 <style scoped>
-@import "../../../assets/css/signin.css";
+@import "../../../assets/css/signup.css";
 /deep/ .el-step__icon {
   width: 22px;
   height: 22px;

@@ -21,7 +21,9 @@ VueRouter.prototype.replace = function push (location, onResolve, onReject) {
 const routes = [
   {
     path: '/',
-    redirect: '/index'
+    redirect: {
+      name: 'index'
+    }
   },
   {
     path: '/index',
@@ -35,11 +37,13 @@ const routes = [
     component: () => import('@/views/relogin/LoginView')
   },
   {
-    path: '/signin',
-    name: 'signin',
+    path: '/signup',
+    name: 'signup',
     alwaysShow: true,
-    redirect: '/signin/person1',
-    component: () => import('@/views/relogin/SigninView'),
+    redirect: {
+      name: 'getotp'
+    },
+    component: () => import('@/views/relogin/RegisterView'),
     children: [
       {
         path: 'person1',
@@ -52,10 +56,10 @@ const routes = [
         meta: { title: '欢迎注册' },
         component: () => import('@/components/home/relogin/RegisterMain')
       }, {
-        path: 'person/signin_success',
-        name: 'signin_success',
+        path: 'person/signup_success',
+        name: 'signup_success',
         meta: { title: '欢迎注册' },
-        component: () => import('@/components/home/relogin/SigninSuccess')
+        component: () => import('@/components/home/relogin/RegisterSuccess')
       }
     ]
   },
@@ -91,48 +95,52 @@ const routes = [
     children: [
       {
         path: 'goods',
-        name: 'goods',
+        name: 'goods_admin',
         meta: { title: '商品管理' },
-        redirect: '/admin/goods/lists',
+        redirect: {
+          name: 'list_admin'
+        },
         component: () => import('@/views/admin/goods/IndexView'),
         children: [
           {
-            path: '/admin/goods/lists',
-            name: 'goodslist',
+            path: 'lists',
+            name: 'list_admin',
             meta: { title: '全部商品', activeMenu: '/admin/goods' },
             component: () => import('@/views/admin/goods/ListView')
           }, {
-            path: '/admin/goods/add',
+            path: 'add',
             name: 'addgoods',
             meta: { title: '添加商品' },
             component: () => import('@/views/admin/goods/AddgoodsView')
           }, {
-            path: '/admin/goods/edit',
+            path: 'edit',
             name: 'editgoods',
             meta: { title: '更新商品' },
             component: () => import('@/views/admin/goods/EditgoodsView')
           }, {
-            path: '/admin/goods/category',
-            name: 'goods_category',
+            path: 'category',
+            name: 'category_admin',
             meta: { title: '类型管理' },
             component: () => import('@/views/admin/goods/CategoryView')
           }
         ]
       },
       {
-        path: '/admin/seckill',
-        name: 'seckill',
+        path: 'seckill',
+        name: 'seckill_admin',
         meta: { title: '秒杀管理' },
-        redirect: '/admin/seckill/event',
+        redirect: {
+          name: 'seckill_event'
+        },
         component: () => import('@/views/admin/seckill/IndexView'),
         children: [
           {
-            path: '/admin/seckill/event',
+            path: 'event',
             name: 'seckill_event',
             meta: { title: '秒杀活动管理' },
             component: () => import('@/views/admin/seckill/EventView')
           }, {
-            path: '/admin/seckill/goods',
+            path: 'goods',
             name: 'seckill_goods',
             meta: { title: '秒杀商品管理' },
             component: () => import('@/views/admin/seckill/GoodsView')
@@ -140,24 +148,26 @@ const routes = [
         ]
       },
       {
-        path: '/admin/order',
-        name: 'order',
+        path: 'order',
+        name: 'order_admin',
         meta: { title: '订单管理' },
-        redirect: '/admin/order/list',
+        redirect: {
+          name: 'order_list'
+        },
         component: () => import('@/views/admin/order/IndexView'),
         children: [
           {
-            path: '/admin/order/list',
+            path: 'list',
             name: 'order_list',
             meta: { title: '全部订单' },
             component: () => import('@/views/admin/order/ListView')
           }, {
-            path: '/admin/order/deliver',
+            path: 'eliver',
             name: 'order_deliver',
             meta: { title: '订单发货' },
             component: () => import('@/views/admin/order/DeliverView')
           }, {
-            path: '/admin/order/aftersales',
+            path: 'aftersales',
             name: 'order_aftersales',
             // meta: { title: '订单售后' },
             component: () => import('@/views/admin/order/AftersalesView')
@@ -165,19 +175,19 @@ const routes = [
         ]
       },
       {
-        path: '/admin/user',
-        name: 'user',
+        path: 'user',
+        name: 'user_admin',
         meta: { title: '用户管理' },
         component: () => import('@/views/admin/user/IndexView')
       }
     ]
+  },
+  {
+    path: '/*',
+    redirect: '/error_request/404',
+    component: () => import('@/error/ErrorPage404'),
+    hidden: true
   }
-  // {
-  //   path: '*',
-  //   redirect: '/error_request/404',
-  //   component: () => import('@/error/ErrorPage404'),
-  //   hidden: true
-  // }
 ]
 
 const router = new VueRouter({

@@ -143,7 +143,6 @@
           </div>
         </div>
         <el-divider> END </el-divider>
-        <el-button @click="toDestination">totop</el-button>
       </el-col>
     </el-row>
   </div>
@@ -270,14 +269,7 @@ export default {
   methods: {
     handleClick () {
 
-    },
-    toDestination () {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      })
     }
-
   },
   components: {
   }
