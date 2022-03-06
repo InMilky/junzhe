@@ -54,7 +54,7 @@ export default {
   overflow: hidden;
   display: flex;
   align-items: center;
-  background-color: #dddddd;
+  background-color: #e6e6e6;
 }
 .my-breadcrumb{
   float: right;
