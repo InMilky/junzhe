@@ -70,6 +70,12 @@ const routes = [
     component: () => import('@/views/home/cart/CartView')
   },
   {
+    path: '/payorder',
+    name: 'payorder',
+    meta: { title: '支付页面' },
+    component: () => import('@/views/home/cart/PayView')
+  },
+  {
     path: '/order',
     name: 'order',
     meta: { title: '个人订单' },
@@ -82,9 +88,20 @@ const routes = [
     component: () => import('@/views/home/seckill/IndexView')
   },
   {
+    path: '/item',
+    name: 'item',
+    meta: { title: '商品秒杀' },
+    component: () => import('@/views/home/seckill/ItemView')
+  },
+  {
     path: '/goodslist',
     name: 'goodslist',
     component: () => import('@/views/home/goods/GoodsView')
+  },
+  {
+    path: '/goodsinfo',
+    name: 'goodsinfo',
+    component: () => import('@/views/home/goods/GoodsinfoView')
   },
   {
     path: '/admin',
@@ -205,3 +222,7 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
+// 跳转后返回页面顶部
+router.afterEach(() => {
+  window.scrollTo(0, 0)
+})

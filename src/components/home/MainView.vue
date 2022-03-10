@@ -5,8 +5,7 @@
         <!--  轮播图  -->
         <div class="carousel">
             <el-carousel height="480px">
-              <el-carousel-item v-for="item in banner" :key="item.index">
-<!--                <h3 class="small">{{ item }}</h3>-->
+              <el-carousel-item v-for="item in banner" :key="item.index" class="banner">
                 <img :src="item.src" :alt="item.index">
               </el-carousel-item>
             </el-carousel>
@@ -14,7 +13,7 @@
         <!--  秒杀专区  -->
         <div id="seckill" class="miaosha-zone">
             <div class="seckill-area">
-              <a href="/seckill" target="_blank" class="seckill-link">
+              <router-link to="/seckill" target="_blank" class="seckill-link">
                 <div class="countdown-title">秒杀专区</div>
                 <div class="qianggou-icon"><i class="el-icon-alarm-clock"></i></div>
                 <div class="countdown-desc">距离 <strong>抢购</strong> 开始
@@ -24,12 +23,12 @@
                   <span class="timer-unit timer-unit-day">00</span>
                   <span class="timer-unit timer-unit-hour">00</span>
                   <span class="timer-unit timer-unit-minute">00</span>
-                </div></a>
+                </div></router-link>
             </div>
             <div class="slide-list">
               <div class="slide-wrapper">
-                <a v-for="item in miaoshaList" :key="item.index"
-                   :href="item.href" target="_blank" class="seckill-item-link" >
+                <router-link v-for="item in miaoshaList" :key="item.index"
+                   :to="item.href" target="_blank" class="seckill-item-link" >
                   <div class="seckill-item">
                     <div class="seckill-item-img">
                       <img :src="item.imgurl" :alt="item.title"></div>
@@ -37,7 +36,7 @@
                     <div class="seckill-item-price">
                       <span>￥{{ item.miaosha_price}}</span><span>￥{{item.price}}</span></div>
                   </div>
-                </a>
+                </router-link>
 
               </div>
             </div>
@@ -101,7 +100,7 @@
               </div>
         </div>
         <!--  发现好货  -->
-        <div :id="'nicegoods'+i" class="nicegoods" v-for="i in 2" :key="i">
+        <div id="nicegoods" class="nicegoods">
           <div class="nice-nav nice-title">
             <a href="javascript:void(0)" class="nicegoods-link">
               <div class="nicegoods-tit">
@@ -111,7 +110,27 @@
               </div></a>
           </div>
           <div class="nice-nav" v-for="(item,index) in niceList" :key="index">
-            <a href="javascript:void(0)" target="_blank" class="nice-item-link">
+            <a href="javascript:void(0)" class="nice-item-link">
+              <div class="nice-item">
+                <div class="nice-item-img">
+                  <img :src="item.imgurl" :alt="item.name"></div>
+                <p class="nice-item-name">{{ item.name }}</p>
+                <div class="nice-item-price">￥{{ item.price }}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div id="rnicegoods" class="nicegoods">
+          <div class="nice-nav nice-title">
+            <a href="javascript:void(0)" class="nicegoods-link">
+              <div class="nicegoods-tit">
+                <span class="nicegoods-txt">好物推荐</span>
+                <el-button class="more" size="mini" circle>
+                  <i class="el-icon-arrow-right"></i> </el-button>
+              </div></a>
+          </div>
+          <div class="nice-nav" v-for="(item,index) in niceList" :key="index">
+            <a href="javascript:void(0)" class="nice-item-link">
               <div class="nice-item">
                 <div class="nice-item-img">
                   <img :src="item.imgurl" :alt="item.name"></div>
@@ -156,11 +175,11 @@ export default {
       destinationID: this.dID,
       isClick: false,
       banner: [
-        { index: 0, src: require('@/assets/img/banner/banner01.png') },
-        { index: 1, src: require('@/assets/img/banner/banner02.png') },
-        { index: 2, src: require('@/assets/img/banner/banner03.png') },
-        { index: 3, src: require('@/assets/img/banner/banner04.png') },
-        { index: 4, src: require('@/assets/img/banner/banner05.png') }
+        { index: 0, src: require('@/assets/img/banner/banner01.jpg') },
+        { index: 1, src: require('@/assets/img/banner/banner02.jpg') },
+        { index: 2, src: require('@/assets/img/banner/banner03.jpg') },
+        { index: 3, src: require('@/assets/img/banner/banner04.jpg') },
+        { index: 4, src: require('@/assets/img/banner/banner05.jpg') }
       ],
       miaoshaList: [
         { index: 1, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', imgurl: require('@/assets/img/seckill/seckill-item01.png'), href: '/' },
@@ -253,7 +272,7 @@ export default {
     dID () {
       if (this.dID !== 'top' && this.dID) {
         const des = document.getElementById(this.dID)
-        const y = des.offsetTop + 88
+        const y = des.offsetTop + 96
         window.scrollTo({
           top: y,
           behavior: 'smooth'

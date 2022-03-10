@@ -36,7 +36,7 @@
                 </el-form-item>
                 <div class="additional">
                     <el-link type="info" style="float: left; font-size: 12px" :underline="false">其他登录</el-link>
-                    <el-link type="info" to="/signup" style="float: right;" :underline="false">前往注册</el-link>
+                    <router-link class="rbtn" type="info" to="/signup" style="float: right;" :underline="false">前往注册</router-link>
                 </div>
               </el-form>
           </el-col>
@@ -131,6 +131,12 @@ export default {
     font-size: 14px;
   }
   /deep/ .el-link--inner:hover{
+    color: #e1251b;
+  }
+  .rbtn{
+    font-size: 14px;
+  }
+  .rbtn:hover{
     color: #e1251b;
   }
   /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {

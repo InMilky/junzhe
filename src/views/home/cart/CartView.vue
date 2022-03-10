@@ -1,6 +1,5 @@
 <template>
   <div class="cart-container">
-    <TopNav></TopNav>
     <CartHeader :search="search" :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
       <div class="cart">
@@ -23,13 +22,15 @@
                 <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.id" />
                 <div class="goods-img">
                   <img width="56" height="56" src="../../../assets/img/seckill/seckill-item10.png"/></div>
-                <div class="goods-info">{{ list.title }} - {{list.description}}</div>
-                <div class="goods-price">￥{{ list.price }}</div>
-                <div class="goods-num">
-                  {{list.num}}
-<!--                  <input v-model.number="list.num" type="number" value="list.num" />-->
+                <div class="goods-info">
+                  <div>{{ list.title }}</div>
+                  <div style="color: #999999">{{list.description}}</div>
                 </div>
-                <div class="goods-amount">{{ list.price * list.num }}</div>
+                <div class="goods-price" style="font-weight: 700;">￥{{ list.price }}</div>
+                <div class="goods-num">
+                  <el-input-number v-model="list.num" :min="1" :max="9999" @change="calsum" size="mini"></el-input-number>
+                </div>
+                <div class="goods-amount" style="color: #e1251b;font-weight: 700;">￥{{ list.price * list.num }}</div>
                 <div class="goods-action">
                   <a href="javascrip:void(0)" @click="delItem(list.id)">删除</a>
                 </div>
@@ -45,47 +46,21 @@
             </el-col>
             <el-col :span="10">
               <div style="float: right">
-              <span>总价:<span class="amount">￥{{amount|tofixed}}</span></span>
+              <span>总价:<span style="color: #e1251b">￥</span><span class="amount">{{amount|tofixed}}</span></span>
               <el-link class="topay" @click="toOrder" :underline="false">去结算</el-link>
               </div></el-col>
           </el-row>
         </div>
       </div>
     </el-col></el-row>
-    <!--  为你推荐  -->
-    <el-row class="top-nav" type="flex" justify="center">
-      <el-col :span="20">
-       <div id="recommand" class="recommand">
-        <div class="re-title">猜你喜欢</div>
-        <div class="re-more">
-        <div class="re-item" v-for="(item,index) in recommondList" :key="index">
-          <a href="javascript:void(0)" class="re-link">
-            <div class="re-img">
-              <img :src="item.imgurl" :alt="item.title">
-            </div>
-            <div class="re-info">
-              <p class="re-info-name">{{ item.title }}</p>
-              <div class="re-info-price">
-                <i>￥</i>
-                <span class="re-info-price-txt">{{ item.price }}.<span class="re-info-price-decimal">00</span></span>
-                <span class="re-sales">已售{{ item.soldnum }}件</span>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-      </div>
-        <el-divider> END </el-divider>
-      </el-col>
-    </el-row>
-    <FooterView></FooterView>
+    <el-divider> END </el-divider>
+    <RecommendTemp></RecommendTemp>
   </div>
 </template>
 <script>
 
-import TopNav from '@/components/home/topfooter/TopNav'
 import CartHeader from '@/components/home/topfooter/CartHeader'
-import FooterView from '@/components/home/topfooter/FooterView'
+import RecommendTemp from '@/components/home/recommand/RecommendTemp'
 
 export default {
   data () {
@@ -105,29 +80,11 @@ export default {
         },
         {
           id: 'p0002',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
+          title: '品牌剪标撤柜折扣大码小个子棉服女冬设计感小众棉衣短款棉袄外套',
+          description: '颜色分类：米白色；尺码：M[建议91-105斤]',
           price: '3649.00',
           num: '2'
         }
-      ],
-      recommondList: [
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1640', soldnum: '99', imgurl: require('@/assets/img/recommond/re01.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '511', soldnum: '99', imgurl: require('@/assets/img/recommond/re02.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1129', soldnum: '99', imgurl: require('@/assets/img/recommond/re03.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '2146', soldnum: '99', imgurl: require('@/assets/img/recommond/re04.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '5129', soldnum: '99', imgurl: require('@/assets/img/recommond/re05.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1929', soldnum: '99', imgurl: require('@/assets/img/recommond/re06.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '330', soldnum: '99', imgurl: require('@/assets/img/recommond/re07.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '15', soldnum: '99', imgurl: require('@/assets/img/recommond/re08.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '327', soldnum: '99', imgurl: require('@/assets/img/recommond/re09.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '54', soldnum: '99', imgurl: require('@/assets/img/recommond/re10.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '222', soldnum: '99', imgurl: require('@/assets/img/recommond/re11.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '324', soldnum: '99', imgurl: require('@/assets/img/recommond/re12.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '528', soldnum: '99', imgurl: require('@/assets/img/recommond/re01.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '603', soldnum: '99', imgurl: require('@/assets/img/recommond/re02.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '603', soldnum: '99', imgurl: require('@/assets/img/recommond/re04.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1640', soldnum: '99', imgurl: require('@/assets/img/recommond/re03.png'), href: '/' }
       ]
     }
   },
@@ -164,6 +121,16 @@ export default {
   },
   methods: {
     search () {},
+    calsum () {
+      this.amount = 0
+      for (let i = 0; i < this.checkGoods.length; i++) {
+        for (let j = 0; j < this.cartList.length; j++) {
+          if (this.checkGoods[i] === this.cartList[j].id) {
+            this.amount += this.cartList[j].price * this.cartList[j].num
+          }
+        }
+      }
+    },
     chooseAll () {
       if (this.checkAll) {
         this.checkGoods.length = 0
@@ -230,9 +197,8 @@ export default {
     }
   },
   components: {
-    TopNav,
     CartHeader,
-    FooterView
+    RecommendTemp
   }
 }
 </script>
@@ -271,31 +237,39 @@ export default {
 .cart-thead>div,.cart-tfoot>div{
   margin: auto 0;
 }
-.cart-checkbox{
-  flex: 0 0 80px;
-  padding-left: 15px;
-}
-.goods-info{
-  flex: 1;
-  margin: auto 0;
-  line-height: 1;
-}
-.goods-price,.goods-num,.goods-amount,.goods-action,.goods-img{
-  flex: 0 0 100px;
-  margin: auto 0;
-  line-height: 1;
-  text-align: center;
-}
 .cart-tbody{
   width: 100%;
+  font-size: 14px;
+  color: #606266;
 }
 .cart-item{
   width: 100%;
   height: 80px;
   display: flex;
   margin: 5px 0;
+  overflow: hidden;
   border-bottom: 1px solid #e6e6e6;
 }
+.cart-checkbox{
+  flex: 0 0 80px;
+  padding-left: 15px;
+}
+
+.goods-info{
+  flex: 1;
+  margin: auto 0;
+}
+
+.goods-price,.goods-num,.goods-amount,.goods-action,.goods-img{
+  flex: 0 0 110px;
+  margin: auto 0;
+  line-height: 1;
+  text-align: center;
+}
+.goods-action,.goods-img{
+  flex: 0 0 90px;
+}
+
 .cart-item:last-child{
   border-bottom: 0;
 }
@@ -332,32 +306,14 @@ export default {
 /deep/ .el-divider--horizontal {
   width: 30%;
   text-align: center;
-  margin: 36px auto;
+  margin: 50px auto 10px;
 }
 /deep/ .el-divider__text {
   background-color: #fff;
   color: #dddddd;
   font-size: 18px;
 }
-/* recommond */
-.re-title{
-  color: #e1251b;
-  font-size: 18px;
-  line-height: 30px;
-  padding-left: 10px;
-  margin: 20px 0;
-  border-left: 5px solid #e1251b;
+/deep/ .el-input-number--mini {
+  width: 90px;
 }
-.re-item{
-  border: 1px solid #dddddd;
-}
-.re-item:hover{
-  border: 1px solid #e1251b;
-}
-
-.re-link:hover .re-img img{
-  opacity:0.8;
-  transform: scale(1,1);
-}
-
 </style>

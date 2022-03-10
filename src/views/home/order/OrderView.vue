@@ -1,6 +1,5 @@
 <template>
   <div class="order-container">
-    <TopNav></TopNav>
     <CartHeader :search="search" :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
     <div class="order">
@@ -8,8 +7,8 @@
         <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
       </el-empty>
       <div v-else>
-        <el-tabs type="border-card">
-          <el-tab-pane label="全部订单">
+        <el-tabs v-model="activeName" type="border-card">
+          <el-tab-pane name="全部订单" label="全部订单">
             <div class="order-lists">
               <div class="order-header">
                 <div class="o-info">宝贝</div>
@@ -35,16 +34,17 @@
                 </div>
               </div>
               <el-pagination
+                background
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page.sync="currentPage"
                 :page-size="10"
                 layout="prev, pager, next, jumper"
-                :total="51">
+                :total="51" style="float: right;">
               </el-pagination>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="待付款">
+          <el-tab-pane name="待付款" label="待付款">
             <div class="order-lists">
               <div class="order-header">
                 <div class="o-info">宝贝</div>
@@ -54,12 +54,12 @@
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
-              <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~">
+              <el-empty description="你还没有相关订单~">
                 <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
               </el-empty>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="待发货">
+          <el-tab-pane name="待发货" label="待发货">
             <div class="order-lists">
               <div class="order-header">
                 <div class="o-info">宝贝</div>
@@ -69,12 +69,42 @@
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
-              <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~">
+              <el-empty description="你还没有相关订单~" v-if="orderList.length===0">
+                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
+              </el-empty>
+              <div class="order-item" v-for="i in 3" :key="orderList[i].orderID" v-else>
+                <div class="o-head">
+                  <span style="font-weight: 700">订单号：{{orderList[i].orderID}}</span>
+                  <span>下单时间：{{orderList[i].order_time}}</span> </div>
+                <div class="o-body">
+                  <div class="o-img">
+                    <img width="56" height="56" src="../../../assets/img/seckill/seckill-item10.png"/></div>
+                  <div class="o-title">{{orderList[i].title}}--{{orderList[i].description}}</div>
+                  <div class="o-price">￥{{orderList[i].price}}</div>
+                  <div class="o-num">{{orderList[i].num}}</div>
+                  <div class="o-total">￥{{orderList[i].totalPrice}}</div>
+                  <div class="o-state">{{orderList[i].paystate}}</div>
+                  <div class="o-action">评论</div>
+                </div>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane name="待收货" label="待收货">
+            <div class="order-lists">
+              <div class="order-header">
+                <div class="o-info">宝贝</div>
+                <div class="o-price">单价</div>
+                <div class="o-num">数量</div>
+                <div class="o-total" style="font-weight: normal">实付款</div>
+                <div class="o-state">交易状态</div>
+                <div class="o-action">交易操作</div>
+              </div>
+              <el-empty description="你还没有相关订单~">
                 <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
               </el-empty>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="待收货">
+          <el-tab-pane name="评价" label="评价">
             <div class="order-lists">
               <div class="order-header">
                 <div class="o-info">宝贝</div>
@@ -84,22 +114,7 @@
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
-              <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~">
-                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
-              </el-empty>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="评价">
-            <div class="order-lists">
-              <div class="order-header">
-                <div class="o-info">宝贝</div>
-                <div class="o-price">单价</div>
-                <div class="o-num">数量</div>
-                <div class="o-total" style="font-weight: normal">实付款</div>
-                <div class="o-state">交易状态</div>
-                <div class="o-action">交易操作</div>
-              </div>
-              <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~">
+              <el-empty description="你还没有相关订单哦~">
                 <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
               </el-empty>
             </div>
@@ -108,46 +123,21 @@
       </div>
     </div>
     </el-col></el-row>
-    <!--  为你推荐  -->
-    <el-row class="top-nav" type="flex" justify="center">
-      <el-col :span="20">
-        <div id="recommand" class="recommand">
-          <span class="re-title">热门推荐</span>
-          <div class="re-more">
-            <div class="re-item" v-for="(item,index) in recommondList" :key="index">
-              <a href="javascript:void(0)" class="re-link">
-                <div class="re-img">
-                  <img :src="item.imgurl" :alt="item.title">
-                </div>
-                <div class="re-info">
-                  <p class="re-info-name">{{ item.title }}</p>
-                  <div class="re-info-price">
-                    <i>￥</i>
-                    <span class="re-info-price-txt">{{ item.price }}.<span class="re-info-price-decimal">00</span></span>
-                    <span class="re-sales">已售{{ item.soldnum }}件</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <el-divider> END </el-divider>
-      </el-col>
-    </el-row>
-    <FooterView></FooterView>
+    <RecommendTemp></RecommendTemp>
   </div>
 </template>
 
 <script>
 
-import TopNav from '@/components/home/topfooter/TopNav'
 import CartHeader from '@/components/home/topfooter/CartHeader'
-import FooterView from '@/components/home/topfooter/FooterView'
+import RecommendTemp from '@/components/home/recommand/RecommendTemp'
 
 export default {
   data () {
     return {
       title: '订单',
+      search: '',
+      activeName: '待发货',
       orderList: [
         {
           orderID: '20220222-051129',
@@ -157,7 +147,7 @@ export default {
           price: '3649.00',
           num: '1',
           totalPrice: '3649.00',
-          paystate: '已发货',
+          paystate: '待发货',
           order_time: '2022-02-22 05:11:29'
         },
         {
@@ -168,7 +158,7 @@ export default {
           price: '3649.00',
           num: '1',
           totalPrice: '3649.00',
-          paystate: '已发货',
+          paystate: '待发货',
           order_time: '2021-10-28 05:11:29'
         },
         {
@@ -179,7 +169,7 @@ export default {
           price: '3649.00',
           num: '1',
           totalPrice: '3649.00',
-          paystate: '已发货',
+          paystate: '待发货',
           order_time: '2021-08-13 05:11:29'
         },
         {
@@ -205,24 +195,7 @@ export default {
           order_time: '2021-05-04 05:11:29'
         }
       ],
-      recommondList: [
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1640', soldnum: '99', imgurl: require('@/assets/img/recommond/re01.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '511', soldnum: '99', imgurl: require('@/assets/img/recommond/re02.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1129', soldnum: '99', imgurl: require('@/assets/img/recommond/re03.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '2146', soldnum: '99', imgurl: require('@/assets/img/recommond/re04.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '5129', soldnum: '99', imgurl: require('@/assets/img/recommond/re05.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1929', soldnum: '99', imgurl: require('@/assets/img/recommond/re06.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '330', soldnum: '99', imgurl: require('@/assets/img/recommond/re07.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '15', soldnum: '99', imgurl: require('@/assets/img/recommond/re08.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '327', soldnum: '99', imgurl: require('@/assets/img/recommond/re09.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '54', soldnum: '99', imgurl: require('@/assets/img/recommond/re10.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '222', soldnum: '99', imgurl: require('@/assets/img/recommond/re11.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '324', soldnum: '99', imgurl: require('@/assets/img/recommond/re12.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '528', soldnum: '99', imgurl: require('@/assets/img/recommond/re01.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '603', soldnum: '99', imgurl: require('@/assets/img/recommond/re02.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '603', soldnum: '99', imgurl: require('@/assets/img/recommond/re04.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1640', soldnum: '99', imgurl: require('@/assets/img/recommond/re03.png'), href: '/' }
-      ]
+      currentPage: 1
     }
   },
   methods: {
@@ -231,15 +204,11 @@ export default {
     },
     handleCurrentChange () {
 
-    },
-    currentPage () {
-
     }
   },
   components: {
-    TopNav,
     CartHeader,
-    FooterView
+    RecommendTemp
   }
 }
 </script>
@@ -256,6 +225,7 @@ export default {
 }
 .order-lists{
   width: 100%;
+  overflow: hidden;
 }
 .order-header{
   width: 100%;
@@ -273,7 +243,6 @@ export default {
   margin: auto;
 }
 .order-item{
-  width: 100%;
   height: 150px;
   border: 1px solid #e6e6e6;
   color: #606266;
@@ -336,24 +305,27 @@ export default {
   color: #dddddd;
   font-size: 18px;
 }
-/* recommond */
-.re-title{
+/deep/ .el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover {
   color: #e1251b;
-  font-size: 18px;
-  line-height: 33px;
-  margin: 20px 0;
-  border-bottom: 2px solid #e1251b;
-  padding: 5px 5px 0;
-  display: inline-block;
 }
-.re-item{
-  border: 1px solid #dddddd;
+/deep/ .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
+   color: #e1251b;
+ }
+/deep/ .el-pagination.is-background .el-pager li {
+  font-weight: normal;
 }
-.re-item:hover{
+/deep/ .el-pagination.is-background .el-pager li.active {
+  background-color: #e1251b;
+  color: #FFF;
+  cursor: default;
+}
+/deep/ .el-pagination.is-background .el-pager li:hover {
+   color: #e1251b;
+ }
+/deep/ .el-pagination.is-background .el-pager li.active:hover {
+   color: #FFFFFF;
+ }
+/deep/ .el-input__inner:focus {
   border: 1px solid #e1251b;
-}
-.re-link:hover .re-img img {
-  opacity: 1;
-  transform: scale(1, 1);
 }
 </style>

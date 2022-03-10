@@ -19,7 +19,7 @@ export default {
       elevatorList: [
         { id: 'seckill', title: '秒杀专区', hasIcon: false },
         { id: 'special', title: '特色优选', hasIcon: false },
-        { id: 'nicegoods1', title: '频道广场', hasIcon: false },
+        { id: 'nicegoods', title: '频道广场', hasIcon: false },
         { id: 'recommand', title: '为你推荐', hasIcon: false },
         { id: '', title: '客服', hasIcon: true, icon: 'el-icon-service' },
         { id: '', title: '反馈', hasIcon: true, icon: 'el-icon-edit' },
@@ -94,6 +94,7 @@ export default {
 .elevator-item:hover>.elevator-link:after {
   background:#c81623;
   content: "";
+  z-index: 1;
 }
 
 .elevator-lk-txt{

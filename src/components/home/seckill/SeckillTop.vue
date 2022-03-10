@@ -1,45 +1,47 @@
 <template>
-  <div class="cart-header">
+  <div class="seckill-header">
     <el-row class="headerarea" type="flex" justify="center">
       <el-col :span="20">
-        <el-row type="flex" justify="space-between">
+        <el-row>
           <el-col :span="5">
             <div class="logo">
               <img src="../../../assets/logo.png" />
-              <div class="page-title">我的{{title}}</div>
             </div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="10" :push="5">
             <div class="nav">
               <el-input type="text" placeholder="搜索" v-model="searchKey">
                 <el-button slot="append" icon="el-icon-search" @click="searchGoods"></el-button>
               </el-input>
             </div>
           </el-col>
+          <el-col :span="3" :push="6">
+              <el-button class="mycart" @click="toCart">
+                <i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&nbsp;
+                <div style="display: inline-block; font-size: 12px; position:relative; top:-2px">我的购物车</div>
+              </el-button></el-col>
         </el-row>
       </el-col>
     </el-row>
   </div>
 </template>
-
 <script>
 export default {
-  props: ['title'],
   data () {
     return {
       searchKey: ''
     }
   },
   methods: {
-    searchGoods () {
-      this.$emit('search', this.searchKey)
+    searchGoods () {},
+    toCart () {
+      this.$router.push('/cart')
     }
   }
 }
 </script>
-
 <style scoped>
-.cart-header{
+.seckill-header{
   width: 100%;
   height: 100px;
   margin: 0;
@@ -60,13 +62,6 @@ export default {
   display: block;
   height: auto;
   margin: auto 0;
-}
-.page-title{
-  margin: auto;
-  font-size: 18px;
-  position: relative;
-  top: 10px;
-  left: 10px;
 }
 .nav{
   height: 100%;
@@ -106,5 +101,12 @@ export default {
   border-radius: 0;
   font-size: 24px;
 }
-
+.mycart{
+  color: #e1251b !important;
+  /*box-shadow: 0 1px 2px #a9a9a9;*/
+}
+.mycart:hover{
+  border: 1px solid #e1251b;
+  background: transparent;
+}
 </style>

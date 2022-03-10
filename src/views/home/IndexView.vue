@@ -2,18 +2,14 @@
   <div class="home">
     <FixedTop v-show="showFixedTop" @search="searchGoods"></FixedTop>
     <FixedRight v-show="showRightnav" @destination="toDestination"></FixedRight>
-    <TopNav :isLogin="isLogin" :username="username"  @logout="logout"></TopNav>
     <HeaderView @search="searchGoods"></HeaderView>
     <MainView :dID="destinationID"></MainView>
-    <FooterView></FooterView>
   </div>
 </template>
 
 <script>
 
-import TopNav from '@/components/home/topfooter/TopNav'
 import HeaderView from '@/components/home/topfooter/HeaderView'
-import FooterView from '@/components/home/topfooter/FooterView'
 import MainView from '@/components/home/MainView'
 import FixedRight from '@/components/home/topfooter/FixedRight'
 import FixedTop from '@/components/home/topfooter/FixedTop'
@@ -21,8 +17,6 @@ import FixedTop from '@/components/home/topfooter/FixedTop'
 export default {
   data () {
     return {
-      isLogin: true,
-      username: '小橘子',
       showFixedTop: false,
       showRightnav: false,
       destinationID: ''
@@ -51,16 +45,10 @@ export default {
     searchGoods (key) {
       // alert(key)
       // axios请求
-    },
-    logout () {
-      this.username = ''
-      this.isLogin = false
     }
   },
   components: {
-    TopNav,
     HeaderView,
-    FooterView,
     MainView,
     FixedTop,
     FixedRight
