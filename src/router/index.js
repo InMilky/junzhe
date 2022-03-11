@@ -26,6 +26,11 @@ const routes = [
     }
   },
   {
+    path: '/error_request_404',
+    name: 'error_request_404',
+    component: () => import('@/views/home/error/ErrorPage404')
+  },
+  {
     path: '/index',
     name: 'index',
     component: IndexView
@@ -76,6 +81,11 @@ const routes = [
     component: () => import('@/views/home/cart/PayView')
   },
   {
+    path: '/payorder/cashier',
+    name: 'payitem',
+    component: () => import('@/views/home/cart/PaySuccess')
+  },
+  {
     path: '/order',
     name: 'order',
     meta: { title: '个人订单' },
@@ -88,20 +98,19 @@ const routes = [
     component: () => import('@/views/home/seckill/IndexView')
   },
   {
-    path: '/item',
-    name: 'item',
-    meta: { title: '商品秒杀' },
+    path: '/seckill/item/:ID',
+    name: 'seckill_item',
     component: () => import('@/views/home/seckill/ItemView')
   },
   {
-    path: '/goodslist',
-    name: 'goodslist',
+    path: '/listitem',
+    name: 'listitem',
     component: () => import('@/views/home/goods/GoodsView')
   },
   {
-    path: '/goodsinfo',
-    name: 'goodsinfo',
-    component: () => import('@/views/home/goods/GoodsinfoView')
+    path: '/listitem/:ID',
+    name: 'goods_item',
+    component: () => import('@/views/home/goods/ItemView')
   },
   {
     path: '/admin',
@@ -200,9 +209,9 @@ const routes = [
     ]
   },
   {
-    path: '/*',
-    redirect: '/error_request/404',
-    component: () => import('@/error/ErrorPage404'),
+    path: '*',
+    redirect: '/error_request_404',
+    name: 'Not Found',
     hidden: true
   }
 ]

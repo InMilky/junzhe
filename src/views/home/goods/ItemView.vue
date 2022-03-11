@@ -19,60 +19,46 @@
       <el-row type="flex" justify="center" style="width: 100%">
         <el-col :span="20">
           <div class="main-info">
-          <el-row type="flex" style="width: 100%">
-            <el-col :span="9" class="p-img">
-              <div class="main-img"><img :src="info[0].imgurl" alt="main-img"/></div>
-              <div class="bottom-img">
-                <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
-                  <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
-                  <el-col :span="5"><div class="b-img active"><img :src="info[0].img_btm[0]" alt="main-img"/></div></el-col>
-                  <el-col :span="5"><div class="b-img"><img :src="info[0].img_btm[1]" alt="main-img"/></div></el-col>
-                  <el-col :span="5"><div class="b-img"><img :src="info[0].img_btm[2]" alt="main-img"/></div></el-col>
-                  <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-right"></i></el-col>
-                </el-row>
-              </div>
-            </el-col>
-            <el-col :span="14" :push="1" class="p-info">
-              <div class="p-title">{{info[0].title}}</div>
-              <div class="p-price">
-                <div class="p-header">
-                  <div><i class="el-icon-alarm-clock" style="font-size: 21px;padding-right: 10px"></i>
-                    <span>橘栀秒杀活动</span></div>
-                  <div>距离结束
-                    <span class="timer-unit">{{hour|addZero}}</span> :
-                    <span class="timer-unit">{{minute|addZero}}</span> :
-                    <span class="timer-unit">{{second|addZero}}</span></div>
+            <el-row type="flex" style="width: 100%">
+              <el-col :span="9" class="p-img">
+                <div class="main-img"><img :src="info[0].imgurl" alt="main-img"/></div>
+                <div class="bottom-img">
+                  <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
+                    <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
+                    <el-col :span="5"><div class="b-img active"><img :src="info[0].img_btm[0]" alt="main-img"/></div></el-col>
+                    <el-col :span="5"><div class="b-img"><img :src="info[0].img_btm[1]" alt="main-img"/></div></el-col>
+                    <el-col :span="5"><div class="b-img"><img :src="info[0].img_btm[2]" alt="main-img"/></div></el-col>
+                    <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-right"></i></el-col>
+                  </el-row>
                 </div>
-                <div class="p-body">
-                  <div>秒杀价：<span style="color: #e1251b">￥</span>
-                    <span class="mprice">{{info[0].miaosha_price}}</span>
-                    <span class="oprice">￥{{info[0].price}}</span></div>
-                  <div>促  销：限购1件，超出数量以结算价为准</div>
-                  <div class="discount">
-                    <el-tag type="danger">领券购买</el-tag>
-                  </div>
+              </el-col>
+              <el-col :span="14" :push="1" class="p-info">
+                <div class="p-title">{{info[0].title}}</div>
+                <div class="p-price">
+                  价格：<span style="color: #e1251b">￥</span>
+                  <span class="mprice">{{info[0].miaosha_price}}</span>
+                  <span class="oprice">￥{{info[0].price}}</span>
                 </div>
-              </div>
-              <div class="p-tip">服 务：支持极速审核、运费险、闪电退款，包邮免运费（限中国内地）</div>
-              <div class="p-description">
-                描述：<span>{{info[0].description['描述']}}</span>
-              </div>
-              <div class="p-sth">
+                <div class="p-tip">服 务：支持极速审核、运费险、闪电退款，包邮免运费（限中国内地）</div>
+                <div class="p-description">
+                  描述：<span>{{info[0].description['描述']}}</span>
+                </div>
+                <div class="p-sth">
                   <div class="p-sth-item"><p>月销量</p><p class="count">{{info[0].soldnum}}+</p></div>
                   <div class="p-sth-item"><p>累计评论</p><p class="count">51129</p></div>
                   <div class="p-sth-item"><p>库存量</p><p class="count">{{ info[0].amount }}</p></div>
-              </div>
-              <div class="addnum">
-                数量：<el-input-number v-model="num" :min="1" :max="9999"></el-input-number>
-              </div>
-              <div class="btn-group">
-                <button type="button" class="paybtn" @click="toOrder">立即购买</button>
-                <button type="button" class="cartbtn" @click="toCart">
-                  <i class="el-icon-shopping-cart-2" style="font-size: 20px;padding-right: 5px"></i>
-                  加入购物车</button>
-              </div>
-            </el-col>
-          </el-row>
+                </div>
+                <div class="addnum">
+                  数量：<el-input-number v-model="num" :min="1" :max="9999"></el-input-number>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="paybtn" @click="toOrder">立即购买</button>
+                  <button type="button" class="cartbtn" @click="toCart">
+                    <i class="el-icon-shopping-cart-2" style="font-size: 20px;padding-right: 5px"></i>
+                    加入购物车</button>
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
       </el-row>
@@ -82,6 +68,9 @@
             <span class="active">商品详情</span>
             <span>规格包装</span>
             <span>商品评价</span>
+            <button type="button" class="addcartbtn" @click="toCart">
+              <i class="el-icon-shopping-cart-2" style="font-size: 20px;padding-right: 5px"></i>
+              加入购物车</button>
           </div>
           <el-backtop :visibility-height="800" :right="20"></el-backtop>
           <div class="desc">
@@ -91,7 +80,7 @@
             </el-descriptions>
           </div>
           <div class="info-img" v-for="(img,index) in info[0].imggruop" :key="index">
-              <img :src="img" :alt="index" />
+            <img :src="img" :alt="index" />
           </div>
           <div class="evaluate">
             <div class="evaluate_title">评论</div>
@@ -143,10 +132,9 @@ export default {
   data () {
     return {
       num: 1,
-      ID: '',
-      hour: 0,
-      minute: 0,
-      second: 0,
+      rate: 4.9,
+      radio: '0',
+      isFixed: false,
       info: [
         {
           ID: 'O1CN014gHYph20tulJeXAqV',
@@ -155,8 +143,6 @@ export default {
           category: 'MUJOSH',
           store: '木九十官方旗舰店',
           miaosha_price: '599',
-          start_date: '2022/3/11 00:00:00',
-          end_date: '2022/3/11 12:00:00',
           amount: 1129,
           soldnum: 51,
           imgurl: require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_00.jpg'),
@@ -182,15 +168,11 @@ export default {
             镜片尺寸: '64mm及以上',
             描述: '前卫简约舒适时尚，男女通用，适合各种脸型，功能: 防UVA、防UVB、偏光、遮阳。尼龙镜片，配送高清尼龙镜片/双面防油污/内渡减反射膜'
           }
-        }],
-      rate: 4.9,
-      radio: '0',
-      isFixed: false
+        }]
     }
   },
   mounted () {
     window.addEventListener('scroll', this.getScrollTop)
-    this.ID = this.$route.query.ID
   },
   methods: {
     getScrollTop () {
@@ -208,18 +190,12 @@ export default {
     toOrder () {
       const ID = this.info[0].ID.toString()
       const buyNum = this.num.toString()
-      this.$router.push({ name: 'payorder', params: { ID: ID, buy_num: buyNum } })
+      this.$router.push({ name: 'seckill_item', params: { ID: ID, buy_num: buyNum } })
     },
     toCart () {
       const ID = this.info[0].ID.toString()
       const buyNum = this.num.toString()
       this.$router.push({ name: 'cart', params: { ID: ID, buy_num: buyNum } })
-    }
-  },
-  filters: {
-    addZero (val) {
-      val = val < 10 ? '0' + val : val
-      return val
     }
   },
   components: {
@@ -317,42 +293,6 @@ export default {
 }
 .p-price{
   margin-top: 20px;
-  width: 100%;
-  height: 120px;
-}
-.p-header{
-  width: 100%;
-  height: 36px;
-  background-color: #e1251b;
-  color: #FFFFFF;
-  padding: 0 10px;
-  display: flex;
-  justify-content: space-between;
-}
-.p-header>div{
-  margin: auto 0;
-}
-.p-body{
-  width: 100%;
-  height: 80px;
-  padding: 0 10px;
-  background-color: #e6e6e6;
-  color: #999999;
-  font-size: 14px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.p-body>div{
-  padding: 5px 0;
-}
-.discount{
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  margin-top: -5%;
-  cursor: pointer;
 }
 .mprice{
   font-size: 24px;
@@ -435,8 +375,8 @@ export default {
 }
 
 /deep/ .el-breadcrumb__inner.is-link {
-   font-weight: 500;
- }
+  font-weight: 500;
+}
 
 .info-title{
   width: 100%;

@@ -28,7 +28,7 @@
                 </div>
                 <div class="goods-price" style="font-weight: 700;">￥{{ list.price }}</div>
                 <div class="goods-num">
-                  <el-input-number v-model="list.num" :min="1" :max="9999" @change="calsum" size="mini"></el-input-number>
+                  <el-input-number v-model="list.num" :min="1" :max="9999" @change="totalPrice" size="mini"></el-input-number>
                 </div>
                 <div class="goods-amount" style="color: #e1251b;font-weight: 700;">￥{{ list.price * list.num }}</div>
                 <div class="goods-action">
@@ -46,7 +46,7 @@
             </el-col>
             <el-col :span="10">
               <div style="float: right">
-              <span>总价:<span style="color: #e1251b">￥</span><span class="amount">{{amount|tofixed}}</span></span>
+              <span>总价:<span style="color: #e1251b">￥</span><span class="amount">{{totalPrice|dot}}</span></span>
               <el-link class="topay" @click="toOrder" :underline="false">去结算</el-link>
               </div></el-col>
           </el-row>
@@ -121,16 +121,6 @@ export default {
   },
   methods: {
     search () {},
-    calsum () {
-      this.amount = 0
-      for (let i = 0; i < this.checkGoods.length; i++) {
-        for (let j = 0; j < this.cartList.length; j++) {
-          if (this.checkGoods[i] === this.cartList[j].id) {
-            this.amount += this.cartList[j].price * this.cartList[j].num
-          }
-        }
-      }
-    },
     chooseAll () {
       if (this.checkAll) {
         this.checkGoods.length = 0
@@ -184,12 +174,25 @@ export default {
           confirmButtonText: '确定'
         })
       } else {
-        this.$message.success('下单成功')
+        this.$router.push({ name: 'payorder' })
       }
     }
   },
+  computed: {
+    totalPrice () {
+      let sum = 0
+      for (let i = 0; i < this.checkGoods.length; i++) {
+        for (let j = 0; j < this.cartList.length; j++) {
+          if (this.checkGoods[i] === this.cartList[j].id) {
+            sum += this.cartList[j].price * this.cartList[j].num
+          }
+        }
+      }
+      return sum
+    }
+  },
   filters: {
-    tofixed: function (value) {
+    dot: function (value) {
       if (!value) return '0.00'
       else {
         return value.toFixed(2)

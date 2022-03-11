@@ -1,0 +1,177 @@
+<template>
+  <div class="pay-success">
+    <el-row class="headerarea" type="flex" justify="center">
+      <el-col :span="20">
+        <el-row type="flex" justify="space-between">
+          <el-col :span="6">
+            <div class="logo">
+              <img src="../../../assets/logo.png" />
+              <div class="page-title">收银台</div>
+            </div>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
+    <el-row class="tip" type="flex" justify="center">
+      <el-col :span="20" style="margin: auto 0;display: flex">
+        <div class="q-img"><img src="../../../assets/img/index/erweima.png" alt="QRcode"></div>
+        <div class="q-txt"><p>订单提交成功，请尽快付款！订单号：{{orderID}}</p>
+          <p style="color: #999999;font-size: 12px">请您在<span style="color: #e1251b">{{countdown}}</span>内完成支付，负责订单会被自动取消</p>
+        </div>
+        <div class="q-price">应付金额
+          <span style="color: #e1251b;font-size: 20px;padding: 0 5px">{{totalPrice}}</span>元</div>
+      </el-col>
+    </el-row>
+    <el-row type="flex" justify="center" style="border-top: 1px solid #e6e6e6;padding: 10px 0">
+      <el-col :span="20">
+        <div>
+          <h4 style="font-weight: 500">订单详情</h4>
+          <p>收货地址：{{receiver.address}}</p>
+          <p>收货人：{{receiver.name}} {{receiver.phone}}</p>
+          <p>商品名称：{{item}}</p>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row type="flex" justify="center" style="margin-top:30px;border-top: 1px solid #e6e6e6;">
+      <el-col :span="20">
+        <div>
+          <h4 style="font-weight: 500">推荐支付：</h4>
+          <div style="display: flex">
+            <div class="pay-code">
+              <p>支付宝支付</p>
+              <img src="../../../assets/img/index/erweima.png" alt="QRcode"></div>
+            <div class="pay-code">
+              <p>微信支付</p>
+              <img src="../../../assets/img/index/erweima.png" alt="QRcode"></div>
+            <div class="pay-code">
+              <el-link class="jump" @click="toOrder" :underline="false">已完成支付</el-link>
+              <el-link class="jump jumpindex" @click="toIndex" :underline="false">返回首页</el-link>
+            </div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      countdown: '16分钟40秒',
+      orderID: '',
+      totalPrice: '2146',
+      item: '品牌剪标撤柜折扣大码小个子棉服女冬设计感小众棉衣短款棉袄外套',
+      receiver: {
+        name: '小**',
+        phone: '183****5129',
+        address: '广东省佛山市南海区狮山镇华南师范大学南海校区（菜鸟驿站）'
+      }
+    }
+  },
+  mounted () {
+    this.orderID = this.$route.query.orderID
+  },
+  methods: {
+    toOrder () {
+      this.$router.push('/order')
+    },
+    toIndex () {
+      this.$router.push('/index')
+    }
+  }
+}
+</script>
+<style scoped>
+.pay-success{
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+.headerarea{
+  width: 100%;
+  height: 100px;
+  background: white;
+  color: #333333;
+}
+.logo{
+  height: 100%;
+  display: flex;
+}
+.logo>img{
+  max-width: 50%;
+  display: block;
+  height: auto;
+  margin: auto 0;
+}
+.page-title{
+  margin: auto;
+  font-size: 18px;
+  position: relative;
+  top: 10px;
+}
+/deep/ .el-col {
+  margin: auto 0;
+}
+.tip{
+  width: 100%;
+  height: 100px;
+  margin: 20px;
+}
+
+.q-img{
+  height: 100%;
+  flex: 0 0 100px;
+}
+.q-img>img{
+  width: auto;
+  height: 100%;
+  display: block;
+  border: 1px solid #e1251b;
+}
+.q-txt{
+  flex: 1;
+  margin: auto 15px;
+}
+.q-price{
+  flex: 0 0 200px;
+  margin: auto 0;
+}
+.pay-code{
+  width: 200px;
+  height: 120px;
+  text-align: center;
+}
+.pay-code>img{
+  width: auto;
+  height: 80%;
+}
+
+.jump{
+  display: inline-block;
+  width: 140px;
+  line-height: 40px;
+  border-radius: 3px;
+  font-size: 18px;
+  text-align: center;
+  height: 40px;
+  background-color: #e1251b;
+  color: #FFFFFF;
+  font-weight: bold;
+  float: right;
+  margin: 10px 24px;
+}
+.jumpindex{
+  background-color: transparent;
+  color: #e1251b;
+  border: 1px solid #e1251b;
+  box-sizing: border-box;
+}
+.jump:hover{
+  color: #FFFFFF;
+  background: rgba(225,37,27,.95);
+}
+.jumpindex:hover{
+  background: rgba(225,37,27,1);
+}
+</style>

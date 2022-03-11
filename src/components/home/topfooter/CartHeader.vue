@@ -3,7 +3,7 @@
     <el-row class="headerarea" type="flex" justify="center">
       <el-col :span="20">
         <el-row type="flex" justify="space-between">
-          <el-col :span="5">
+          <el-col :span="6">
             <div class="logo">
               <img src="../../../assets/logo.png" />
               <div class="page-title">我的{{title}}</div>

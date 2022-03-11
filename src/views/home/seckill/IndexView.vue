@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     toGoodsInfo (id) {
-      this.$router.push({ path: '/goodsinfo', query: { ID: id } })
+      return this.$router.push({ name: 'seckill_item', params: { ID: id } })
     }
   },
   components: {
