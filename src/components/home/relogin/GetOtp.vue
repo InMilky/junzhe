@@ -21,7 +21,7 @@
                 <div class="el-form-item_error" v-show="!data.isClick"><i class="el-icon-warning"></i> 请先进行手机号验证</div>
             </el-form-item>
             <el-form-item>
-              <button class="my-btn" @click="toSignin">下一步</button>
+              <button class="my-btn" @click="toSignup">下一步</button>
             </el-form-item>
           </el-form>
         </div>
@@ -62,14 +62,31 @@ export default {
       this.data.isClick = true
       this.$refs.data.validate((isValid, errors) => {
         if (isValid) {
-          this.isValidate = true
-          this.$emit('savePhone', this.data.phone)
+          this.$axios.post('/user/validatePhone',
+            { telphone: this.data.phone })
+            .then((response) => {
+              if (response.data.status === 200) {
+                this.isValidate = true
+                this.$message.success(response.data.msg)
+                this.$emit('savePhone', this.data.phone)
+              } else if (response.data.status === 400) {
+                this.$confirm(response.data.msg, '验证手机号失败', {
+                  confirmButtonText: '前往登录',
+                  cancelButtonText: '取消',
+                  cancelButtonClass: 'cancel',
+                  confirmButtonClass: 'confirmation',
+                  type: 'warning'
+                }).then(() => {
+                  this.$router.push('/login')
+                }).catch(() => {})
+              }
+            }).catch((errors) => {})
         } else {
           this.$message.error('请输入正确的手机号进行验证')
         }
       })
     },
-    toSignin () {
+    toSignup () {
       if (this.isValidate) {
         this.$router.replace('/signup/person2')
       } else {
@@ -127,5 +144,22 @@ export default {
   top: -6px;
   height: 33px;
   line-height: 33px;
+}
+
+</style>
+<style>
+.cancel{
+  width: 78px;
+  color: #e1251b!important;
+  border: 1px solid #e1251b!important;
+}
+.cancel:hover{
+  background: #e1251b!important;
+  color: #FFF!important;
+}
+.confirmation{
+  width: 80px;
+  background: #e1251b!important;
+  border: 1px solid #e1251b!important;
 }
 </style>

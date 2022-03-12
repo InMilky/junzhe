@@ -22,14 +22,17 @@ export default {
       title: '注册'
     }
   },
+  created () {
+    if (this.$route.path !== '/signup/person/signup_success') {
+      this.$router.replace({ name: 'signup' })
+    }
+  },
   methods: {
     savePhone (value) {
       this.telphone = value
-      this.$message.success(this.telphone)
     },
     sendPhone (value) {
       value = this.telphone
-      // return value
     }
   },
   components: {

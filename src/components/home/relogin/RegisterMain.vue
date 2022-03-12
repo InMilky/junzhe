@@ -26,9 +26,9 @@
               <el-input class="my-input" type="password"
                         v-model="ruleForm.password" show-password><template slot="prepend">输入密码</template></el-input>
             </el-form-item>
-            <el-form-item prop="repassword">
+            <el-form-item prop="re_password">
               <el-input class="my-input" type="password"
-                        v-model="ruleForm.repassword" show-password><template slot="prepend">确认密码</template></el-input>
+                        v-model="ruleForm.re_password" show-password><template slot="prepend">确认密码</template></el-input>
             </el-form-item>
             <el-form-item prop="email"
                           :rules="[
@@ -62,8 +62,8 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-        if (this.ruleForm.repassword !== '') {
-          this.$refs.ruleForm.validateField('repassword')
+        if (this.ruleForm.re_password !== '') {
+          this.$refs.ruleForm.validateField('re_password')
         }
         callback()
       }
@@ -83,7 +83,7 @@ export default {
         phone: '',
         username: '',
         password: '',
-        repassword: '',
+        re_password: '',
         email: ''
       },
       rules: {
@@ -91,7 +91,7 @@ export default {
           { min: 5, max: 20, required: true, message: '格式错误，密码长度需大于5，小于20' },
           { validator: validatePsw, trigger: 'blur' }
         ],
-        repassword: [{ validator: validateRepsw, trigger: 'blur' }]
+        re_password: [{ validator: validateRepsw, trigger: 'blur' }]
       }
     }
   },
@@ -106,7 +106,18 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$router.replace('/signup/person/signin_success')
+          this.$axios.post('/user/signup', {
+            telphone: this.ruleForm.phone,
+            username: this.ruleForm.username,
+            password: this.ruleForm.password,
+            email: this.ruleForm.email
+          }).then((response) => {
+            if (response.data.status === 200) {
+              this.$router.replace('/signup/person/signup_success')
+            } else if (response.data.status === 400) {
+              this.$alert(response.data.msg)
+            }
+          }).catch((err) => console.log(err))
         } else {
           this.$message.error('请完整填写注册信息，才能完成注册')
           return false

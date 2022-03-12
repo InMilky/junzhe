@@ -2,7 +2,7 @@
   <div id="app">
     <TopNav :isLogin="isLogin" :username="username"  @logout="logout"
             v-if="!relogin"></TopNav>
-    <router-view/>
+    <router-view />
     <FooterView v-if="!relogin"></FooterView>
   </div>
 </template>
@@ -14,10 +14,14 @@ export default {
   name: 'App',
   data () {
     return {
-      isLogin: true,
-      username: '小橘子',
-      relogin: false
+      isLogin: false,
+      username: '',
+      relogin: false,
+      token: ''
     }
+  },
+  created () {
+    this.token = localStorage.getItem('jwt_token')
   },
   mounted () {
     const url = window.location.href
@@ -25,6 +29,13 @@ export default {
     if (path === 'login' || path === 'signup') {
       this.relogin = true
     } else {
+      if (localStorage.username) { // 改
+        this.username = localStorage.username
+        this.isLogin = true
+      } else {
+        this.username = ''
+        this.isLogin = false
+      }
       this.relogin = false
     }
   },
@@ -41,8 +52,26 @@ export default {
   },
   methods: {
     logout () {
+      localStorage.removeItem('jwt_token')
+      localStorage.removeItem('username')
       this.username = ''
       this.isLogin = false
+      this.$confirm('你已退出登陆或者登录已失效', '提示', {
+        confirmButtonText: '前往登录',
+        cancelButtonText: '取消',
+        cancelButtonClass: 'cancelbtn',
+        confirmButtonClass: 'confirmbtn',
+        type: 'warning'
+      }).then(() => {
+        this.$router.push({
+          path: '/login',
+          query: {
+            redirectURL: this.$route.path
+          }
+        })
+      }).catch(() => {
+        this.$router.replace('/index')
+      })
     }
   },
   components: {
@@ -66,5 +95,19 @@ body {
   font-size: 16px;
   margin: 0;
   padding: 0;
+}
+.cancelbtn{
+  width: 78px;
+  color: #e1251b!important;
+  border: 1px solid #e1251b!important;
+}
+.cancelbtn:hover{
+  background: #e1251b!important;
+  color: #FFF!important;
+}
+.confirmbtn{
+  width: 80px;
+  background: #e1251b!important;
+  border: 1px solid #e1251b!important;
 }
 </style>

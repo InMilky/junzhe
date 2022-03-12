@@ -7,11 +7,9 @@
         <el-row type="flex" justify="center">
           <el-col :span="10">
               <h1 style="text-align: center">登 录</h1>
-              <el-form :model="validateForm" ref="validateForm" class="my-form" onsubmit="return false;">
-                <div class="error-msg" v-if="hasError">{{errmsg}}</div>
-                <el-form-item prop="phone" :rules="[
-                  {required:true,message:'手机号不能为空'},
-                ]">
+              <el-form :model="validateForm" :rules="rules" ref="validateForm" class="my-form" onsubmit="return false;">
+                <div class="error-msg" v-if="hasError">{{ errMsg }}</div>
+                <el-form-item prop="phone">
                 <el-input class="my-input" type="text"
                           v-model="validateForm.phone"
                           prefix-icon="el-icon-user-solid"
@@ -28,7 +26,7 @@
                             autocomplete="off" show-password></el-input>
                 </el-form-item>
                 <div class="additional">
-                  <el-checkbox v-model="rememberpsw">记住密码</el-checkbox>
+                  <el-checkbox v-model="savePsw">记住密码</el-checkbox>
                   <el-link type="danger" style="float: right;" :underline="false">忘记密码?</el-link>
                 </div>
                 <el-form-item class="my-btn-div">
@@ -53,16 +51,32 @@ import LogisterHeader from '@/components/home/relogin/ReloginHeader'
 import CopyRight from '@/components/home/topfooter/CopyRight'
 export default {
   name: 'LoginView',
+  props: ['username'],
   data () {
+    const phoneValidate = (rule, value, callback) => {
+      const reg = /^1[3456789]\d{9}$/
+      if (reg.test(value)) {
+        callback()
+      } else if (!value) {
+        callback(new Error('请输入手机号'))
+      } else {
+        callback(new Error('手机号格式错误'))
+      }
+    }
     return {
       validateForm: {
         phone: '',
         password: ''
       },
-      rememberpsw: false,
+      rules: {
+        phone: [
+          { validator: phoneValidate, trigger: 'change' }
+        ]
+      },
+      savePsw: false,
       title: '登录',
       hasError: false,
-      errmsg: '该账号不存在，请前往注册'
+      errMsg: '该账号不存在，请前往注册'
     }
   },
   methods: {
@@ -70,8 +84,20 @@ export default {
       this.hasError = false
       this.$refs[formData].validate((valid) => {
         if (valid) {
-          // axios
-          this.$router.push('/index')
+          this.$axios.post('/user/signin', {
+            telphone: this.validateForm.phone,
+            password: this.validateForm.password
+          }).then((response) => {
+            if (response.data.status === 200) {
+              localStorage.setItem('jwt_token', response.data.token)
+              localStorage.setItem('username', response.data.username)
+              const redirectURL = decodeURIComponent(this.$route.query.redirectURL || '/')
+              this.$router.push({ path: redirectURL })
+            } else if (response.data.status === 400) {
+              this.hasError = true
+              this.errMsg = response.data.msg
+            }
+          }).catch((err) => console.log(err))
         } else {
           this.$message.error('请完整填写登录信息')
           return false

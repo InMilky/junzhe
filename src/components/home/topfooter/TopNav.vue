@@ -2,7 +2,7 @@
   <div class="TopNav">
     <el-row class="top-nav" type="flex" justify="center">
       <el-col :span="20">
-        <router-link class="index-icon" v-if="$route.path!='/index'" to="/index">
+        <router-link class="index-icon" v-if="$route.path!=='/index'" to="/index">
           <i class="el-icon-s-home" style="font-size: 16px"></i>&nbsp;返回首页</router-link>
         <el-breadcrumb separator="|" class="my-breadcrumb">
           <el-breadcrumb-item v-if="!isLogin">
@@ -11,14 +11,14 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item v-else>
             <span class="a-link">欢迎{{ username }}</span>&nbsp;
-            <el-link class="r-link" @click="signout" :underline="false">退出登录</el-link>
+            <el-link class="r-link" @click="logout" :underline="false">退出登录</el-link>
           </el-breadcrumb-item>
           <el-breadcrumb-item>
-            <router-link to="/order" class="r-link" v-if="$route.path!='/order'" >我的订单</router-link>
+            <router-link to="/order" class="r-link" v-if="$route.path!=='/order'" >我的订单</router-link>
             <router-link to="/cart" class="r-link" v-else >我的购物车</router-link>
           </el-breadcrumb-item>
           <el-breadcrumb-item>
-            <el-link href="javascript:void(0)" :underline="false" class="r-link">个人中心</el-link>
+            <el-link href="javascript:void(0)" :underline="false" class="r-link" @click.native="userCenter">个人中心</el-link>
           </el-breadcrumb-item>
           <el-breadcrumb-item>
             <el-link href="javascript:void(0)" :underline="false" class="r-link">关注网站</el-link>
@@ -36,9 +36,21 @@ export default {
     return {
     }
   },
+  created () {
+    if (localStorage.username) {
+      this.$parent.username = localStorage.username
+      this.$parent.isLogin = true
+    } else {
+      this.$parent.username = ''
+      this.$parent.isLogin = false
+    }
+  },
   methods: {
-    signout () {
+    logout () {
       this.$emit('logout')
+    },
+    userCenter () {
+      this.$message.error('click')
     }
   }
 }
@@ -70,7 +82,8 @@ export default {
 .r-link:hover{
   color: #e1251b;
 }
-/deep/ .el-breadcrumb__inner a:hover, .el-breadcrumb__inner.is-link:hover {
+/deep/ .el-breadcrumb__inner a:hover,
+/deep/ .el-breadcrumb__inner.is-link:hover {
   color: #e1251b;
 }
 /deep/ .el-link.el-link--default {

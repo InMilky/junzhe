@@ -39,7 +39,7 @@ const routes = [
     path: '/login',
     name: 'login',
     meta: { title: '欢迎登录' },
-    component: () => import('@/views/relogin/LoginView')
+    component: () => import('@/views/home/signin/LoginView')
   },
   {
     path: '/signup',
@@ -48,7 +48,7 @@ const routes = [
     redirect: {
       name: 'getotp'
     },
-    component: () => import('@/views/relogin/RegisterView'),
+    component: () => import('@/views/home/signup/RegisterView'),
     children: [
       {
         path: 'person1',
@@ -64,6 +64,7 @@ const routes = [
         path: 'person/signup_success',
         name: 'signup_success',
         meta: { title: '欢迎注册' },
+        hidden: true,
         component: () => import('@/components/home/relogin/RegisterSuccess')
       }
     ]
@@ -71,24 +72,25 @@ const routes = [
   {
     path: '/cart',
     name: 'cart',
-    meta: { title: '购物车' },
+    meta: { title: '购物车', requireAuth: true },
     component: () => import('@/views/home/cart/CartView')
   },
   {
     path: '/payorder',
     name: 'payorder',
-    meta: { title: '支付页面' },
+    meta: { title: '支付页面', requireAuth: true },
     component: () => import('@/views/home/cart/PayView')
   },
   {
     path: '/payorder/cashier',
     name: 'payitem',
+    meta: { title: '结算页面', requireAuth: true },
     component: () => import('@/views/home/cart/PaySuccess')
   },
   {
     path: '/order',
     name: 'order',
-    meta: { title: '个人订单' },
+    meta: { title: '个人订单', requireAuth: true },
     component: () => import('@/views/home/order/OrderView')
   },
   {
@@ -110,19 +112,20 @@ const routes = [
   {
     path: '/listitem/:ID',
     name: 'goods_item',
+    meta: { title: '商品列表' },
     component: () => import('@/views/home/goods/ItemView')
   },
   {
     path: '/admin',
     name: 'admin',
     alwaysShow: true,
-    meta: { title: '首页' },
+    meta: { title: '首页', requireAuth: true },
     component: () => import('@/views/admin/IndexView'),
     children: [
       {
         path: 'goods',
         name: 'goods_admin',
-        meta: { title: '商品管理' },
+        meta: { title: '商品管理', requireAuth: true },
         redirect: {
           name: 'list_admin'
         },
@@ -131,22 +134,22 @@ const routes = [
           {
             path: 'lists',
             name: 'list_admin',
-            meta: { title: '全部商品', activeMenu: '/admin/goods' },
+            meta: { title: '全部商品', activeMenu: '/admin/goods', requireAuth: true },
             component: () => import('@/views/admin/goods/ListView')
           }, {
             path: 'add',
             name: 'addgoods',
-            meta: { title: '添加商品' },
+            meta: { title: '添加商品', requireAuth: true },
             component: () => import('@/views/admin/goods/AddgoodsView')
           }, {
             path: 'edit',
             name: 'editgoods',
-            meta: { title: '更新商品' },
+            meta: { title: '更新商品', requireAuth: true },
             component: () => import('@/views/admin/goods/EditgoodsView')
           }, {
             path: 'category',
             name: 'category_admin',
-            meta: { title: '类型管理' },
+            meta: { title: '类型管理', requireAuth: true },
             component: () => import('@/views/admin/goods/CategoryView')
           }
         ]
@@ -154,7 +157,7 @@ const routes = [
       {
         path: 'seckill',
         name: 'seckill_admin',
-        meta: { title: '秒杀管理' },
+        meta: { title: '秒杀管理', requireAuth: true },
         redirect: {
           name: 'seckill_event'
         },
@@ -163,12 +166,12 @@ const routes = [
           {
             path: 'event',
             name: 'seckill_event',
-            meta: { title: '秒杀活动管理' },
+            meta: { title: '秒杀活动管理', requireAuth: true },
             component: () => import('@/views/admin/seckill/EventView')
           }, {
             path: 'goods',
             name: 'seckill_goods',
-            meta: { title: '秒杀商品管理' },
+            meta: { title: '秒杀商品管理', requireAuth: true },
             component: () => import('@/views/admin/seckill/GoodsView')
           }
         ]
@@ -176,7 +179,7 @@ const routes = [
       {
         path: 'order',
         name: 'order_admin',
-        meta: { title: '订单管理' },
+        meta: { title: '订单管理', requireAuth: true },
         redirect: {
           name: 'order_list'
         },
@@ -185,17 +188,17 @@ const routes = [
           {
             path: 'list',
             name: 'order_list',
-            meta: { title: '全部订单' },
+            meta: { title: '全部订单', requireAuth: true },
             component: () => import('@/views/admin/order/ListView')
           }, {
             path: 'eliver',
             name: 'order_deliver',
-            meta: { title: '订单发货' },
+            meta: { title: '订单发货', requireAuth: true },
             component: () => import('@/views/admin/order/DeliverView')
           }, {
             path: 'aftersales',
             name: 'order_aftersales',
-            // meta: { title: '订单售后' },
+            // meta: { title: '订单售后', requireAuth: true },
             component: () => import('@/views/admin/order/AftersalesView')
           }
         ]
@@ -203,13 +206,13 @@ const routes = [
       {
         path: 'user',
         name: 'user_admin',
-        meta: { title: '用户管理' },
+        meta: { title: '用户管理', requireAuth: true },
         component: () => import('@/views/admin/user/IndexView')
       }
     ]
   },
   {
-    path: '*',
+    path: '*', // 非以上路由访问进入404页面
     redirect: '/error_request_404',
     name: 'Not Found',
     hidden: true
@@ -220,18 +223,31 @@ const router = new VueRouter({
   routes
 })
 
-// 每个页面的title改变
+// 钩子函数
 router.beforeEach((to, from, next) => {
+  // 设置每个页面的title改变
   if (to.meta.title) {
     document.title = to.meta.title
   } else {
     document.title = 'JZ.COM'
   }
+  // 需要进行登录路由拦截
+  if (to.meta.requireAuth) {
+    if (localStorage.getItem('jwt_token')) {
+      next()
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirectURL: to.fullPath
+        }
+      })
+    }
+  }
   next()
 })
-
-export default router
 // 跳转后返回页面顶部
 router.afterEach(() => {
   window.scrollTo(0, 0)
 })
+export default router
