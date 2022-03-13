@@ -1,6 +1,5 @@
 <template>
   <div class="re-temp">
-
     <!--  为你推荐  -->
     <el-row class="top-nav" type="flex" justify="center">
       <el-col :span="20">
@@ -10,7 +9,7 @@
             <div class="re-item" v-for="(item,index) in recommendList" :key="index">
               <a href="javascript:void(0)" class="re-link">
                 <div class="re-img">
-                  <img :src="item.imgurl" :alt="item.title">
+                  <el-image class="el-img" :src="item.imgurl" :alt="item.title" fit="contain" lazy></el-image>
                 </div>
                 <div class="re-info">
                   <p class="re-info-name">{{ item.title }}</p>
@@ -59,7 +58,6 @@ export default {
   width: 100%;
   overflow: hidden;
 }
-/* recommond */
 .re-title{
   color: #e1251b;
   font-size: 18px;
@@ -74,8 +72,7 @@ export default {
 .re-item:hover{
   border: 1px solid #e1251b;
 }
-
-.re-link:hover .re-img img{
+.re-link:hover .re-img .el-img{
   opacity:0.8;
   transform: scale(1,1);
 }

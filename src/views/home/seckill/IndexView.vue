@@ -14,7 +14,8 @@
         <div class="sbody">
           <el-card :body-style="{ padding: '0px' }" shadow="hover" class="card-item"
                    v-for="item in miaoshaList" :key="item.ID" @click.native="toGoodsInfo(item.ID)">
-            <div class="s-image"><img :src="item.imgurl" /></div>
+            <div class="s-image">
+              <el-image style="padding: 0 14%" :src="item.imgurl" fit="contain" lazy></el-image></div>
             <div class="s-txt">
               <span>{{ item.title }}</span>
               <div class="bottom">
@@ -119,12 +120,6 @@ export default {
   width:100%;
   height: 70%;
   display: flex;
-}
-.s-image>img{
-  max-width:72%;
-  height: auto;
-  margin: auto;
-  display: block;
 }
 .s-txt{
   height: 30%;

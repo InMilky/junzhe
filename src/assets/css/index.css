@@ -174,11 +174,6 @@ p{
     height: 136px;
     margin: 28px auto 0;
 }
-.miaosha-zone .slide-wrapper .seckill-item .seckill-item-img>img{
-    width: 100%;
-    display: block;
-    background: none;
-}
 .miaosha-zone .slide-wrapper .seckill-item h6.seckill-item-name{
     width: 156px;
     font-weight: normal;
@@ -298,11 +293,6 @@ p{
      width: 64%;
      margin: 12% auto;
 }
- .tab-item-0 .tab-item-img img{
-    width: 100%;
-    height: auto;
-    display: block;
-}
  .tab-item-0 .tab-item-msg{
     width: 100%;
     text-align: center;
@@ -369,12 +359,6 @@ p{
     width: 50%;
     height: 50%;
     float: left;
-    margin: auto;
-}
-.tab-item-1 .tab-item-img img{
-    width: auto;
-    max-height: 100%;
-    display: block;
     margin: auto;
 }
 .tab-item-1 .tab-item-msg{
@@ -483,11 +467,6 @@ p{
     height: 80%;
     display: flex;
 }
-.brand-logo>img{
-    max-width: 80%;
-    height: auto;
-    margin: auto;
-}
 .brand-name{
     text-align: center;
 }
@@ -549,12 +528,6 @@ p{
     height: 72%;
     margin: 0 auto;
     display: flex;
-}
-.nice-item-img>img{
-    width: 90%;
-    height: auto;
-    margin: auto;
-    display: block;
 }
 .nice-item-name{
     font-size: 14px;
@@ -640,7 +613,7 @@ p{
     overflow: hidden;
     transition: background .2s linear,opacity .2s linear!important;
 }
-.re-img>img{
+.re-img .el-img{
     width: 100%;
     height: auto;
     display: block;
@@ -693,7 +666,7 @@ p{
     font-size: 12px;
     float: right;
 }
-.re-link:hover .re-img img{
+.re-link:hover .re-img .el-img{
     opacity:0.8;
     transform: scale(1.1,1.1);
 }

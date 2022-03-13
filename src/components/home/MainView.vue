@@ -31,7 +31,7 @@
                    :to="item.href" target="_blank" class="seckill-item-link" >
                   <div class="seckill-item">
                     <div class="seckill-item-img">
-                      <img :src="item.imgurl" :alt="item.title"></div>
+                      <el-image :src="item.imgurl" :alt="item.title" fit="contain" lazy></el-image></div>
                     <h6 class="seckill-item-name">{{ item.title }}</h6>
                     <div class="seckill-item-price">
                       <span>￥{{ item.miaosha_price}}</span><span>￥{{item.price}}</span></div>
@@ -55,7 +55,7 @@
                   <div class="tab-item-0">
                     <a href="#" class="tab-item-link">
                       <div class="tab-item-img">
-                        <img :src="list.imgMain[0].imgurl" :alt="list.imgMain[0].title" /></div>
+                        <el-image :src="list.imgMain[0].imgurl" :alt="list.imgMain[0].title" fit="contain" lazy></el-image></div>
                       <div class="tab-item-msg">
                         <span class="tab-itemmsg-name">{{ list.imgMain[0].title }}</span>
                         <div class="tab-itemmsg-price">
@@ -68,7 +68,7 @@
                     <div class="tab-item-list" v-for="(item,index) in list.imgList" :key="index">
                       <a href="#" class="tab-item-link">
                         <div class="tab-item-img">
-                          <img :src="item.imgurl" :alt="item.title" /></div>
+                          <el-image style="padding: 8%;" :src="item.imgurl" :alt="item.title" fit="contain" lazy></el-image></div>
                         <div class="tab-item-msg">
                           <span class="tab-itemmsg-name">{{ item.title }}</span>
                           <div class="tab-itemmsg-price">
@@ -92,7 +92,8 @@
               <div class="brand-item">
                 <div class="brand-list" v-for="(item,index) in brandList" :key="index">
                   <a href="javascript:void(0)" class="brand-nav">
-                    <div class="brand-logo"><img :src="item.imgurl" :alt="item.name"></div>
+                    <div class="brand-logo">
+                      <el-image style="padding: 10%;margin: 0 auto" :src="item.imgurl" :alt="item.name" fit="contain"  lazy></el-image></div>
                     <p class="brand-name">{{item.name}}</p>
                   </a>
                 </div>
@@ -113,7 +114,7 @@
             <a href="javascript:void(0)" class="nice-item-link">
               <div class="nice-item">
                 <div class="nice-item-img">
-                  <img :src="item.imgurl" :alt="item.name"></div>
+                  <el-image style="padding: 0 5%" :src="item.imgurl" :alt="item.name" fit="contain" lazy></el-image></div>
                 <p class="nice-item-name">{{ item.name }}</p>
                 <div class="nice-item-price">￥{{ item.price }}</div>
               </div>
@@ -133,7 +134,7 @@
             <a href="javascript:void(0)" class="nice-item-link">
               <div class="nice-item">
                 <div class="nice-item-img">
-                  <img :src="item.imgurl" :alt="item.name"></div>
+                  <el-image style="padding: 0 5%" :src="item.imgurl" :alt="item.name" fit="contain" lazy></el-image></div>
                 <p class="nice-item-name">{{ item.name }}</p>
                 <div class="nice-item-price">￥{{ item.price }}</div>
               </div>
@@ -147,7 +148,7 @@
             <div class="re-item" v-for="(item,index) in recommondList" :key="index">
               <a href="javascript:void(0)" class="re-link">
                 <div class="re-img">
-                  <img :src="item.imgurl" :alt="item.title">
+                  <el-image class="el-img" :src="item.imgurl" :alt="item.title" lazy></el-image>
                 </div>
                 <div class="re-info">
                   <p class="re-info-name">{{ item.title }}</p>
