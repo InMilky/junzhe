@@ -5,7 +5,7 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="6">
             <div class="logo">
-              <img src="../../../assets/logo.png" />
+              <img src="@/assets/logo.png" />
               <div class="page-title">结算页面</div>
             </div>
           </el-col>
@@ -38,7 +38,7 @@
             <div class="order-title">确定订单信息</div>
             <div class="order-item" v-for="list in orderList" :key="list.id">
               <div class="item-img">
-                <img width="56" height="56" src="../../../assets/img/seckill/seckill-item10.png"/></div>
+                <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
               <div class="item-title">
                 <div>{{ list.title }}</div>
                 <div style="color: #999999">{{list.description}}</div>

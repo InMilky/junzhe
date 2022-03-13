@@ -5,7 +5,7 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="6">
             <div class="logo">
-              <img src="../../../assets/logo.png" />
+              <img src="@/assets/logo.png" />
               <div class="page-title">收银台</div>
             </div>
           </el-col>
@@ -14,7 +14,7 @@
     </el-row>
     <el-row class="tip" type="flex" justify="center">
       <el-col :span="20" style="margin: auto 0;display: flex">
-        <div class="q-img"><img src="../../../assets/img/index/erweima.png" alt="QRcode"></div>
+        <div class="q-img"><img src="@/assets/img/index/erweima.png" alt="QRcode"></div>
         <div class="q-txt"><p>订单提交成功，请尽快付款！订单号：{{orderID}}</p>
           <p style="color: #999999;font-size: 12px">请您在<span style="color: #e1251b">{{countdown}}</span>内完成支付，负责订单会被自动取消</p>
         </div>
@@ -39,10 +39,10 @@
           <div style="display: flex">
             <div class="pay-code">
               <p>支付宝支付</p>
-              <img src="../../../assets/img/index/erweima.png" alt="QRcode"></div>
+              <img src="@/assets/img/index/erweima.png" alt="QRcode"></div>
             <div class="pay-code">
               <p>微信支付</p>
-              <img src="../../../assets/img/index/erweima.png" alt="QRcode"></div>
+              <img src="@/assets/img/index/erweima.png" alt="QRcode"></div>
             <div class="pay-code">
               <el-link class="jump" @click="toOrder" :underline="false">已完成支付</el-link>
               <el-link class="jump jumpindex" @click="toIndex" :underline="false">返回首页</el-link>

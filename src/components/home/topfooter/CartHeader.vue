@@ -5,7 +5,7 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="6">
             <div class="logo">
-              <img src="../../../assets/logo.png" />
+              <img src="@/assets/logo.png" />
               <div class="page-title">我的{{title}}</div>
             </div>
           </el-col>

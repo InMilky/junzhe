@@ -8,7 +8,7 @@
         <div class="shead">
           <h3 class="stitle">秒杀专区</h3>
           <div class="tuijian">
-            <img src="../../../assets/img/seckill/tuijian.png" alt="焦点图">
+            <img src="@/assets/img/seckill/tuijian.png" alt="焦点图">
           </div>
         </div>
         <div class="sbody">

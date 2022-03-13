@@ -21,7 +21,7 @@
               <div class="cart-item" v-for="list in cartList" :key="list.id">
                 <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.id" />
                 <div class="goods-img">
-                  <img width="56" height="56" src="../../../assets/img/seckill/seckill-item10.png"/></div>
+                  <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
                 <div class="goods-info">
                   <div>{{ list.title }}</div>
                   <div style="color: #999999">{{list.description}}</div>

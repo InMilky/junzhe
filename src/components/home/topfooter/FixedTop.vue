@@ -4,7 +4,7 @@
       <el-col :span="20" style="height: 100%">
         <el-row type="flex" style="height: 100%">
           <el-col :span="3" style="height: 100%"><div class="logo">
-            <img src="../../../assets/logo.png">
+            <img src="@/assets/logo.png">
           </div></el-col>
           <el-col :span="12" :push="1">
             <el-input type="text" placeholder="搜索" v-model="searchKey">

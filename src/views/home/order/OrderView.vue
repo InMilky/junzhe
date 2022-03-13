@@ -24,7 +24,7 @@
                   <span>下单时间：{{item.order_time}}</span> </div>
                 <div class="o-body">
                   <div class="o-img">
-                  <img width="56" height="56" src="../../../assets/img/seckill/seckill-item10.png"/></div>
+                  <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
                   <div class="o-title">{{item.title}}--{{item.description}}</div>
                   <div class="o-price">￥{{item.price}}</div>
                   <div class="o-num">{{item.num}}</div>
@@ -78,7 +78,7 @@
                   <span>下单时间：{{orderList[i].order_time}}</span> </div>
                 <div class="o-body">
                   <div class="o-img">
-                    <img width="56" height="56" src="../../../assets/img/seckill/seckill-item10.png"/></div>
+                    <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
                   <div class="o-title">{{orderList[i].title}}--{{orderList[i].description}}</div>
                   <div class="o-price">￥{{orderList[i].price}}</div>
                   <div class="o-num">{{orderList[i].num}}</div>

@@ -3,7 +3,7 @@
     <el-row type="flex" justify="center">
       <el-col :span="20">
         <div class="logo">
-          <img src="../../../assets/logo.png">
+          <img src="@/assets/logo.png">
         </div></el-col>
     </el-row>
     <el-empty description="抱歉，网页无法访问……">

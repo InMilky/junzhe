@@ -5,7 +5,7 @@
         <el-row type="flex">
           <el-col :span="4">
             <div class="logo">
-            <img src="../../../assets/logo.png">
+            <img src="@/assets/logo.png">
           </div></el-col>
           <el-col :span="16" :push="1">
             <div class="nav">
@@ -31,7 +31,7 @@
             </div>
           </el-col>
           <el-col :span="3" :push="1"><div class="QR-code">
-            <img src="../../../assets/img/index/erweima.png">
+            <img src="@/assets/img/index/erweima.png">
           </div></el-col>
         </el-row>
       </el-col>
