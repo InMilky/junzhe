@@ -65,12 +65,12 @@ export default {
           this.$axios.post('/user/validatePhone',
             { telphone: this.data.phone })
             .then((response) => {
-              if (response.data.status === 200) {
+              if (response.status === 200) {
                 this.isValidate = true
-                this.$message.success(response.data.msg)
+                this.$message.success(response.msg)
                 this.$emit('savePhone', this.data.phone)
-              } else if (response.data.status === 400) {
-                this.$confirm(response.data.msg, '验证手机号失败', {
+              } else if (response.status === 400) {
+                this.$confirm(response.msg, '验证手机号失败', {
                   confirmButtonText: '前往登录',
                   cancelButtonText: '取消',
                   cancelButtonClass: 'cancel',

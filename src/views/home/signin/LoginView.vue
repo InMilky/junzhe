@@ -88,14 +88,14 @@ export default {
             telphone: this.validateForm.phone,
             password: this.validateForm.password
           }).then((response) => {
-            if (response.data.status === 200) {
-              localStorage.setItem('jwt_token', response.data.token)
-              localStorage.setItem('username', response.data.username)
+            if (response.status === 200) {
+              localStorage.setItem('jwt_token', response.token)
+              localStorage.setItem('username', response.username)
               const redirectURL = decodeURIComponent(this.$route.query.redirectURL || '/')
               this.$router.push({ path: redirectURL })
-            } else if (response.data.status === 400) {
+            } else if (response.status === 400) {
               this.hasError = true
-              this.errMsg = response.data.msg
+              this.errMsg = response.msg
             }
           }).catch((err) => console.log(err))
         } else {

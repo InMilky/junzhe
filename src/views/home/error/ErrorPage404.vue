@@ -9,10 +9,21 @@
     <el-empty description="抱歉，网页无法访问……">
       <el-button type="button" @click="toIndex">返回首页</el-button>
     </el-empty>
+    {{errMsg}}
   </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
+      errMsg: ''
+    }
+  },
+  mounted () {
+    this.$axios.get('/user/getuser').then(res => {
+      this.errMsg = res
+    })
+  },
   methods: {
     toIndex () {
       return this.$router.push({ name: 'index' })

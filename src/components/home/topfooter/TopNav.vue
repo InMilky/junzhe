@@ -37,13 +37,15 @@ export default {
     }
   },
   created () {
-    if (localStorage.username) {
-      this.$parent.username = localStorage.username
-      this.$parent.isLogin = true
-    } else {
-      this.$parent.username = ''
-      this.$parent.isLogin = false
-    }
+    this.$axios.get('/user/getuser').then(res => {
+      if (res.status === 200) {
+        this.$parent.username = res.username
+        this.$parent.isLogin = true
+      } else {
+        this.$parent.username = ''
+        this.$parent.isLogin = false
+      }
+    })
   },
   methods: {
     logout () {

@@ -112,10 +112,10 @@ export default {
             password: this.ruleForm.password,
             email: this.ruleForm.email
           }).then((response) => {
-            if (response.data.status === 200) {
+            if (response.status === 200) {
               this.$router.replace('/signup/person/signup_success')
-            } else if (response.data.status === 400) {
-              this.$alert(response.data.msg)
+            } else if (response.status === 400) {
+              this.$alert(response.msg)
             }
           }).catch((err) => console.log(err))
         } else {
