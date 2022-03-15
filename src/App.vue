@@ -16,26 +16,19 @@ export default {
     return {
       isLogin: false,
       username: '',
-      relogin: false,
-      token: ''
+      relogin: false
     }
   },
   created () {
-    this.token = localStorage.getItem('jwt_token')
+    this.getUserInfo()
   },
   mounted () {
+    this.getUserInfo()
     const url = window.location.href
-    const path = url.split('#')[1].split('/')[1]
-    if (path === 'login' || path === 'signup') {
+    const path = url.split('#')[1]
+    if (path.startsWith('/login') || path.startsWith('/signup') || path.startsWith('/admin')) {
       this.relogin = true
     } else {
-      if (localStorage.username) { // 改
-        this.username = localStorage.username
-        this.isLogin = true
-      } else {
-        this.username = ''
-        this.isLogin = false
-      }
       this.relogin = false
     }
   },
@@ -43,7 +36,8 @@ export default {
     $route (to, from) {
       const url = to.path
       const path = url.split('/')[1]
-      if (path === 'login' || path === 'signup') {
+      this.getUserInfo()
+      if (path === 'login' || path === 'signup' || path.startsWith('/admin')) {
         this.relogin = true
       } else {
         this.relogin = false
@@ -51,27 +45,58 @@ export default {
     }
   },
   methods: {
-    logout () {
-      localStorage.removeItem('jwt_token')
-      localStorage.removeItem('username')
-      this.username = ''
-      this.isLogin = false
-      this.$confirm('你已退出登陆或者登录已失效', '提示', {
-        confirmButtonText: '前往登录',
-        cancelButtonText: '取消',
-        cancelButtonClass: 'cancelbtn',
-        confirmButtonClass: 'confirmbtn',
-        type: 'warning'
-      }).then(() => {
-        this.$router.push({
-          path: '/login',
-          query: {
-            redirectURL: this.$route.path
+    updateUser (val) {
+      val = this.username
+    },
+    getUserInfo () {
+      if (localStorage.jwt_token) {
+        this.$axios.get('/user/getuser').then(res => {
+          if (res.status === 200) {
+            this.username = res.username
+            this.isLogin = true
+          } else {
+            localStorage.removeItem('jwt_token')
+            this.username = ''
+            this.isLogin = false
           }
         })
-      }).catch(() => {
-        this.$router.replace('/index')
+      } else {
+        this.username = ''
+        this.isLogin = false
+      }
+    },
+    logout (path) {
+      localStorage.removeItem('jwt_token')
+      this.username = ''
+      this.isLogin = false
+      this.$alert('你已退出登陆或者登录已失效，请前往登录！', '提示', {
+        confirmButtonText: '确定',
+        confirmButtonClass: 'confirmbtn',
+        callback: action => {
+          this.$router.push({
+            path: '/login',
+            query: {
+              redirectURL: this.$route.path
+            }
+          })
+        }
       })
+      // this.$confirm('你已退出登陆或者登录已失效', '提示', {
+      //   confirmButtonText: '前往登录',
+      //   cancelButtonText: '取消',
+      //   cancelButtonClass: 'cancelbtn',
+      //   confirmButtonClass: 'confirmbtn',
+      //   type: 'warning'
+      // }).then(() => {
+      //   this.$router.push({
+      //     path: '/login',
+      //     query: {
+      //       redirectURL: this.$route.path
+      //     }
+      //   })
+      // }).catch(() => {
+      //   this.$router.replace('/index')
+      // })
     }
   },
   components: {

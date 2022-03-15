@@ -110,10 +110,15 @@ const routes = [
     component: () => import('@/views/home/goods/GoodsView')
   },
   {
-    path: '/listitem/:ID',
+    path: '/item/:ID',
     name: 'goods_item',
     meta: { title: '商品列表' },
     component: () => import('@/views/home/goods/ItemView')
+  },
+  {
+    path: '/item_default/:ID',
+    name: 'default_item',
+    component: () => import('@/views/home/goods/DefaultItem')
   },
   {
     path: '/admin',

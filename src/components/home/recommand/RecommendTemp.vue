@@ -7,16 +7,16 @@
           <div class="re-title">猜你喜欢</div>
           <div class="re-more">
             <div class="re-item" v-for="(item,index) in recommendList" :key="index">
-              <a href="javascript:void(0)" class="re-link">
+              <a href="javascript:void(0)" @click="toItem(item.ID)" class="re-link">
                 <div class="re-img">
-                  <el-image class="el-img" :src="item.imgurl" :alt="item.title" fit="contain" lazy></el-image>
+                  <el-image class="el-img" :src="item.img_url" :alt="item.title" fit="contain" lazy></el-image>
                 </div>
                 <div class="re-info">
                   <p class="re-info-name">{{ item.title }}</p>
                   <div class="re-info-price">
                     <i>￥</i>
                     <span class="re-info-price-txt">{{ item.price }}.<span class="re-info-price-decimal">00</span></span>
-                    <span class="re-sales">已售{{ item.soldnum }}件</span>
+                    <span class="re-sales">已售{{ item.sold_num }}件</span>
                   </div>
                 </div>
               </a>
@@ -33,23 +33,37 @@
 export default {
   data () {
     return {
-      recommendList: [
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1640', soldnum: '99', imgurl: require('@/assets/img/recommond/re01.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '511', soldnum: '99', imgurl: require('@/assets/img/recommond/re02.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1129', soldnum: '99', imgurl: require('@/assets/img/recommond/re03.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '2146', soldnum: '99', imgurl: require('@/assets/img/recommond/re04.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '5129', soldnum: '99', imgurl: require('@/assets/img/recommond/re05.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '1929', soldnum: '99', imgurl: require('@/assets/img/recommond/re06.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '330', soldnum: '99', imgurl: require('@/assets/img/recommond/re07.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '15', soldnum: '99', imgurl: require('@/assets/img/recommond/re08.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '327', soldnum: '99', imgurl: require('@/assets/img/recommond/re09.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '54', soldnum: '99', imgurl: require('@/assets/img/recommond/re10.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '222', soldnum: '99', imgurl: require('@/assets/img/recommond/re11.png'), href: '/' },
-        { title: '依波路(ERNEST BOREL)瑞士手表原装进口男自动机械手表方盘皮带传奇系列男表 GS1856S-E251BK', price: '324', soldnum: '99', imgurl: require('@/assets/img/recommond/re12.png'), href: '/' }
-      ]
+      recommendList: []
     }
   },
-  methods: {}
+  created () {
+    this.getRecommond()
+  },
+  // mounted () {
+  //   this.getRecommond()
+  // },
+  methods: {
+    getRecommond () {
+      this.$axios.get('/item/getRecommond').then(res => {
+        if (res.status === 200) {
+          const url = 'http://localhost:5129/'
+          res.data = res.data.map((item, index) => {
+            item.img_url = url + item.img_url
+            return item
+          })
+          this.recommendList = res.data
+        } else {
+          this.$message.error(res.msg)
+        }
+      }).catch(err => {
+        this.$message.error(err)
+      })
+    },
+    toItem (ID) {
+      const itemID = ID || '1234'
+      this.$router.push({ name: 'goods_item', params: { ID: itemID } })
+    }
+  }
 }
 </script>
 

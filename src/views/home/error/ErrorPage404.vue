@@ -20,9 +20,9 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get('/user/getuser').then(res => {
-      this.errMsg = res
-    })
+    // this.$axios.get('/user/getuser').then(res => {
+    //   this.errMsg = res
+    // })
   },
   methods: {
     toIndex () {

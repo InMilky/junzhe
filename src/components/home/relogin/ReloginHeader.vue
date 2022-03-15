@@ -2,7 +2,7 @@
   <div class="container">
   <el-row type="flex" justify="space-around" class="my-col">
     <el-col :span="8" class="my-top">
-      <el-link href="/index" class="logo" :underline="false"></el-link>
+      <el-link href="/" class="logo" :underline="false"></el-link>
       <span class="logo_title" :name="title">欢迎{{ title }}</span>
     </el-col>
     <el-col :span="10" class="my-top my-top-right">

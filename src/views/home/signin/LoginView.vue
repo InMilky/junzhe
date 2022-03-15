@@ -33,7 +33,7 @@
                   <el-button class="my-btn" @click="submitForm('validateForm')">登 录</el-button>
                 </el-form-item>
                 <div class="additional">
-                    <el-link type="info" style="float: left; font-size: 12px" :underline="false">其他登录</el-link>
+                    <el-link type="info" style="float: left; font-size: 12px" @click.native="toAdmin('validateForm')" :underline="false">其他登录</el-link>
                     <router-link class="rbtn" type="info" to="/signup" style="float: right;" :underline="false">前往注册</router-link>
                 </div>
               </el-form>
@@ -80,6 +80,28 @@ export default {
     }
   },
   methods: {
+    toAdmin (formData) {
+      this.hasError = false
+      this.$refs[formData].validate((valid) => {
+        if (valid) {
+          this.$axios.post('/admin/signin', {
+            telphone: this.validateForm.phone,
+            password: this.validateForm.password
+          }).then((response) => {
+            if (response.status === 200) {
+              localStorage.setItem('jwt_token', response.token)
+              this.$router.push('/admin')
+            } else if (response.status === 400) {
+              this.hasError = true
+              this.errMsg = response.msg
+            }
+          }).catch((err) => console.log(err))
+        } else {
+          this.$message.error('请完整填写登录信息')
+          return false
+        }
+      })
+    },
     submitForm (formData) {
       this.hasError = false
       this.$refs[formData].validate((valid) => {
@@ -90,7 +112,6 @@ export default {
           }).then((response) => {
             if (response.status === 200) {
               localStorage.setItem('jwt_token', response.token)
-              localStorage.setItem('username', response.username)
               const redirectURL = decodeURIComponent(this.$route.query.redirectURL || '/')
               this.$router.push({ path: redirectURL })
             } else if (response.status === 400) {

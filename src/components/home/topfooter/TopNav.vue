@@ -34,18 +34,16 @@ export default {
   props: ['isLogin', 'username'],
   data () {
     return {
+      user: ''
     }
   },
   created () {
-    this.$axios.get('/user/getuser').then(res => {
-      if (res.status === 200) {
-        this.$parent.username = res.username
-        this.$parent.isLogin = true
-      } else {
-        this.$parent.username = ''
-        this.$parent.isLogin = false
-      }
-    })
+    let param = ''
+    param = this.$emit('updateUser', param)
+    this.user = param.$attrs.username
+  },
+  watch: {
+
   },
   methods: {
     logout () {
