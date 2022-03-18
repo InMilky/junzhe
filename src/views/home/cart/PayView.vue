@@ -21,7 +21,10 @@
               <span>确认收货地址</span>
               <el-link :underline="false" style="float: right;font-size: 12px">管理收货地址</el-link></div>
             <div class="rec-info">
-              <span>{{ receiver.name }}</span>
+              <span class="checked" style="margin-right: 8px;position:relative;">
+                {{ receiver.name }}
+                <label class="el-upload-list__item-status-label"><i class="el-icon-upload-success el-icon-check"></i></label>
+              </span>
               <span>{{ receiver.name }} {{receiver.phone}} {{receiver.address}}</span>
               <el-tag type="danger" size="mini">默认地址</el-tag>
             </div>
@@ -30,7 +33,8 @@
           <div class="pay-method">
             <div class="pay-title">支付方式</div>
             <div class="pay-ways">
-              <span>货到付款</span><span>在线付款</span>
+              <span :class="onlineClass" @click="activeChange(0)">在线付款</span>
+              <span :class="deliverClass" @click="activeChange(1)">货到付款</span>
               <span class="el-dropdown-link">更多<i class="el-icon-d-arrow-right"></i></span>
             </div>
           </div>
@@ -38,7 +42,7 @@
             <div class="order-title">确定订单信息</div>
             <div class="order-item" v-for="list in orderList" :key="list.id">
               <div class="item-img">
-                <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
+                <img width="56" height="56" :src="list.img_url"/></div>
               <div class="item-title">
                 <div>{{ list.title }}</div>
                 <div style="color: #999999">{{list.description}}</div>
@@ -50,15 +54,15 @@
           </div>
         </div>
         <div class="detail">
-          <div>总商品金额：￥{{totalPrice| dot }}</div>
+          <div>总商品金额：<span style="color: #e1251b">￥{{totalPrice| dot }}</span></div>
           <div>运费：免费配送 快递 免邮</div>
           <div>
-            <div>应付总金额：￥{{totalPrice|dot }}</div>
-            <div>寄送至：{{receiver.address}}</div>
-            <div>收货人：{{receiver.name}} {{receiver.phone}}</div>
+            <div>应付总金额：<span style="color: #e1251b;font-size: 21px;font-weight: bold;line-height: 30px">￥{{totalPrice|dot }}</span></div>
+            <div style="color: #606266;font-size: 12px;line-height: 16px;margin-top: 5px">寄送至：{{receiver.address}}</div>
+            <div style="color: #606266;font-size: 12px;line-height: 16px">收货人：{{receiver.name}} {{receiver.phone}}</div>
           </div>
         </div>
-          <div><el-link class="topay" @click="toPay" :underline="false">提交订单</el-link></div>
+          <div><el-link class="topay" @click.native="toPay" :underline="false">提交订单</el-link></div>
       </el-col>
     </el-row>
   </div>
@@ -70,25 +74,21 @@ export default {
       ID: '',
       orderList: [
         {
-          id: 'p0001',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
-          price: '3649.00',
-          num: '1'
-        },
-        {
-          id: 'p0002',
-          title: '品牌剪标撤柜折扣大码小个子棉服女冬设计感小众棉衣短款棉袄外套',
-          description: '颜色分类：米白色；尺码：M[建议91-105斤]',
-          price: '3649.00',
-          num: '2'
+          ID: 'ef71b3ab-21d6-4ab8-b9b9-8e5651b40f76',
+          title: '迪奥全新烈艳蓝金单色腮红6.7G 新品',
+          description: '哑光#999',
+          price: '249.00',
+          num: '1',
+          img_url: 'http://localhost:5129/upload/dd3027f1c63c05160cd2dd705a380d2c.png'
         }
       ],
       receiver: {
         name: '小橘子',
         phone: '183****5129',
-        address: '广东省佛山市南海区狮山镇华南师范大学南海校区（菜鸟驿站）'
-      }
+        address: '广东省佛山市南海区狮山镇华南师范大学南海校区(菜鸟驿站)'
+      },
+      onlineClass: 'checked',
+      deliverClass: 'non-checked'
     }
   },
   mounted () {
@@ -98,6 +98,15 @@ export default {
     toPay () {
       // :to="{ path:'/pay',query:{'cartIds':0}}"
       this.$router.push({ name: 'payitem', query: { orderID: 202202222146, receiverID: 1 } })
+    },
+    activeChange (val) {
+      if (val === 0) {
+        this.onlineClass = 'checked'
+        this.deliverClass = 'non-checked'
+      } else {
+        this.deliverClass = 'checked'
+        this.onlineClass = 'non-checked'
+      }
     }
   },
   computed: {
@@ -175,7 +184,12 @@ export default {
   background-color: #f4f4f4;
   padding: 18px 24px;
   box-sizing: border-box;
+  margin-top: 15px;
+  line-height: 24px;
 }
+/*.detail>div{*/
+/*  margin: 5px 0;*/
+/*}*/
 .rec-title>span,.pay-title,.order-title{
   font-weight: 700;
 }
@@ -184,13 +198,38 @@ export default {
   display: flex;
   color: #606266;
 }
+.rec-info>span{
+  display: inline-block;
+  margin: auto 0;
+}
+.checked{
+  padding: 5px;
+  border: 2px solid #e1251b;
+}
+.non-checked{
+  padding: 5px;
+  border: 2px solid transparent;
+}
 .pay-ways>span{
-  margin-right: 10px;
+  display: inline-block;
+  margin: auto 10px auto 0;
+  cursor: pointer;
 }
 .rec-link{
   padding-left: 15px;
   color: #606266;
   cursor: pointer;
+}
+.non-checked{
+  border: 2px solid transparent;
+}
+.el-dropdown-link{
+  cursor: pointer;
+}
+.el-dropdown-link:hover,
+.el-dropdown-link:hover .el-icon-d-arrow-right{
+  color: #e1251b;
+  text-decoration: underline;
 }
 .order-item{
   width: 100%;
@@ -198,10 +237,11 @@ export default {
   display: flex;
   margin: 5px 0;
   overflow: hidden;
-  background-color: #eeeeee;
+  background-color: #fafafa;
 }
 .item-title{
   flex: 1;
+  margin: auto;
 }
 .item-price,.item-num,.item-amount{
   flex: 0 0 110px;
@@ -211,6 +251,7 @@ export default {
 }
 .item-img{
   flex: 0 0 90px;
+  margin: auto;
 }
 
 .topay{

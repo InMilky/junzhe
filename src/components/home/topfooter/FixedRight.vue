@@ -37,7 +37,7 @@ export default {
 
 <style scoped>
 .right-aside{
-  width: 56px;
+  width: 64px;
   height: 72%;
   position: fixed;
   right: 1%;
@@ -74,9 +74,9 @@ export default {
 .elevator-link:after {
   position: absolute;
   display: inline-block;
-  width: 40px;
+  width: 64px;
   height: 1px;
-  left: 20%;
+  left: 0;
   bottom: 0;
   background: -webkit-gradient(linear, right top, left top, from(white), color-stop(#eeeeee), color-stop(#eeeeee), to(white));
   background: linear-gradient(

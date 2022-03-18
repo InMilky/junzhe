@@ -199,7 +199,8 @@ export default {
   .my-btn {
     background: #e1251b;
     border: 1px solid #DCDFE6;
-    color: #606266;
+    color: #FFFFFF;
+    font-size: 18px;
     width: 100%;
   }
 </style>

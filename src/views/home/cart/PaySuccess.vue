@@ -59,20 +59,34 @@ export default {
   data () {
     return {
       countdown: '16分钟40秒',
+      timer: 300,
       orderID: '',
       totalPrice: '2146',
-      item: '品牌剪标撤柜折扣大码小个子棉服女冬设计感小众棉衣短款棉袄外套',
+      item: '迪奥全新烈艳蓝金单色腮红6.7G 新品',
       receiver: {
         name: '小**',
         phone: '183****5129',
-        address: '广东省佛山市南海区狮山镇华南师范大学南海校区（菜鸟驿站）'
+        address: '广东省佛山市南海区狮山镇华南师范大学南海校区(菜鸟驿站)'
       }
     }
   },
   mounted () {
     this.orderID = this.$route.query.orderID
+    this.countDown()
   },
   methods: {
+    countDown () {
+      const timer = window.setInterval(() => {
+        this.timer -= 1
+        const minute = parseInt(this.timer / 60)
+        const second = parseInt(this.timer % 60)
+        this.countdown = `${minute}分钟${second}秒`
+        if (minute === 0 && second === 0) {
+          window.clearInterval(timer)
+          this.$router.push('/order')
+        }
+      }, 1000)
+    },
     toOrder () {
       this.$router.push('/order')
     },

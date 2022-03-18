@@ -50,7 +50,7 @@ export default {
       this.$emit('logout')
     },
     userCenter () {
-      this.$message.error('click')
+      // this.$message.error('click')
     }
   }
 }

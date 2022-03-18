@@ -63,10 +63,10 @@
                   <div class="p-sth-item"><p>库存量</p><p class="count">{{ info[0].amount }}</p></div>
               </div>
               <div class="addnum">
-                数量：<el-input-number v-model="num" :min="1" :max="9999"></el-input-number>
+                数量：<el-input-number v-model="num" :min="1" :max="1"></el-input-number>
               </div>
               <div class="btn-group">
-                <button type="button" class="paybtn" @click="toOrder">立即购买</button>
+                <button type="button" class="paybtn" @click="toOrder" :disabled="disabled">立即购买</button>
                 <button type="button" class="cartbtn" @click="toCart">
                   <i class="el-icon-shopping-cart-2" style="font-size: 20px;padding-right: 5px"></i>
                   加入购物车</button>
@@ -144,9 +144,16 @@ export default {
     return {
       num: 1,
       ID: '',
-      hour: 0,
-      minute: 0,
-      second: 0,
+      time: {
+        interval: '',
+        timeGap: 0,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        start: false,
+        end: false,
+        done: false
+      },
       info: [
         {
           ID: 'O1CN014gHYph20tulJeXAqV',
@@ -188,9 +195,28 @@ export default {
       isFixed: false
     }
   },
+  // async created () {
+  //   const serverTime = await this.getServerTime()
+  //   this.time.timeGap = Date.now() - serverTime// 当前时间和服务器时间差
+  //   this.updateState()
+  //   this.timeInterval = setInterval(() => {
+  //     this.updateState()
+  //   }, 1000)
+  // },
+  // updated () {
+  //   if (this.end || this.done) {
+  //     clearInterval(this.timeInterval)
+  //   }
+  // },
   mounted () {
     window.addEventListener('scroll', this.getScrollTop)
     this.ID = this.$route.query.ID
+    this.setTimer()
+  },
+  computed: {
+    disabled () {
+      return !(this.time.start && this.time.end && this.time.done)
+    }
   },
   methods: {
     getScrollTop () {
@@ -204,6 +230,12 @@ export default {
     searchGoods (key) {
       // alert(key)
       // axios请求
+    },
+    setTimer () {
+      // const _this = this
+      this.interval = setInterval(function () {
+
+      }, 1000)
     },
     toOrder () {
       const ID = this.info[0].ID.toString()
@@ -554,5 +586,8 @@ export default {
   color: #e1251b;
   border: 1px solid #e1251b;
   background-color: rgba(225,37,27,.1);
+}
+button[disabled]{
+  cursor: not-allowed;
 }
 </style>

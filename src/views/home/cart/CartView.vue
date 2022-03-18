@@ -1,6 +1,6 @@
 <template>
   <div class="cart-container">
-    <CartHeader :search="search" :title="title"></CartHeader>
+    <CartHeader :search="searchKey" :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
       <div class="cart">
         <el-empty description="购物车空空的哦~，去看看心仪的商品吧~" v-if="cartList.length==0">
@@ -21,7 +21,7 @@
               <div class="cart-item" v-for="list in cartList" :key="list.id">
                 <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.id" />
                 <div class="goods-img">
-                  <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
+                  <img width="56" height="56" :src="list.img_url"/></div>
                 <div class="goods-info">
                   <div>{{ list.title }}</div>
                   <div style="color: #999999">{{list.description}}</div>
@@ -72,23 +72,18 @@ export default {
       amount: 0,
       cartList: [
         {
-          id: 'p0001',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
-          price: '3649.00',
-          num: '1'
-        },
-        {
-          id: 'p0002',
-          title: '品牌剪标撤柜折扣大码小个子棉服女冬设计感小众棉衣短款棉袄外套',
-          description: '颜色分类：米白色；尺码：M[建议91-105斤]',
-          price: '3649.00',
-          num: '2'
+          ID: 'ef71b3ab-21d6-4ab8-b9b9-8e5651b40f76',
+          title: '迪奥全新烈艳蓝金单色腮红6.7G 新品',
+          description: '哑光#999',
+          price: '249.00',
+          num: '1',
+          img_url: 'http://localhost:5129/upload/dd3027f1c63c05160cd2dd705a380d2c.png'
         }
       ]
     }
   },
   mounted () {
+    // this.getCart()
     if (this.checkAll) {
       this.checkGoods.length = 0
       for (let i = 0; i < this.cartList.length; i++) {
@@ -120,7 +115,23 @@ export default {
     }
   },
   methods: {
-    search () {},
+    searchKey () {},
+    // getCart () {
+    //   this.$axios.get('/cart/getCart').then(res => {
+    //     if (res.status === 200) {
+    //       const url = 'http://localhost:5129/'
+    //       res.data = res.data.map((item, index) => {
+    //         item.img_url = url + item.img_url
+    //         return item
+    //       })
+    //       this.carousel = res.data
+    //     } else {
+    //       this.$message.error(res.msg)
+    //     }
+    //   }).catch(err => {
+    //     this.$message.error(err)
+    //   })
+    // },
     chooseAll () {
       if (this.checkAll) {
         this.checkGoods.length = 0

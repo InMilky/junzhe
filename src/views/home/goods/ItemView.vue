@@ -44,8 +44,8 @@
                 </div>
                 <div class="p-sth">
                   <div class="p-sth-item"><p>月销量</p><p class="count">{{item[0].sold_num}}+</p></div>
-                  <div class="p-sth-item"><p>累计评论</p><p class="count">51129</p></div>
-                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ item[0].amount || 0 }}</p></div>
+                  <div class="p-sth-item"><p>累计评论</p><p class="count">1640+</p></div>
+                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ item[0].amount || 1000 }}+</p></div>
                 </div>
                 <div class="addnum">
                   数量：<el-input-number v-model="num" :min="1" :max="9999"></el-input-number>
@@ -161,8 +161,12 @@ export default {
           if (res.status === 200) {
             const url = 'http://localhost:5129/'
             res.data = res.data.map((item) => {
-              item.img_url = url + item.img_url
               item.flag = false
+              item.img_url = url + item.img_url
+              item.price = item.price.toFixed(2)
+              if (item.m_price !== null) {
+                item.m_price = item.m_price.toFixed(2)
+              }
               // 若存在detail
               if (item.detail) {
                 item.flag = true
@@ -171,11 +175,18 @@ export default {
                   return val
                 })
                 item.brief_img = item.detail[0].brief_img
+                // 调整顺序
+                const object = [item.detail[0].size, item.detail[0].details]
+                delete item.detail[0].size
+                delete item.detail[0].details
                 delete item.detail[0].brief_img
+                item.detail[0].color = item.color
+                item.detail[0].size = object[0]
+                item.detail[0].details = object[1]
               }
+              console.log(item)
               return item
             })
-            console.log(res.data)
             this.item = res.data
           } else {
             this.$message.error(res.msg)
@@ -430,7 +441,7 @@ export default {
   font-size: 12px;
   color: #e6e6e6;
   margin: 30px 0;
-  padding: 0 30px;
+  padding: 0 15px;
 }
 /deep/ .el-descriptions__title {
   font-size: 14px;

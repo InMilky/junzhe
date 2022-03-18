@@ -14,7 +14,7 @@
                 <div class="o-info">宝贝</div>
                 <div class="o-price">单价</div>
                 <div class="o-num">数量</div>
-                <div class="o-total" style="font-weight: normal">实付款</div>
+                <div class="o-total">实付款</div>
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
@@ -24,11 +24,11 @@
                   <span>下单时间：{{item.order_time}}</span> </div>
                 <div class="o-body">
                   <div class="o-img">
-                  <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
+                  <img style="width:94px;max-height: 100%;" :src="item.img_url"/></div>
                   <div class="o-title">{{item.title}}--{{item.description}}</div>
                   <div class="o-price">￥{{item.price}}</div>
                   <div class="o-num">{{item.num}}</div>
-                  <div class="o-total">￥{{item.totalPrice}}</div>
+                  <div class="o-total red">￥{{item.totalPrice}}</div>
                   <div class="o-state">{{item.paystate}}</div>
                   <div class="o-action">评论</div>
                 </div>
@@ -50,7 +50,7 @@
                 <div class="o-info">宝贝</div>
                 <div class="o-price">单价</div>
                 <div class="o-num">数量</div>
-                <div class="o-total" style="font-weight: normal">实付款</div>
+                <div class="o-total">实付款</div>
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
@@ -65,25 +65,25 @@
                 <div class="o-info">宝贝</div>
                 <div class="o-price">单价</div>
                 <div class="o-num">数量</div>
-                <div class="o-total" style="font-weight: normal">实付款</div>
+                <div class="o-total">实付款</div>
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
               <el-empty description="你还没有相关订单~" v-if="orderList.length===0">
                 <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
               </el-empty>
-              <div class="order-item" v-for="i in 3" :key="orderList[i].orderID" v-else>
+              <div class="order-item" v-for="list in orderList" :key="list.orderID" v-else>
                 <div class="o-head">
-                  <span style="font-weight: 700">订单号：{{orderList[i].orderID}}</span>
-                  <span>下单时间：{{orderList[i].order_time}}</span> </div>
+                  <span style="font-weight: 700">订单号：{{list.orderID}}</span>
+                  <span>下单时间：{{list.order_time}}</span> </div>
                 <div class="o-body">
                   <div class="o-img">
-                    <img width="56" height="56" src="@/assets/img/seckill/seckill-item10.png"/></div>
-                  <div class="o-title">{{orderList[i].title}}--{{orderList[i].description}}</div>
-                  <div class="o-price">￥{{orderList[i].price}}</div>
-                  <div class="o-num">{{orderList[i].num}}</div>
-                  <div class="o-total">￥{{orderList[i].totalPrice}}</div>
-                  <div class="o-state">{{orderList[i].paystate}}</div>
+                    <img style="width:94px;max-height: 100%;" :src="list.img_url" /></div>
+                  <div class="o-title">{{list.title}}--{{list.description}}</div>
+                  <div class="o-price">￥{{list.price}}</div>
+                  <div class="o-num">{{list.num}}</div>
+                  <div class="o-total red">￥{{list.totalPrice}}</div>
+                  <div class="o-state">{{list.paystate}}</div>
                   <div class="o-action">评论</div>
                 </div>
               </div>
@@ -95,7 +95,7 @@
                 <div class="o-info">宝贝</div>
                 <div class="o-price">单价</div>
                 <div class="o-num">数量</div>
-                <div class="o-total" style="font-weight: normal">实付款</div>
+                <div class="o-total">实付款</div>
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
@@ -110,7 +110,7 @@
                 <div class="o-info">宝贝</div>
                 <div class="o-price">单价</div>
                 <div class="o-num">数量</div>
-                <div class="o-total" style="font-weight: normal">实付款</div>
+                <div class="o-total">实付款</div>
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
@@ -141,60 +141,16 @@ export default {
       orderList: [
         {
           orderID: '20220222-051129',
-          itemID: 'p0001',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
-          price: '3649.00',
+          itemID: 'ef71b3ab-21d6-4ab8-b9b9-8e5651b40f76',
+          title: '迪奥全新烈艳蓝金单色腮红6.7G 新品',
+          description: '哑光#999',
+          price: '249.00',
           num: '1',
-          totalPrice: '3649.00',
+          totalPrice: '249.00',
           paystate: '待发货',
-          order_time: '2022-02-22 05:11:29'
-        },
-        {
-          orderID: '20211028-051129',
-          itemID: 'p0001',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
-          price: '3649.00',
-          num: '1',
-          totalPrice: '3649.00',
-          paystate: '待发货',
-          order_time: '2021-10-28 05:11:29'
-        },
-        {
-          orderID: '20210813-051129',
-          itemID: 'p0001',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
-          price: '3649.00',
-          num: '1',
-          totalPrice: '3649.00',
-          paystate: '待发货',
-          order_time: '2021-08-13 05:11:29'
-        },
-        {
-          orderID: '20210520-051129',
-          itemID: 'p0001',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
-          price: '3649.00',
-          num: '1',
-          totalPrice: '3649.00',
-          paystate: '已发货',
-          order_time: '2021-05-20 05:11:29'
-        },
-        {
-          orderID: '20210504-051129',
-          itemID: 'p0001',
-          title: '小米12 小米手机 5G手机 新品手机 120Hz高刷 骁龙8 Gen1',
-          description: '8GB+128GB 黑色 官方标配',
-          price: '51.00',
-          num: '3',
-          totalPrice: '153.00',
-          paystate: '已评论',
-          order_time: '2021-05-04 05:11:29'
-        }
-      ],
+          img_url: 'http://localhost:5129/upload/dd3027f1c63c05160cd2dd705a380d2c.png',
+          order_time: '2022-03-17 17:11:29'
+        }],
       currentPage: 1
     }
   },
@@ -290,7 +246,10 @@ export default {
 }
 .o-total{
   width: 12%;
+}
+.o-total.red{
   font-weight: 700;
+  color: #e1251b;
 }
 .o-state,.o-action{
   width: 10%;

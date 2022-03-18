@@ -28,7 +28,7 @@
             <div class="slide-list">
               <div class="slide-wrapper">
                 <router-link v-for="item in miaoshaList" :key="item.index"
-                   :to="item.href" target="_blank" class="seckill-item-link" >
+                             to="/seckill" target="_blank" class="seckill-item-link" >
                   <div class="seckill-item">
                     <div class="seckill-item-img">
                       <el-image :src="item.img_url" :alt="item.title" fit="contain" lazy></el-image></div>
@@ -229,21 +229,21 @@ export default {
       brandList: [],
       niceList: [
         {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }, {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }, {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }, {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }, {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }, {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }, {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }, {
-          img_url: 'upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
+          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
         }],
       recommondList: []
     }
@@ -314,7 +314,7 @@ export default {
       this.$axios.get('/item/getNice').then(res => {
         if (res.status === 200) {
           const url = 'http://localhost:5129/'
-          res.data = res.data.map((item, index) => {
+          res.data = res.data.map((item) => {
             item.img_url = url + item.img_url
             return item
           })
