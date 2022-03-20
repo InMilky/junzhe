@@ -124,8 +124,9 @@
 </template>
 
 <script>
-import SeckillTop from '@/components/home/seckill/SeckillTop'
 
+import SeckillTop from '@/components/home/seckill/SeckillTop'
+const SERVER_HOST = require('@/plugins/config')
 export default {
   data () {
     return {
@@ -159,7 +160,8 @@ export default {
       this.$axios.post('/item/getItem', { ID: ID })
         .then(res => {
           if (res.status === 200) {
-            const url = 'http://localhost:5129/'
+            // const url = 'http://localhost:5129/'
+            const url = SERVER_HOST
             res.data = res.data.map((item) => {
               item.flag = false
               item.img_url = url + item.img_url

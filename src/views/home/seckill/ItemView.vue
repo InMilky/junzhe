@@ -6,9 +6,8 @@
         <el-row type="flex" justify="center" style="width: 100%">
           <el-col :span="20" style="display:flex;overflow: hidden;justify-content: space-between">
             <el-breadcrumb separator-class="el-icon-arrow-right" class="left-breadrum">
-              <el-breadcrumb-item to="/">{{info[0].category}}</el-breadcrumb-item>
-              <el-breadcrumb-item to="/">{{info[0].store}}</el-breadcrumb-item>
-              <el-breadcrumb-item>{{info[0].title}}</el-breadcrumb-item>
+              <el-breadcrumb-item to="/">{{info.data.brand}}</el-breadcrumb-item>
+              <el-breadcrumb-item>{{info.data.title}}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="right-action">
               <el-link :underline="false"><i class="el-icon-service"></i>联系客服</el-link>
@@ -21,32 +20,32 @@
           <div class="main-info">
           <el-row type="flex" style="width: 100%">
             <el-col :span="9" class="p-img">
-              <div class="main-img"><img :src="info[0].imgurl" alt="main-img"/></div>
+              <div class="main-img"><img :src="info.data.img_url" alt="main-img"/></div>
               <div class="bottom-img">
                 <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
                   <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
-                  <el-col :span="5"><div class="b-img active"><img :src="info[0].img_btm[0]" alt="main-img"/></div></el-col>
-                  <el-col :span="5"><div class="b-img"><img :src="info[0].img_btm[1]" alt="main-img"/></div></el-col>
-                  <el-col :span="5"><div class="b-img"><img :src="info[0].img_btm[2]" alt="main-img"/></div></el-col>
+                  <el-col :span="5"><div class="b-img active"><img :src="info.data.img_url" alt="main-img"/></div></el-col>
+                  <el-col :span="5"><div class="b-img"><img :src="info.data.img_url" alt="main-img"/></div></el-col>
+                  <el-col :span="5"><div class="b-img"><img :src="info.data.img_url" alt="main-img"/></div></el-col>
                   <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-right"></i></el-col>
                 </el-row>
               </div>
             </el-col>
             <el-col :span="14" :push="1" class="p-info">
-              <div class="p-title">{{info[0].title}}</div>
+              <div class="p-title">{{info.data.title}}</div>
               <div class="p-price">
                 <div class="p-header">
                   <div><i class="el-icon-alarm-clock" style="font-size: 21px;padding-right: 10px"></i>
                     <span>橘栀秒杀活动</span></div>
                   <div>距离结束
-                    <span class="timer-unit">{{hour|addZero}}</span> :
-                    <span class="timer-unit">{{minute|addZero}}</span> :
-                    <span class="timer-unit">{{second|addZero}}</span></div>
+                    <span class="timer-unit">{{time.hour|addZero}}</span> :
+                    <span class="timer-unit">{{time.minute|addZero}}</span> :
+                    <span class="timer-unit">{{time.second|addZero}}</span></div>
                 </div>
                 <div class="p-body">
                   <div>秒杀价：<span style="color: #e1251b">￥</span>
-                    <span class="mprice">{{info[0].miaosha_price}}</span>
-                    <span class="oprice">￥{{info[0].price}}</span></div>
+                    <span class="mprice">{{info.data.m_price}}</span>
+                    <span class="oprice">￥{{info.data.price}}</span></div>
                   <div>促  销：限购1件，超出数量以结算价为准</div>
                   <div class="discount">
                     <el-tag type="danger">领券购买</el-tag>
@@ -55,12 +54,12 @@
               </div>
               <div class="p-tip">服 务：支持极速审核、运费险、闪电退款，包邮免运费（限中国内地）</div>
               <div class="p-description">
-                描述：<span>{{info[0].description['描述']}}</span>
+                描述：<span>{{info.data.description}}</span>
               </div>
               <div class="p-sth">
-                  <div class="p-sth-item"><p>月销量</p><p class="count">{{info[0].soldnum}}+</p></div>
-                  <div class="p-sth-item"><p>累计评论</p><p class="count">51129</p></div>
-                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ info[0].amount }}</p></div>
+                  <div class="p-sth-item"><p>月销量</p><p class="count">{{info.data.sold_num}}+</p></div>
+                  <div class="p-sth-item"><p>累计评论</p><p class="count">1640+</p></div>
+                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ info.data.amount }}</p></div>
               </div>
               <div class="addnum">
                 数量：<el-input-number v-model="num" :min="1" :max="1"></el-input-number>
@@ -76,7 +75,7 @@
           </div>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center" style="width: 100%;margin-top: 50px">
+      <el-row type="flex" justify="center" style="width: 100%;margin-top: 30px">
         <el-col :span="20">
           <div class="info-title">
             <span class="active">商品详情</span>
@@ -86,11 +85,11 @@
           <el-backtop :visibility-height="800" :right="20"></el-backtop>
           <div class="desc">
             <el-descriptions title="产品信息" class="desc-info">
-              <el-descriptions-item v-for="(item,key) in info[0].description" :key="key"
-                                    :label="key">{{item}}</el-descriptions-item>
+              <el-descriptions-item v-for="(item,key) in info.data.detail" :key="key"
+                                    :label="entocn[key]">{{item}}</el-descriptions-item>
             </el-descriptions>
           </div>
-          <div class="info-img" v-for="(img,index) in info[0].imggruop" :key="index">
+          <div class="info-img" v-for="(img,index) in info.data.brief_img" :key="index">
               <img :src="img" :alt="index" />
           </div>
           <div class="evaluate">
@@ -119,7 +118,7 @@
           </div>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center" :class="{fixed:isFixed}"
+      <el-row type="flex" justify="center" v-if="info.data.flag" :class="{fixed:isFixed}"
               style="width: 100%;background-color: #FFFFFF">
         <el-col :span="20">
           <div class="info-title">
@@ -138,7 +137,7 @@
 
 <script>
 import SeckillTop from '@/components/home/seckill/SeckillTop'
-
+const SERVER_HOST = require('@/plugins/config')
 export default {
   data () {
     return {
@@ -154,45 +153,19 @@ export default {
         end: false,
         done: false
       },
-      info: [
-        {
-          ID: 'O1CN014gHYph20tulJeXAqV',
-          title: '木九十新品太阳镜百搭黑超偏光男女墨镜MJ102SH519',
-          price: '699',
-          category: 'MUJOSH',
-          store: '木九十官方旗舰店',
-          miaosha_price: '599',
-          start_date: '2022/3/11 00:00:00',
-          end_date: '2022/3/11 12:00:00',
-          amount: 1129,
-          soldnum: 51,
-          imgurl: require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_00.jpg'),
-          img_btm: [
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_b01.jpg'),
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_b02.jpg'),
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_b03.jpg')
-          ],
-          imggruop: [
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_01.jpg'),
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_02.jpg'),
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_03.jpg'),
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_04.jpg'),
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_05.jpg'),
-            require('@/assets/img/O1CN014gHYph20tulJeXAqV/O1CN014gHYph20tulJeXAqV_06.jpg')
-          ],
-          description: {
-            商品名称: 'MUJOSH/木九十',
-            商品编号: 'O1CN014gHYph20tulJeXAqV',
-            颜色分类: 'BKC1曜石黑+单灰偏光片',
-            上市时间: '2021年春季',
-            镜架材质: '尼龙',
-            镜片尺寸: '64mm及以上',
-            描述: '前卫简约舒适时尚，男女通用，适合各种脸型，功能: 防UVA、防UVB、偏光、遮阳。尼龙镜片，配送高清尼龙镜片/双面防油污/内渡减反射膜'
-          }
-        }],
+      info: { data: { brand: '首页' } },
       rate: 4.9,
       radio: '0',
-      isFixed: false
+      isFixed: false,
+      entocn: {
+        item_no: '商品编号',
+        brand: '商品品牌',
+        color: '颜色分类',
+        publish_date: '上市时间',
+        feature: '商品特性',
+        size: '尺寸大小',
+        details: '详情描述'
+      }
     }
   },
   // async created () {
@@ -208,10 +181,11 @@ export default {
   //     clearInterval(this.timeInterval)
   //   }
   // },
-  mounted () {
+  async mounted () {
     window.addEventListener('scroll', this.getScrollTop)
-    this.ID = this.$route.query.ID
+    this.ID = this.$route.params.ID
     this.setTimer()
+    await this.getItem()
   },
   computed: {
     disabled () {
@@ -231,6 +205,43 @@ export default {
       // alert(key)
       // axios请求
     },
+    getItem () {
+      const ID = this.ID
+      this.$axios.post('/miaosha/getItem', { ID: ID })
+        .then(res => {
+          if (res.status === 200) {
+            const url = SERVER_HOST
+            // const url = 'http://localhost:5129/'
+            const item = res.data
+            item.flag = false
+            item.img_url = url + item.img_url
+            // 若存在detail
+            if (item.detail) {
+              item.flag = true
+              item.detail.brief_img = item.detail.brief_img.map((val) => {
+                val = url + val
+                return val
+              })
+              item.brief_img = item.detail.brief_img
+              // 调整顺序
+              const object = [item.detail.feature, item.detail.size, item.detail.details]
+              delete item.detail.feature
+              delete item.detail.size
+              delete item.detail.details
+              delete item.detail.brief_img
+              item.detail.color = item.color
+              item.detail.size = object[1]
+              item.detail.feature = object[0]
+              item.detail.details = object[2]
+            }
+            this.info = res
+          } else {
+            this.$message.error(res.msg)
+          }
+        }).catch(err => {
+          this.$message.error(err)
+        })
+    },
     setTimer () {
       // const _this = this
       this.interval = setInterval(function () {
@@ -238,12 +249,12 @@ export default {
       }, 1000)
     },
     toOrder () {
-      const ID = this.info[0].ID.toString()
+      const ID = this.info.data.ID.toString()
       const buyNum = this.num.toString()
       this.$router.push({ name: 'payorder', params: { ID: ID, buy_num: buyNum } })
     },
     toCart () {
-      const ID = this.info[0].ID.toString()
+      const ID = this.info.data.ID.toString()
       const buyNum = this.num.toString()
       this.$router.push({ name: 'cart', params: { ID: ID, buy_num: buyNum } })
     }
@@ -296,7 +307,7 @@ export default {
   width: 100%;
 }
 .p-img{
-  height: 480px;
+  height: 500px;
 }
 .main-img{
   width: 100%;
@@ -311,8 +322,8 @@ export default {
 }
 .bottom-img{
   width: 100%;
-  height: 16%;
-  margin-top: 4%;
+  height: 17%;
+  margin-top: 3%;
   color: #606266;
   text-align: center;
 }
@@ -320,12 +331,14 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  box-sizing: border-box;
 }
 .b-img.active{
   border: 2px solid #e1251b;
 }
 .b-img>img{
   width: 100%;
+  height: 100%;
   display: block;
 }
 .rl-icon{
@@ -337,7 +350,6 @@ export default {
   color: #606266;
 }
 .p-info{
-  height: 400px;
   color: #999999;
 }
 .p-title{
@@ -348,13 +360,14 @@ export default {
   color: #606266;
 }
 .p-price{
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
-  height: 120px;
+  height: 136px;
 }
 .p-header{
   width: 100%;
-  height: 36px;
+  height: 42px;
+  line-height: 42px;
   background-color: #e1251b;
   color: #FFFFFF;
   padding: 0 10px;
@@ -366,7 +379,7 @@ export default {
 }
 .p-body{
   width: 100%;
-  height: 80px;
+  height: 88px;
   padding: 0 10px;
   background-color: #e6e6e6;
   color: #999999;
@@ -383,7 +396,7 @@ export default {
   position: absolute;
   right: 10px;
   top: 50%;
-  margin-top: -5%;
+  margin-top: -6%;
   cursor: pointer;
 }
 .mprice{
@@ -513,7 +526,7 @@ export default {
   font-size: 12px;
   color: #e6e6e6;
   margin: 30px 0;
-  padding: 0 30px;
+  padding: 0 15px;
 }
 /deep/ .el-descriptions__title {
   font-size: 14px;

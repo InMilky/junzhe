@@ -105,9 +105,10 @@ const routes = [
     component: () => import('@/views/home/seckill/ItemView')
   },
   {
-    path: '/listitem',
-    name: 'listitem',
-    component: () => import('@/views/home/goods/GoodsView')
+    path: '/item/item_list',
+    name: 'list_item',
+    meta: { title: '商品列表' },
+    component: () => import('@/views/home/goods/IndexView')
   },
   {
     path: '/item/:ID',
@@ -225,6 +226,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 

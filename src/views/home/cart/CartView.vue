@@ -1,6 +1,6 @@
 <template>
   <div class="cart-container">
-    <CartHeader :search="searchKey" :title="title"></CartHeader>
+    <CartHeader :search="keyword" @search="searchItem" :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
       <div class="cart">
         <el-empty description="购物车空空的哦~，去看看心仪的商品吧~" v-if="cartList.length==0">
@@ -18,21 +18,21 @@
             <div class="goods-action">操作</div>
           </div>
           <div class="cart-tbody">
-              <div class="cart-item" v-for="list in cartList" :key="list.id">
-                <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.id" />
+              <div class="cart-item" v-for="list in cartList" :key="list.ID">
+                <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.item_id" />
                 <div class="goods-img">
                   <img width="56" height="56" :src="list.img_url"/></div>
                 <div class="goods-info">
                   <div>{{ list.title }}</div>
-                  <div style="color: #999999">{{list.description}}</div>
+                  <div style="color: #999999">{{list.color}}</div>
                 </div>
                 <div class="goods-price" style="font-weight: 700;">￥{{ list.price }}</div>
                 <div class="goods-num">
-                  <el-input-number v-model="list.num" :min="1" :max="9999" @change="totalPrice" size="mini"></el-input-number>
+                  <el-input-number v-model="list.quantity" :min="1" :max="9999" @change="totalPrice" size="mini"></el-input-number>
                 </div>
-                <div class="goods-amount" style="color: #e1251b;font-weight: 700;">￥{{ list.price * list.num }}</div>
+                <div class="goods-amount" style="color: #e1251b;font-weight: 700;">￥{{ list.price * list.quantity }}</div>
                 <div class="goods-action">
-                  <a href="javascrip:void(0)" @click="delItem(list.id)">删除</a>
+                  <a href="javascrip:void(0)" @click="delItem(list.item_id)">删除</a>
                 </div>
               </div>
           </div>
@@ -61,40 +61,22 @@
 
 import CartHeader from '@/components/home/topfooter/CartHeader'
 import RecommendTemp from '@/components/home/recommand/RecommendTemp'
+import { SERVER_HOST } from '@/plugins/config'
 
 export default {
   data () {
     return {
       title: '购物车',
+      keyword: '',
       checkAll: true,
       checkedCount: 0,
       checkGoods: [],
       amount: 0,
-      cartList: [
-        {
-          ID: 'ef71b3ab-21d6-4ab8-b9b9-8e5651b40f76',
-          title: '迪奥全新烈艳蓝金单色腮红6.7G 新品',
-          description: '哑光#999',
-          price: '249.00',
-          num: '1',
-          img_url: 'http://localhost:5129/upload/dd3027f1c63c05160cd2dd705a380d2c.png'
-        }
-      ]
+      cartList: []
     }
   },
   mounted () {
-    // this.getCart()
-    if (this.checkAll) {
-      this.checkGoods.length = 0
-      for (let i = 0; i < this.cartList.length; i++) {
-        this.checkGoods.push(this.cartList[i].id)
-      }
-      this.checkedCount = this.checkGoods.length
-    } else {
-      this.checkGoods = []
-      this.checkedCount = 0
-      this.amount = 0
-    }
+    this.getCart()
   },
   watch: {
     checkGoods: function (e) {
@@ -104,7 +86,7 @@ export default {
       if (e) {
         for (let i = 0; i < e.length; i++) {
           for (let j = 0; j < this.cartList.length; j++) {
-            if (e[i] === this.cartList[j].id) {
+            if (e[i] === this.cartList[j].item_id) {
               this.amount += this.cartList[j].price * this.cartList[j].num
             }
           }
@@ -115,28 +97,63 @@ export default {
     }
   },
   methods: {
-    searchKey () {},
-    // getCart () {
-    //   this.$axios.get('/cart/getCart').then(res => {
-    //     if (res.status === 200) {
-    //       const url = 'http://localhost:5129/'
-    //       res.data = res.data.map((item, index) => {
-    //         item.img_url = url + item.img_url
-    //         return item
-    //       })
-    //       this.carousel = res.data
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   }).catch(err => {
-    //     this.$message.error(err)
-    //   })
-    // },
+    searchItem (key) {
+      this.keyword = key
+      this.$router.replace({ name: 'list_item', query: { key: key } })
+      this.$axios.get('/item/search', { params: { key: key } })
+        .then(res => {
+          if (res.status === 200) {
+            // const url = 'http://localhost:5129/'
+            const url = SERVER_HOST
+            res.data = res.data.map((val) => {
+              val.img_url = url + val.img_url
+              return val
+            })
+            this.item = res.data
+            this.emptyMsg = ''
+          } else {
+            this.item = []
+            this.emptyMsg = res.msg
+          }
+        }).catch(err => {
+          Promise.reject(err)
+        })
+    },
+    checkbox () {
+      if (this.checkAll) {
+        this.checkGoods.length = 0
+        for (let i = 0; i < this.cartList.length; i++) {
+          this.checkGoods.push(this.cartList[i].item_id)
+        }
+        this.checkedCount = this.checkGoods.length
+      } else {
+        this.checkGoods = []
+        this.checkedCount = 0
+        this.amount = 0
+      }
+    },
+    getCart () {
+      this.$axios.get('/cart/getCart').then(res => {
+        if (res.status === 200) {
+          const url = 'http://localhost:5129/'
+          res.data = res.data.map((item, index) => {
+            item.img_url = url + item.img_url
+            return item
+          })
+          this.cartList = res.data
+          this.checkbox()
+        } else {
+          this.$message.error(res.msg)
+        }
+      }).catch(err => {
+        this.$message.error(err)
+      })
+    },
     chooseAll () {
       if (this.checkAll) {
         this.checkGoods.length = 0
         for (let i = 0; i < this.cartList.length; i++) {
-          this.checkGoods.push(this.cartList[i].id)
+          this.checkGoods.push(this.cartList[i].item_id)
         }
         this.checkedCount = this.checkGoods.length
       } else {
@@ -150,7 +167,7 @@ export default {
       const goodslist = this.cartList
       for (let i = 0, j = 0; i < chosedlist.length; i++) {
         while (j < goodslist.length) {
-          if (chosedlist[i] === goodslist[j].id) {
+          if (chosedlist[i] === goodslist[j].item_id) {
             goodslist.splice(j, 1)
             j = 0; break
           } else {
@@ -166,7 +183,7 @@ export default {
       const goodslist = this.cartList
       const chosedlist = this.checkGoods
       const index = goodslist.findIndex(function (val) {
-        return val.id === id
+        return val.item_id === id
       })
       if (index !== -1) {
         this.cartList.splice(index, 1)
@@ -194,8 +211,8 @@ export default {
       let sum = 0
       for (let i = 0; i < this.checkGoods.length; i++) {
         for (let j = 0; j < this.cartList.length; j++) {
-          if (this.checkGoods[i] === this.cartList[j].id) {
-            sum += this.cartList[j].price * this.cartList[j].num
+          if (this.checkGoods[i] === this.cartList[j].item_id) {
+            sum += this.cartList[j].price * this.cartList[j].quantity
           }
         }
       }

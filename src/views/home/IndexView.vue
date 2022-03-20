@@ -43,17 +43,7 @@ export default {
       this.destinationID = id
     },
     searchGoods (key) {
-      // axios请求
-      // this.$axios.get('/search', { query: { key: key } })
-      //   .then(res => {
-      //     if (res.status === 200) {
-      //
-      //     } else {
-      //       this.$message.error(res.msg)
-      //     }
-      //   }).catch(err => {
-      //     this.$message.error(err)
-      //   })
+      this.$router.push({ name: 'list_item', query: { key: key } })
     }
   },
   components: {

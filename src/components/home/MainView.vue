@@ -27,7 +27,7 @@
             </div>
             <div class="slide-list">
               <div class="slide-wrapper">
-                <router-link v-for="item in miaoshaList" :key="item.index"
+                <router-link v-for="(item,index) in miaoshaList" :key="index"
                              to="/seckill" target="_blank" class="seckill-item-link" >
                   <div class="seckill-item">
                     <div class="seckill-item-img">
@@ -112,13 +112,13 @@
                   <i class="el-icon-arrow-right"></i> </el-button>
               </div></a>
           </div>
-          <div class="nice-nav" v-for="i in [0,1,2,3]" :key="i">
-            <a href="javascript:void(0)" @click="toItem(niceList[i].ID)" class="nice-item-link">
+          <div class="nice-nav" v-for="(item,index) in niceList1" :key="index">
+            <a href="javascript:void(0)" @click="toItem(item.ID)" class="nice-item-link">
               <div class="nice-item">
                 <div class="nice-item-img">
-                  <el-image style="padding: 0 5%" :src="niceList[i].img_url" :alt="niceList[i].title" fit="contain" lazy></el-image></div>
-                <p class="nice-item-name">{{ niceList[i].title }}</p>
-                <div class="nice-item-price">￥{{ niceList[i].price }}</div>
+                  <el-image style="padding: 0 5%" :src="item.img_url" :alt="item.title" fit="contain" lazy></el-image></div>
+                <p class="nice-item-name">{{ item.title }}</p>
+                <div class="nice-item-price">￥{{ item.m_price || item.price }}</div>
               </div>
             </a>
           </div>
@@ -132,13 +132,13 @@
                   <i class="el-icon-arrow-right"></i> </el-button>
               </div></a>
           </div>
-          <div class="nice-nav" v-for="i in [4,5,6,7]" :key="i">
-            <a href="javascript:void(0)" @click="toItem(niceList[i].ID)" class="nice-item-link">
+          <div class="nice-nav" v-for="(item,index) in niceList2" :key="index">
+            <a href="javascript:void(0)" @click="toItem(item.ID)" class="nice-item-link">
               <div class="nice-item">
                 <div class="nice-item-img">
-                  <el-image style="padding: 0 5%" :src="niceList[i].img_url" :alt="niceList[i].title" fit="contain" lazy></el-image></div>
-                <p class="nice-item-name">{{ niceList[i].title }}</p>
-                <div class="nice-item-price">￥{{ niceList[i].price }}</div>
+                  <el-image style="padding: 0 5%" :src="item.img_url" :alt="item.title" fit="contain" lazy></el-image></div>
+                <p class="nice-item-name">{{ item.title }}</p>
+                <div class="nice-item-price">￥{{ item.m_price || item.price }}</div>
               </div>
             </a>
           </div>
@@ -171,6 +171,8 @@
 </template>
 
 <script>
+import { SERVER_HOST } from '@/plugins/config'
+
 export default {
   props: ['dID'],
   data () {
@@ -178,35 +180,25 @@ export default {
       destinationID: this.dID,
       isClick: false,
       carousel: [],
-      miaoshaList: [
-        { index: 1, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item01.png'), href: '/' },
-        { index: 2, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item02.png'), href: '/' },
-        { index: 3, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item03.png'), href: '/' },
-        { index: 4, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item04.png'), href: '/' },
-        { index: 5, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item05.png'), href: '/' },
-        { index: 6, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item06.png'), href: '/' },
-        { index: 7, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item07.png'), href: '/' },
-        { index: 8, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item08.png'), href: '/' },
-        { index: 9, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item09.png'), href: '/' }
-      ],
+      miaoshaList: [],
       activeName: 'first',
       activeIndex: 0,
       offerList: [
         {
           name: 'first',
           label: '精选',
-          imgMain: { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item01.png'), href: '/' },
+          imgMain: { title: '新款带尖头小牛皮女鞋', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item01.png'), href: '/' },
           imgList: [
-            { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item02.png'), href: '/' },
-            { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item03.png'), href: '/' },
-            { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item04.png'), href: '/' },
-            { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item05.png'), href: '/' }
+            { title: '新款推荐三色腮红FITME', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item02.png'), href: '/' },
+            { title: '丝绒豆沙红口红套装', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item03.png'), href: '/' },
+            { title: '雾光控油持久隔离霜', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item04.png'), href: '/' },
+            { title: '石英白金边手表热卖', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item05.png'), href: '/' }
           ]
         },
         {
           name: 'second',
           label: '热销',
-          imgMain: { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item06.png'), href: '/' },
+          imgMain: { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/recommond/0270d9dc3901a53a6257ade450b5762d.png'), href: '/' },
           imgList: [
             { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item07.png'), href: '/' },
             { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item08.png'), href: '/' },
@@ -217,7 +209,7 @@ export default {
         {
           name: 'third',
           label: '新品',
-          imgMain: { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item11.png'), href: '/' },
+          imgMain: { title: '美宝莲多色眼影', price: '51.29', m_price: '16.40', img_url: require('@/assets/img/seckill/seckill-item11.png'), href: '/' },
           imgList: [
             { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item01.png'), href: '/' },
             { title: '世上本无事，庸人自扰之', price: '51.29', m_price: '16.40', sold_num: '99', img_url: require('@/assets/img/seckill/seckill-item02.png'), href: '/' },
@@ -227,31 +219,16 @@ export default {
         }
       ],
       brandList: [],
-      niceList: [
-        {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }, {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }, {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }, {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }, {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }, {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }, {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }, {
-          img_url: 'http://localhost:5129/upload/cfdab3c8d25418b0a1479a3b01678e9a.jpg'
-        }],
+      niceList1: [],
+      niceList2: [],
       recommondList: []
     }
   },
   mounted () {
     this.getCarousel()
-    this.getBrand()
+    this.getMiaosha()
     this.getNice()
+    this.getBrand()
     this.getRecommond()
   },
   watch: {
@@ -293,6 +270,22 @@ export default {
         this.$message.error(err)
       })
     },
+    getMiaosha () {
+      this.$axios.get('/item/getMiaosha').then(res => {
+        if (res.status === 200) {
+          const url = 'http://localhost:5129/'
+          res.data = res.data.map((item, index) => {
+            item.img_url = url + item.img_url
+            return item
+          })
+          this.miaoshaList = res.data
+        } else {
+          this.$message.error(res.msg)
+        }
+      }).catch(err => {
+        this.$message.error(err)
+      })
+    },
     getBrand () {
       this.$axios.get('/item/getBrand').then(res => {
         if (res.status === 200) {
@@ -313,12 +306,18 @@ export default {
     getNice () {
       this.$axios.get('/item/getNice').then(res => {
         if (res.status === 200) {
-          const url = 'http://localhost:5129/'
-          res.data = res.data.map((item) => {
+          const url = SERVER_HOST
+          // const url = 'http://localhost:5129/'
+          res.data[0] = res.data[0].map((item) => {
             item.img_url = url + item.img_url
             return item
           })
-          this.niceList = res.data
+          res.data[1] = res.data[1].map((val) => {
+            val.img_url = url + val.img_url
+            return val
+          })
+          this.niceList1 = res.data[0]
+          this.niceList2 = res.data[1]
         } else {
           this.$message.error(res.msg)
         }

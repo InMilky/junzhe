@@ -13,51 +13,61 @@
         </div>
         <div class="sbody">
           <el-card :body-style="{ padding: '0px' }" shadow="hover" class="card-item"
-                   v-for="item in miaoshaList" :key="item.ID" @click.native="toGoodsInfo(item.ID)">
+                   v-for="item in miaoshaList" :key="item.item_id" @click.native="toGoodsInfo(item.item_id)">
             <div class="s-image">
-              <el-image style="padding: 0 14%" :src="item.imgurl" fit="contain" lazy></el-image></div>
+              <el-image style="padding: 0 14%" :src="item.img_url" fit="contain" lazy></el-image></div>
             <div class="s-txt">
               <span>{{ item.title }}</span>
               <div class="bottom">
-                <div class="price">￥<span class="mprice">{{ item.miaosha_price }}</span>
+                <div class="price">￥<span class="mprice">{{ item.m_price }}</span>
                   <span class="oprice">￥{{item.price}}</span></div>
-                <span class="percent">已售{{parseInt(item.soldnum/item.amount*100)}}%</span>
-                <el-progress :percentage="parseInt(item.soldnum/item.amount*100)" class="my-progress"
+                <span class="percent">已售{{parseInt(item.sold_num/item.amount*100)}}%</span>
+                <el-progress :percentage="parseInt(item.sold_num/item.amount*100)" class="my-progress"
                              color="#e1251b" :stroke-width="8" :show-text="false"></el-progress>
               </div>
-              <el-button type="text" class="button" @click="toGoodsInfo(item.ID)">立即抢购</el-button>
+              <el-button type="text" class="button" @click="toGoodsInfo(item.item_id)">立即抢购</el-button>
             </div>
           </el-card>
         </div>
       </div>
     </el-col></el-row>
-
     <el-divider> END </el-divider>
   </div>
 </template>
 
 <script>
 import SeckillTop from '@/components/home/seckill/SeckillTop'
+const SERVER_HOST = require('@/plugins/config')
 
 export default {
   data () {
     return {
-      miaoshaList: [
-        { ID: 1, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 100, soldnum: 51, imgurl: require('@/assets/img/seckill/seckill-item01.png'), href: '/' },
-        { ID: 2, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 99, soldnum: 51, imgurl: require('@/assets/img/seckill/seckill-item02.png'), href: '/' },
-        { ID: 3, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 51, soldnum: 51, imgurl: require('@/assets/img/seckill/seckill-item03.png'), href: '/' },
-        { ID: 4, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 29, soldnum: 11, imgurl: require('@/assets/img/seckill/seckill-item04.png'), href: '/' },
-        { ID: 5, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 100, soldnum: 11, imgurl: require('@/assets/img/seckill/seckill-item05.png'), href: '/' },
-        { ID: 6, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 100, soldnum: 29, imgurl: require('@/assets/img/seckill/seckill-item06.png'), href: '/' },
-        { ID: 7, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 100, soldnum: 16, imgurl: require('@/assets/img/seckill/seckill-item07.png'), href: '/' },
-        { ID: 8, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 100, soldnum: 40, imgurl: require('@/assets/img/seckill/seckill-item08.png'), href: '/' },
-        { ID: 9, title: '山河令开播一周年快乐四季花常在九洲事尽知', price: '51.29', miaosha_price: '16.40', amount: 100, soldnum: 51, imgurl: require('@/assets/img/seckill/seckill-item09.png'), href: '/' }
-      ]
+      miaoshaList: []
     }
+  },
+  mounted () {
+    this.getMiaosha()
   },
   methods: {
     toGoodsInfo (id) {
       return this.$router.push({ name: 'seckill_item', params: { ID: id } })
+    },
+    getMiaosha () {
+      this.$axios.get('/miaosha/getSeckill').then(res => {
+        if (res.status === 200) {
+          // const url = 'http://localhost:5129/'
+          const url = SERVER_HOST
+          res.data = res.data.map((item, index) => {
+            item.img_url = url + item.img_url
+            return item
+          })
+          this.miaoshaList = res.data
+        } else {
+          this.$message.error(res.msg)
+        }
+      }).catch(err => {
+        this.$message.error(err)
+      })
     }
   },
   components: {

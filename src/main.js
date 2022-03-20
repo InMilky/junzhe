@@ -26,7 +26,10 @@ axios.interceptors.response.use(
     return response.data
   },
   function (error) {
-    Promise.reject(error.data.msg)
+    // if (error.response.status === 401) {
+    //   localStorage.removeItem('jwt_token')
+    // }
+    return Promise.reject(error.data.msg)
   }
 )
 

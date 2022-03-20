@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="10" :push="5">
             <div class="nav">
-              <el-input type="text" placeholder="搜索" v-model="searchKey">
+              <el-input type="text" placeholder="搜索" :wq="keyword" v-model="searchKey">
                 <el-button slot="append" icon="el-icon-search" @click="searchGoods"></el-button>
               </el-input>
             </div>
@@ -27,15 +27,31 @@
 </template>
 <script>
 export default {
+  props: ['keyword'],
   data () {
     return {
-      searchKey: ''
+      searchKey: this.keyword
     }
   },
+  mounted () {
+
+  },
   methods: {
-    searchGoods () {},
+    searchGoods () {
+      this.$emit('search', this.searchKey)
+    },
     toCart () {
       this.$router.push('/cart')
+    }
+  },
+  computed: {
+    wq: function () {
+      return this.searchKey
+    }
+  },
+  watch: {
+    keyword (newV, oldV) { // watch监听props里status的变化，然后执行操作
+      this.searchKey = newV
     }
   }
 }

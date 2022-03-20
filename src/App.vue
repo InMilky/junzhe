@@ -19,13 +19,10 @@ export default {
       relogin: false
     }
   },
-  created () {
-    this.getUserInfo()
-  },
   mounted () {
     this.getUserInfo()
     const url = window.location.href
-    const path = url.split('#')[1]
+    const path = url.split('www.jz.com')[1]
     if (path.startsWith('/login') || path.startsWith('/signup') || path.startsWith('/admin')) {
       this.relogin = true
     } else {
