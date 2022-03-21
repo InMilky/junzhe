@@ -617,8 +617,8 @@ p{
     transition: background .2s linear,opacity .2s linear!important;
 }
 .re-img .el-img{
-    width: 100%;
-    height: auto;
+    max-width: 100%;
+    max-height: 100%;
     display: block;
     transition: transform .2s linear,opacity .2s linear!important;
 }

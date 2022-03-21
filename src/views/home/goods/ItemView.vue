@@ -24,7 +24,7 @@
                 <div class="bottom-img">
                   <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
                     <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
-                    <el-col :span="5"><div class="b-img active"><img :src="item.img_url" alt="main-img"/></div></el-col>
+                    <el-col :span="5"><div class="b-img active"><img :src="item.img_url" :alt="item.img_url"/></div></el-col>
                     <el-col :span="5"><div class="b-img"><img :src="item.img_url" alt="main-img"/></div></el-col>
                     <el-col :span="5"><div class="b-img"><img :src="item.img_url" alt="main-img"/></div></el-col>
                     <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-right"></i></el-col>
@@ -126,6 +126,7 @@
 <script>
 
 import SeckillTop from '@/components/home/seckill/SeckillTop'
+import { SERVER_HOST } from '@/plugins/config'
 export default {
   data () {
     return {
@@ -165,9 +166,14 @@ export default {
             if (item.m_price !== null) {
               item.m_price = item.m_price.toFixed(2)
             }
+            item.img_url = SERVER_HOST + item.img_url
             // 若存在detail
             if (item.detail) {
               item.flag = true
+              item.detail.brief_img = item.detail.brief_img.map((temp) => {
+                temp = SERVER_HOST + temp
+                return temp
+              })
               item.brief_img = item.detail.brief_img
               // 调整顺序
               const object = [item.detail.feature, item.detail.size, item.detail.details]
@@ -282,7 +288,10 @@ export default {
   border: 2px solid #e1251b;
 }
 .b-img>img{
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   display: block;
 }
 .rl-icon{

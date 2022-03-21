@@ -37,6 +37,7 @@
 
 <script>
 import SeckillTop from '@/components/home/seckill/SeckillTop'
+import { SERVER_HOST } from '@/plugins/config'
 
 export default {
   data () {
@@ -54,6 +55,10 @@ export default {
     getMiaosha () {
       this.$axios.get('/miaosha/getSeckill').then(res => {
         if (res.status === 200) {
+          res.data = res.data.map((item) => {
+            item.img_url = SERVER_HOST + item.img_url
+            return item
+          })
           this.miaoshaList = res.data
         } else {
           this.$message.error(res.msg)

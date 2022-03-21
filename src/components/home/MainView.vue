@@ -171,7 +171,8 @@
 </template>
 
 <script>
-// import { SERVER_HOST } from '@/plugins/config'
+
+import { SERVER_HOST } from '@/plugins/config'
 
 export default {
   props: ['dID'],
@@ -257,6 +258,10 @@ export default {
     getCarousel () {
       this.$axios.get('/item/getCarousel').then(res => {
         if (res.status === 200) {
+          res.data = res.data.map((item) => {
+            item.img_url = SERVER_HOST + item.img_url
+            return item
+          })
           this.carousel = res.data
         } else {
           this.$message.error(res.msg)
@@ -268,6 +273,10 @@ export default {
     getMiaosha () {
       this.$axios.get('/item/getMiaosha').then(res => {
         if (res.status === 200) {
+          res.data = res.data.map((item) => {
+            item.img_url = SERVER_HOST + item.img_url
+            return item
+          })
           this.miaoshaList = res.data
         } else {
           this.$message.error(res.msg)
@@ -281,6 +290,7 @@ export default {
         if (res.status === 200) {
           res.data = res.data.map((item, index) => {
             item.name = item.name + '品牌闪购'
+            item.logo_url = SERVER_HOST + item.logo_url
             return item
           })
           this.brandList = res.data
@@ -294,6 +304,14 @@ export default {
     getNice () {
       this.$axios.get('/item/getNice').then(res => {
         if (res.status === 200) {
+          res.data[0] = res.data[0].map((item) => {
+            item.img_url = SERVER_HOST + item.img_url
+            return item
+          })
+          res.data[1] = res.data[1].map((item) => {
+            item.img_url = SERVER_HOST + item.img_url
+            return item
+          })
           this.niceList1 = res.data[0]
           this.niceList2 = res.data[1]
         } else {
@@ -306,6 +324,10 @@ export default {
     getRecommond () {
       this.$axios.get('/item/getRecommond').then(res => {
         if (res.status === 200) {
+          res.data = res.data.map((item) => {
+            item.img_url = SERVER_HOST + item.img_url
+            return item
+          })
           this.recommondList = res.data
         } else {
           this.$message.error(res.msg)
