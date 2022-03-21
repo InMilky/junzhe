@@ -22,7 +22,7 @@ export default {
   mounted () {
     this.getUserInfo()
     const url = window.location.href
-    const path = url.split('www.jz.com')[1]
+    const path = url.split('www.jz.com')[1] || url.split('localhost')[1]
     if (path.startsWith('/login') || path.startsWith('/signup') || path.startsWith('/admin')) {
       this.relogin = true
     } else {
@@ -78,22 +78,6 @@ export default {
           })
         }
       })
-      // this.$confirm('你已退出登陆或者登录已失效', '提示', {
-      //   confirmButtonText: '前往登录',
-      //   cancelButtonText: '取消',
-      //   cancelButtonClass: 'cancelbtn',
-      //   confirmButtonClass: 'confirmbtn',
-      //   type: 'warning'
-      // }).then(() => {
-      //   this.$router.push({
-      //     path: '/login',
-      //     query: {
-      //       redirectURL: this.$route.path
-      //     }
-      //   })
-      // }).catch(() => {
-      //   this.$router.replace('/index')
-      // })
     }
   },
   components: {

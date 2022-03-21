@@ -6,8 +6,8 @@
         <el-row type="flex" justify="center" style="width: 100%">
           <el-col :span="20" style="display:flex;overflow: hidden;justify-content: space-between">
             <el-breadcrumb separator-class="el-icon-arrow-right" class="left-breadrum">
-              <el-breadcrumb-item to="/">{{item[0].brand}}</el-breadcrumb-item>
-              <el-breadcrumb-item>{{item[0].title}}</el-breadcrumb-item>
+              <el-breadcrumb-item to="/">{{item.brand}}</el-breadcrumb-item>
+              <el-breadcrumb-item>{{item.title}}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="right-action">
               <el-link :underline="false"><i class="el-icon-service"></i>联系客服</el-link>
@@ -20,32 +20,32 @@
           <div class="main-info">
             <el-row type="flex" style="width: 100%">
               <el-col :span="9" class="p-img">
-                <div class="main-img"><img :src="item[0].img_url" alt="main-img"/></div>
+                <div class="main-img"><img :src="item.img_url" alt="main-img"/></div>
                 <div class="bottom-img">
                   <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
                     <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
-                    <el-col :span="5"><div class="b-img active"><img :src="item[0].img_url" alt="main-img"/></div></el-col>
-                    <el-col :span="5"><div class="b-img"><img :src="item[0].img_url" alt="main-img"/></div></el-col>
-                    <el-col :span="5"><div class="b-img"><img :src="item[0].img_url" alt="main-img"/></div></el-col>
+                    <el-col :span="5"><div class="b-img active"><img :src="item.img_url" alt="main-img"/></div></el-col>
+                    <el-col :span="5"><div class="b-img"><img :src="item.img_url" alt="main-img"/></div></el-col>
+                    <el-col :span="5"><div class="b-img"><img :src="item.img_url" alt="main-img"/></div></el-col>
                     <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-right"></i></el-col>
                   </el-row>
                 </div>
               </el-col>
               <el-col :span="14" :push="1" class="p-info">
-                <div class="p-title">{{item[0].title}}</div>
+                <div class="p-title">{{item.title}}</div>
                 <div class="p-price">
                   价格：<span style="color: #e1251b">￥</span>
-                  <span class="mprice">{{item[0].m_price || item[0].price}}</span>
-                  <span class="oprice" v-if="item[0].m_price">￥{{item[0].price}}</span>
+                  <span class="mprice">{{item.m_price || item.price}}</span>
+                  <span class="oprice" v-if="item.m_price">￥{{item.price}}</span>
                 </div>
                 <div class="p-tip">服 务：支持极速审核、运费险、闪电退款，包邮免运费（限中国内地）</div>
                 <div class="p-description">
-                  描述：<span>{{item[0].description}}</span>
+                  描述：<span>{{item.description}}</span>
                 </div>
                 <div class="p-sth">
-                  <div class="p-sth-item"><p>月销量</p><p class="count">{{item[0].sold_num}}+</p></div>
+                  <div class="p-sth-item"><p>月销量</p><p class="count">{{item.sold_num}}+</p></div>
                   <div class="p-sth-item"><p>累计评论</p><p class="count">1640+</p></div>
-                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ item[0].amount || 1000 }}+</p></div>
+                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ item.amount || 1000 }}+</p></div>
                 </div>
                 <div class="addnum">
                   数量：<el-input-number v-model="num" :min="1" :max="9999"></el-input-number>
@@ -61,7 +61,7 @@
           </div>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center" v-if="item[0].flag" style="width: 100%;margin-top: 50px">
+      <el-row type="flex" justify="center" v-if="item.flag" style="width: 100%;margin-top: 50px">
         <el-col :span="20">
           <div class="info-title">
             <span class="active">商品详情</span>
@@ -74,11 +74,11 @@
           <el-backtop :visibility-height="800" :right="20"></el-backtop>
           <div class="desc">
             <el-descriptions title="产品信息" class="desc-info">
-              <el-descriptions-item v-for="(item,key) in item[0].detail[0]" :key="key"
+              <el-descriptions-item v-for="(item,key) in item.detail" :key="key"
                        :label="entocn[key]">{{item}}</el-descriptions-item>
             </el-descriptions>
           </div>
-          <div class="info-img" v-for="(img,index) in item[0].brief_img" :key="index">
+          <div class="info-img" v-for="(img,index) in item.brief_img" :key="index">
             <img :src="img" :alt="index" />
           </div>
           <div class="evaluate">
@@ -106,7 +106,7 @@
           </div>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center" v-if="item[0].flag" :class="{fixed:isFixed}"
+      <el-row type="flex" justify="center" v-if="item.flag" :class="{fixed:isFixed}"
               style="width: 100%;background-color: #FFFFFF">
         <el-col :span="20">
           <div class="info-title">
@@ -126,7 +126,6 @@
 <script>
 
 import SeckillTop from '@/components/home/seckill/SeckillTop'
-const SERVER_HOST = require('@/plugins/config')
 export default {
   data () {
     return {
@@ -143,7 +142,7 @@ export default {
         size: '尺寸大小',
         details: '详情描述'
       },
-      item: [{ brand: '首页' }],
+      item: { brand: '首页' },
       itemID: ''
     }
   },
@@ -160,35 +159,27 @@ export default {
       this.$axios.post('/item/getItem', { ID: ID })
         .then(res => {
           if (res.status === 200) {
-            // const url = 'http://localhost:5129/'
-            const url = SERVER_HOST
-            res.data = res.data.map((item) => {
-              item.flag = false
-              item.img_url = url + item.img_url
-              item.price = item.price.toFixed(2)
-              if (item.m_price !== null) {
-                item.m_price = item.m_price.toFixed(2)
-              }
-              // 若存在detail
-              if (item.detail) {
-                item.flag = true
-                item.detail[0].brief_img = item.detail[0].brief_img.map((val) => {
-                  val = url + val
-                  return val
-                })
-                item.brief_img = item.detail[0].brief_img
-                // 调整顺序
-                const object = [item.detail[0].size, item.detail[0].details]
-                delete item.detail[0].size
-                delete item.detail[0].details
-                delete item.detail[0].brief_img
-                item.detail[0].color = item.color
-                item.detail[0].size = object[0]
-                item.detail[0].details = object[1]
-              }
-              console.log(item)
-              return item
-            })
+            const item = res.data
+            item.flag = false
+            item.price = item.price.toFixed(2)
+            if (item.m_price !== null) {
+              item.m_price = item.m_price.toFixed(2)
+            }
+            // 若存在detail
+            if (item.detail) {
+              item.flag = true
+              item.brief_img = item.detail.brief_img
+              // 调整顺序
+              const object = [item.detail.feature, item.detail.size, item.detail.details]
+              delete item.detail.feature
+              delete item.detail.size
+              delete item.detail.details
+              delete item.detail.brief_img
+              item.detail.color = item.color
+              item.detail.size = object[1]
+              item.detail.feature = object[0]
+              item.detail.details = object[2]
+            }
             this.item = res.data
           } else {
             this.$message.error(res.msg)

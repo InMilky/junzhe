@@ -137,7 +137,6 @@
 
 <script>
 import SeckillTop from '@/components/home/seckill/SeckillTop'
-const SERVER_HOST = require('@/plugins/config')
 export default {
   data () {
     return {
@@ -210,18 +209,11 @@ export default {
       this.$axios.post('/miaosha/getItem', { ID: ID })
         .then(res => {
           if (res.status === 200) {
-            const url = SERVER_HOST
-            // const url = 'http://localhost:5129/'
             const item = res.data
             item.flag = false
-            item.img_url = url + item.img_url
             // 若存在detail
             if (item.detail) {
               item.flag = true
-              item.detail.brief_img = item.detail.brief_img.map((val) => {
-                val = url + val
-                return val
-              })
               item.brief_img = item.detail.brief_img
               // 调整顺序
               const object = [item.detail.feature, item.detail.size, item.detail.details]

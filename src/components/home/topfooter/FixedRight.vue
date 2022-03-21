@@ -37,7 +37,7 @@ export default {
 
 <style scoped>
 .right-aside{
-  width: 64px;
+  width: 60px;
   height: 72%;
   position: fixed;
   right: 1%;
@@ -74,7 +74,7 @@ export default {
 .elevator-link:after {
   position: absolute;
   display: inline-block;
-  width: 64px;
+  width: 60px;
   height: 1px;
   left: 0;
   bottom: 0;

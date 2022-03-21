@@ -148,7 +148,7 @@ export default {
           num: '1',
           totalPrice: '249.00',
           paystate: '待发货',
-          img_url: 'http://localhost:5129/upload/dd3027f1c63c05160cd2dd705a380d2c.png',
+          img_url: 'http://localhost:51129/server/upload/dd3027f1c63c05160cd2dd705a380d2c.png',
           order_time: '2022-03-17 17:11:29'
         }],
       currentPage: 1

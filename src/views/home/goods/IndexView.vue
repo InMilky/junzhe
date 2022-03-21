@@ -52,7 +52,6 @@
 <script>
 import SeckillTop from '@/components/home/seckill/SeckillTop'
 import RecommendTemp from '@/components/home/recommand/RecommendTemp'
-const SERVER_HOST = require('@/plugins/config')
 export default {
   data () {
     return {
@@ -72,12 +71,6 @@ export default {
       this.$axios.get('/item/search', { params: { key: key } })
         .then(res => {
           if (res.status === 200) {
-            // const url = 'http://localhost:5129/'
-            const url = SERVER_HOST
-            res.data = res.data.map((val) => {
-              val.img_url = url + val.img_url
-              return val
-            })
             this.item = res.data
             this.emptyMsg = ''
           } else {

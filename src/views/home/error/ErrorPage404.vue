@@ -19,11 +19,6 @@ export default {
       errMsg: ''
     }
   },
-  mounted () {
-    // this.$axios.get('/user/getuser').then(res => {
-    //   this.errMsg = res
-    // })
-  },
   methods: {
     toIndex () {
       return this.$router.push({ name: 'index' })

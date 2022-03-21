@@ -61,7 +61,6 @@
 
 import CartHeader from '@/components/home/topfooter/CartHeader'
 import RecommendTemp from '@/components/home/recommand/RecommendTemp'
-import { SERVER_HOST } from '@/plugins/config'
 
 export default {
   data () {
@@ -103,12 +102,6 @@ export default {
       this.$axios.get('/item/search', { params: { key: key } })
         .then(res => {
           if (res.status === 200) {
-            // const url = 'http://localhost:5129/'
-            const url = SERVER_HOST
-            res.data = res.data.map((val) => {
-              val.img_url = url + val.img_url
-              return val
-            })
             this.item = res.data
             this.emptyMsg = ''
           } else {
@@ -135,11 +128,6 @@ export default {
     getCart () {
       this.$axios.get('/cart/getCart').then(res => {
         if (res.status === 200) {
-          const url = 'http://localhost:5129/'
-          res.data = res.data.map((item, index) => {
-            item.img_url = url + item.img_url
-            return item
-          })
           this.cartList = res.data
           this.checkbox()
         } else {

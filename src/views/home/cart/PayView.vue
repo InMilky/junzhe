@@ -79,7 +79,7 @@ export default {
           description: '哑光#999',
           price: '249.00',
           num: '1',
-          img_url: 'http://localhost:5129/upload/dd3027f1c63c05160cd2dd705a380d2c.png'
+          img_url: 'http://localhost:51129/server/upload/dd3027f1c63c05160cd2dd705a380d2c.png'
         }
       ],
       receiver: {
@@ -97,7 +97,7 @@ export default {
   methods: {
     toPay () {
       // :to="{ path:'/pay',query:{'cartIds':0}}"
-      this.$router.push({ name: 'payitem', query: { orderID: 202202222146, receiverID: 1 } })
+      this.$router.push({ name: 'payitem', query: { orderID: '202202222146', receiverID: 1 } })
     },
     activeChange (val) {
       if (val === 0) {
