@@ -2,7 +2,12 @@
   <div id="app">
     <TopNav :isLogin="isLogin" :username="username"  @logout="logout"
             v-if="!relogin"></TopNav>
-    <router-view />
+<!--  缓存激活的组件状态  -->
+    <transition>
+      <keep-alive>
+        <router-view />
+      </keep-alive>
+    </transition>
     <FooterView v-if="!relogin"></FooterView>
   </div>
 </template>

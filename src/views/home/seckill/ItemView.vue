@@ -20,7 +20,7 @@
           <div class="main-info">
           <el-row type="flex" style="width: 100%">
             <el-col :span="9" class="p-img">
-              <div class="main-img"><img :src="info.img_url|service" alt="main-img"/></div>
+              <div class="main-img"><img :src="info.img_url" alt="main-img"/></div>
               <div class="bottom-img">
                 <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
                   <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
@@ -35,8 +35,9 @@
               <div class="p-title">{{info.title}}</div>
               <div class="p-price">
                 <div class="p-header">
-                  <div><i class="el-icon-alarm-clock" style="font-size: 21px;padding-right: 10px"></i>
-                    <span>橘栀秒杀活动</span></div>
+                  <div>
+                    <i class="el-icon-alarm-clock" style="font-size: 21px;padding-right: 5px;position: relative;top: 2px"></i>
+                    <span style="display: inline-block">橘栀秒杀活动</span></div>
                   <div>距离结束
                     <span class="timer-unit">{{time.hour|addZero}}</span> :
                     <span class="timer-unit">{{time.minute|addZero}}</span> :
@@ -65,7 +66,7 @@
                 数量：<el-input-number v-model="num" :min="1" :max="1"></el-input-number>
               </div>
               <div class="btn-group">
-                <button type="button" class="paybtn" @click="toOrder" :disabled="disabled">立即购买</button>
+                <button type="button" class="paybtn" @click="toOrder" :disabled="disabled">{{btn_value}}</button>
                 <button type="button" class="cartbtn" @click="toCart">
                   <i class="el-icon-shopping-cart-2" style="font-size: 20px;padding-right: 5px"></i>
                   加入购物车</button>
@@ -143,6 +144,7 @@ export default {
     return {
       num: 1,
       ID: '',
+      btn_value: '敬请期待',
       time: {
         interval: '',
         timeGap: 0,
@@ -233,7 +235,6 @@ export default {
               item.detail.details = object[2]
             }
             this.info = res.data
-            console.log(this.info)
           } else {
             this.$message.error(res.msg)
           }
@@ -601,5 +602,9 @@ export default {
 }
 button[disabled]{
   cursor: not-allowed;
+  border: 2px solid #dddddd;
+  font-size: 16px;
+  background: #eeeeee;
+  color: #a9a9a9;
 }
 </style>

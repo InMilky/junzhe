@@ -264,13 +264,15 @@ export default {
 .main-img{
   width: 100%;
   height: 80%;
+  display: flex;
   overflow: hidden;
 }
 .main-img>img{
   width: auto;
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
   display: block;
-  margin: 0 auto;
+  margin: auto;
 }
 .bottom-img{
   width: 100%;

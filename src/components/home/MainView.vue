@@ -345,8 +345,6 @@ export default {
         this.$router.push({ name: 'default_item', params: { ID: itemID } })
       }
     }
-  },
-  components: {
   }
 }
 </script>

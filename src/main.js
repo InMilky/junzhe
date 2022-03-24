@@ -1,8 +1,9 @@
 import Vue from 'vue'
-// import './plugins/axios'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import App from './App'
 
 // main.js中引入axios
@@ -12,6 +13,7 @@ Vue.prototype.$axios = axios
 axios.defaults.baseURL = '/server'
 axios.interceptors.request.use(
   function (config) {
+    NProgress.start() // 添加进度条
     if (localStorage.jwt_token) {
       config.headers.Authorization = localStorage.jwt_token
     }
@@ -23,12 +25,14 @@ axios.interceptors.request.use(
 )
 axios.interceptors.response.use(
   function (response) {
+    NProgress.done()
     return response.data
   },
   function (error) {
     // if (error.response.status === 401) {
     //   localStorage.removeItem('jwt_token')
     // }
+    NProgress.done()
     return Promise.reject(error.data.msg)
   }
 )
