@@ -26,13 +26,13 @@
                   <div>{{ list.title }}</div>
                   <div style="color: #999999">{{list.color}}</div>
                 </div>
-                <div class="goods-price" style="font-weight: 700;">￥{{ list.price|dot }}</div>
+                <div class="goods-price" style="font-weight: 700;">￥{{ list.price }}</div>
                 <div class="goods-num">
-                  <el-input-number v-model="list.quantity" :min="1" :max="9999" @change="numChange(list.item_id,list.quantity)" size="mini"></el-input-number>
+                  <el-input-number v-model="list.quantity" :min="1" :max="9999" @change="totalPrice" size="mini"></el-input-number>
                 </div>
-                <div class="goods-amount" style="color: #e1251b;font-weight: 700;">￥{{ list.price * list.quantity|dot }}</div>
+                <div class="goods-amount" style="color: #e1251b;font-weight: 700;">￥{{ list.price * list.quantity }}</div>
                 <div class="goods-action">
-                  <a href="javascript:void(0)" @click="delItem(list.item_id)">删除</a>
+                  <a href="javascrip:void(0)" @click="delItem(list.item_id)">删除</a>
                 </div>
               </div>
           </div>
@@ -68,9 +68,10 @@ export default {
     return {
       title: '购物车',
       keyword: '',
-      checkAll: false,
+      checkAll: true,
       checkedCount: 0,
       checkGoods: [],
+      amount: 0,
       cartList: []
     }
   },
@@ -78,10 +79,21 @@ export default {
     await this.getCart()
   },
   watch: {
-    // 单选checkbox 自动将checkbox中的value纳入数组
     checkGoods: function (e) {
+      this.amount = 0
       this.checkAll = this.checkGoods.length === this.cartList.length
-      this.checkedCount = e.length
+      this.checkedCount = this.checkGoods.length
+      if (e) {
+        for (let i = 0; i < e.length; i++) {
+          for (let j = 0; j < this.cartList.length; j++) {
+            if (e[i] === this.cartList[j].item_id) {
+              this.amount += this.cartList[j].price * this.cartList[j].num
+            }
+          }
+        }
+      } else {
+        this.amount = 0
+      }
     }
   },
   methods: {
@@ -105,16 +117,17 @@ export default {
           Promise.reject(err)
         })
     },
-    chooseAll () {
+    checkbox () {
       if (this.checkAll) {
         this.checkGoods.length = 0
-        this.cartList.forEach((item) => {
-          this.checkGoods.push(item.item_id)
-        })
+        for (let i = 0; i < this.cartList.length; i++) {
+          this.checkGoods.push(this.cartList[i].item_id)
+        }
         this.checkedCount = this.checkGoods.length
       } else {
         this.checkGoods = []
         this.checkedCount = 0
+        this.amount = 0
       }
     },
     getCart () {
@@ -125,9 +138,7 @@ export default {
             return item
           })
           this.cartList = res.data
-          // 默认全选
-          this.checkAll = true
-          this.chooseAll()
+          this.checkbox()
         } else {
           this.$message.error(res.msg)
         }
@@ -135,8 +146,16 @@ export default {
         this.$message.error(err)
       })
     },
-    numChange (itemID, num) { // 更新购物车商品数量
-      this.$axios.get('/cart/updateQuantity', { params: { item_id: itemID, num: num } })
+    chooseAll () {
+      if (this.checkAll) {
+        this.checkGoods.length = 0
+        for (let i = 0; i < this.cartList.length; i++) {
+          this.checkGoods.push(this.cartList[i].item_id)
+        }
+      } else {
+        this.checkGoods = []
+        this.amount = 0
+      }
     },
     delChosed () {
       this.$confirm('确定从购物车中移除选中的商品吗？', '', {
@@ -163,9 +182,7 @@ export default {
         this.cartList = goodslist
         this.checkGoods = []
         this.checkedCount = 0
-
-        console.log('id', chosedlist)
-        this.$axios.get('/cart/deleteCartItem', { params: { items_id: chosedlist } })
+        // this.$axios.get('/cart/deleteCartItem', { params: { item_id: id } })
       })
     },
     delItem (id) {
@@ -191,8 +208,7 @@ export default {
         if (index2 !== -1) {
           this.checkGoods.splice(index, 1)
         }
-        console.log('id', id)
-        this.$axios.get('/cart/deleteCartItem', { params: { items_id: [id] } })
+        this.$axios.get('/cart/deleteCartItem', { params: { item_id: id } })
       })
     },
     toOrder () {
@@ -209,13 +225,13 @@ export default {
   computed: {
     totalPrice () {
       let sum = 0
-      this.checkGoods.forEach(item => {
-        this.cartList.forEach(cartItem => {
-          if (item === cartItem.item_id) {
-            sum += cartItem.price * cartItem.quantity
+      for (let i = 0; i < this.checkGoods.length; i++) {
+        for (let j = 0; j < this.cartList.length; j++) {
+          if (this.checkGoods[i] === this.cartList[j].item_id) {
+            sum += this.cartList[j].price * this.cartList[j].quantity
           }
-        })
-      })
+        }
+      }
       return sum
     }
   },

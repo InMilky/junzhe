@@ -149,10 +149,10 @@ export default {
   },
   created () {
     this.itemID = this.$route.params.ID
+    this.getItem()
   },
   mounted () {
     window.addEventListener('scroll', this.getScrollTop)
-    this.getItem()
   },
   methods: {
     getItem () {
@@ -207,14 +207,31 @@ export default {
       // axios请求
     },
     toOrder () {
-      const ID = this.item[0].ID.toString()
+      const ID = this.item.ID.toString()
       const buyNum = this.num.toString()
-      this.$router.push({ name: 'seckill_item', params: { ID: ID, buy_num: buyNum } })
+      this.$router.push({ name: 'seckill_item', params: { ID: ID, buyNum: buyNum } })
     },
     toCart () {
-      const ID = this.item[0].ID.toString()
+      const ID = this.item.ID.toString()
       const buyNum = this.num.toString()
-      this.$router.push({ name: 'cart', params: { ID: ID, buy_num: buyNum } })
+      // 若没登陆先登陆-回到该页面，否则先插入或更新购物车再跳转到购物车页面
+      if (!localStorage.getItem('jwt_token')) {
+        this.$router.push({
+          path: '/login',
+          query: {
+            redirectURL: this.$route.fullPath
+          }
+        })
+      } else {
+        this.$axios.post('/cart/updateCart', { item_id: ID, buyNum: buyNum })
+          .then(res => {
+            if (res.status === 200) {
+              this.$router.push({ name: 'cart' })
+            }
+          }).catch(err => {
+            Promise.reject(err)
+          })
+      }
     }
   },
   components: {
