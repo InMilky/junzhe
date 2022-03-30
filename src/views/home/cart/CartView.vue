@@ -18,8 +18,8 @@
             <div class="goods-action">操作</div>
           </div>
           <div class="cart-tbody">
-              <div class="cart-item" v-for="list in cartList" :key="list.item_id">
-                <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.item_id" />
+              <div class="cart-item" v-for="list in cartList" :key="list.ID">
+                <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.ID" />
                 <div class="goods-img">
                   <img :src="list.img_url"/></div>
                 <div class="goods-info">
@@ -28,11 +28,11 @@
                 </div>
                 <div class="goods-price" style="font-weight: 700;">￥{{ list.price|dot }}</div>
                 <div class="goods-num">
-                  <el-input-number v-model="list.quantity" :min="1" :max="9999" @change="numChange(list.item_id,list.quantity)" size="mini"></el-input-number>
+                  <el-input-number v-model="list.quantity" :min="1" :max="9999" @change="numChange(list.ID,list.quantity)" size="mini"></el-input-number>
                 </div>
                 <div class="goods-amount" style="color: #e1251b;font-weight: 700;">￥{{ list.price * list.quantity|dot }}</div>
                 <div class="goods-action">
-                  <a href="javascript:void(0)" @click="delItem(list.item_id)">删除</a>
+                  <a href="javascript:void(0)" @click="delItem(list.ID)">删除</a>
                 </div>
               </div>
           </div>
@@ -68,13 +68,14 @@ export default {
     return {
       title: '购物车',
       keyword: '',
+      account: '',
       checkAll: false,
       checkedCount: 0,
       checkGoods: [],
       cartList: []
     }
   },
-  async created () {
+  async mounted () {
     await this.getCart()
   },
   watch: {
@@ -109,7 +110,7 @@ export default {
       if (this.checkAll) {
         this.checkGoods.length = 0
         this.cartList.forEach((item) => {
-          this.checkGoods.push(item.item_id)
+          this.checkGoods.push(item.ID)
         })
         this.checkedCount = this.checkGoods.length
       } else {
@@ -135,8 +136,8 @@ export default {
         this.$message.error(err)
       })
     },
-    numChange (itemID, num) { // 更新购物车商品数量
-      this.$axios.get('/cart/updateQuantity', { params: { item_id: itemID, num: num } })
+    numChange (cartID, num) { // 更新购物车商品数量
+      this.$axios.get('/cart/updateQuantity', { params: { cart_id: cartID, num: num } })
     },
     delChosed () {
       this.$confirm('确定从购物车中移除选中的商品吗？', '', {
@@ -151,7 +152,7 @@ export default {
         const goodslist = this.cartList
         for (let i = 0, j = 0; i < chosedlist.length; i++) {
           while (j < goodslist.length) {
-            if (chosedlist[i] === goodslist[j].item_id) {
+            if (chosedlist[i] === goodslist[j].ID) {
               goodslist.splice(j, 1)
               j = 0
               break
@@ -163,9 +164,7 @@ export default {
         this.cartList = goodslist
         this.checkGoods = []
         this.checkedCount = 0
-
-        console.log('id', chosedlist)
-        this.$axios.get('/cart/deleteCartItem', { params: { items_id: chosedlist } })
+        this.$axios.get('/cart/deleteCartItem', { params: { carts_id: chosedlist } })
       })
     },
     delItem (id) {
@@ -180,7 +179,7 @@ export default {
         const goodslist = this.cartList
         const chosedlist = this.checkGoods
         const index = goodslist.findIndex(function (val) {
-          return val.item_id === id
+          return val.ID === id
         })
         if (index !== -1) {
           this.cartList.splice(index, 1)
@@ -191,18 +190,17 @@ export default {
         if (index2 !== -1) {
           this.checkGoods.splice(index, 1)
         }
-        console.log('id', id)
-        this.$axios.get('/cart/deleteCartItem', { params: { items_id: [id] } })
+        this.$axios.get('/cart/deleteCartItem', { params: { carts_id: [id] } })
       })
     },
     toOrder () {
-    // :to="{ path:'/pay',query:{'cartIds':0}}"
       if (this.checkGoods.length <= 0) {
         this.$alert('请至少选中一个商品下单', '商品下单', {
-          confirmButtonText: '确定'
+          confirmButtonText: '确定',
+          confirmButtonClass: 'confirmbtn'
         })
       } else {
-        this.$router.push({ name: 'payorder' })
+        this.$router.push({ name: 'payorder', params: { ID: this.checkGoods, account: this.account } })
       }
     }
   },
@@ -211,11 +209,13 @@ export default {
       let sum = 0
       this.checkGoods.forEach(item => {
         this.cartList.forEach(cartItem => {
-          if (item === cartItem.item_id) {
+          if (item === cartItem.ID) {
             sum += cartItem.price * cartItem.quantity
           }
         })
       })
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.account = sum
       return sum
     }
   },

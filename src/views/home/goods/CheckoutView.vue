@@ -1,5 +1,5 @@
 <template>
-  <div class="pay-view">
+  <div class="checkout-view">
     <el-row class="headerarea" type="flex" justify="center">
       <el-col :span="20">
         <el-row type="flex" justify="space-between">
@@ -73,7 +73,8 @@ import { SERVER_HOST } from '@/plugins/config'
 export default {
   data () {
     return {
-      carts_id: '',
+      ID: '',
+      buyNum: '',
       account: '',
       orderList: [],
       receiver: {},
@@ -82,16 +83,17 @@ export default {
     }
   },
   async mounted () {
-    this.carts_id = this.$route.params.ID
-    this.account = this.$route.params.account
+    this.ID = this.$route.params.ID
+    this.buyNum = this.$route.params.buyNum
     await this.getOrderItem()
   },
   methods: {
     getOrderItem () {
-      this.$axios.get('/order/confirmOrder', { params: { ID: this.carts_id } }).then(res => {
+      this.$axios.get('/order/confirmOrder', { params: { ID: this.ID } }).then(res => {
         if (res.status === 200) {
           res.data = res.data.map((item) => {
             item.img_url = SERVER_HOST + item.img_url
+            item.quantity = this.buyNum
             return item
           })
           this.orderList = res.data
@@ -104,7 +106,7 @@ export default {
       })
     },
     checkout () {
-      this.$axios.post('/order/checkout', { ID: this.carts_id, account: this.account })
+      this.$axios.post('/order/checkout', { ID: this.ID, account: this.account, quantity: this.buyNum })
         .then(res => {
           if (res.status === 200) {
             const orderID = res.data
@@ -131,6 +133,8 @@ export default {
       for (let i = 0; i < this.orderList.length; i++) {
         sum += this.orderList[i].price * this.orderList[i].quantity
       }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.account = sum
       return sum
     }
   },
@@ -146,7 +150,7 @@ export default {
 </script>
 
 <style scoped>
-.pay-view{
+.checkout-view{
   width: 100%;
   overflow: hidden;
   margin-bottom: 50px;

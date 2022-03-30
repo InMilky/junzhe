@@ -188,6 +188,7 @@ export default {
     this.ID = this.$route.params.ID
     this.setTimer()
     await this.getItem()
+    this.countDown()
   },
   computed: {
     disabled () {
@@ -248,10 +249,22 @@ export default {
 
       }, 1000)
     },
+    countDown () {
+      const timer = window.setInterval(() => {
+        this.timer -= 1
+        const minute = parseInt(this.timer / 60)
+        const second = parseInt(this.timer % 60)
+        this.countdown = `${minute}分钟${second}秒`
+        if (minute === 0 && second === 0) {
+          window.clearInterval(timer)
+          this.$router.push('/order')
+        }
+      }, 1000)
+    },
     toOrder () {
       const ID = this.info.ID.toString()
       const buyNum = this.num.toString()
-      this.$router.push({ name: 'payorder', params: { ID: ID, buy_num: buyNum } })
+      this.$router.push({ name: 'checkout', params: { ID: ID, buyNum: buyNum } })
     },
     toCart () {
       const ID = this.info.ID.toString()

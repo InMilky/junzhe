@@ -26,9 +26,9 @@
       <el-col :span="20">
         <div>
           <h4 style="font-weight: 500">订单详情</h4>
+          <p>收货人：{{receiver.name}} {{receiver.telphone}}</p>
           <p>收货地址：{{receiver.address}}</p>
-          <p>收货人：{{receiver.name}} {{receiver.phone}}</p>
-          <p>商品名称：{{item}}</p>
+          <p>商品名称：{{itemInfo}}</p>
         </div>
       </el-col>
     </el-row>
@@ -58,40 +58,72 @@
 export default {
   data () {
     return {
-      countdown: '16分钟40秒',
+      countdown: '',
       timer: 300,
       orderID: '',
-      totalPrice: '2146',
-      item: '迪奥全新烈艳蓝金单色腮红6.7G 新品',
-      receiver: {
-        name: '小**',
-        phone: '183****5129',
-        address: '广东省佛山市南海区狮山镇华南师范大学南海校区(菜鸟驿站)'
-      }
+      totalPrice: '',
+      itemInfo: '',
+      receiver: {}
     }
   },
-  mounted () {
-    this.orderID = this.$route.query.orderID
+  async mounted () {
+    this.orderID = this.$route.params.orderID
+    // this.totalPrice = this.$route.params.account
+    await this.getReceiver()
+    await this.getOrder()
     this.countDown()
   },
   methods: {
     countDown () {
+      // 5分钟倒计时
       const timer = window.setInterval(() => {
         this.timer -= 1
         const minute = parseInt(this.timer / 60)
         const second = parseInt(this.timer % 60)
-        this.countdown = `${minute}分钟${second}秒`
-        if (minute === 0 && second === 0) {
+        const minutes = minute < 10 ? '0' + minute : minute
+        const seconds = second < 10 ? '0' + second : second
+        this.countdown = `${minutes}分钟${seconds}秒`
+        if (this.timer === 0) {
           window.clearInterval(timer)
-          this.$router.push('/order')
+          this.$router.replace('/order')
         }
       }, 1000)
     },
+    getOrder () {
+      this.$axios.get('/order/getOrderByID', { params: { orderID: this.orderID } })
+        .then(res => {
+          if (res.status === 200) {
+            this.totalPrice = res.data[0].account
+            let itemInfo = ' '
+            res.data.forEach((val, index) => {
+              itemInfo += val.title + ' x' + val.quantity
+              if (index !== res.data.length - 1) {
+                itemInfo += ', '
+              }
+            })
+            this.itemInfo = itemInfo
+          }
+        }).catch(err => {
+          console.error(err)
+          Promise.reject(err)
+        })
+    },
+    getReceiver () {
+      this.$axios.get('/order/getReceiver')
+        .then(res => {
+          if (res.status === 200) {
+            this.receiver = res.data[0]
+          }
+        }).catch(err => {
+          console.error(err)
+          Promise.reject(err)
+        })
+    },
     toOrder () {
-      this.$router.push('/order')
+      this.$router.replace('/order')
     },
     toIndex () {
-      this.$router.push('/index')
+      this.$router.replace('/index')
     }
   }
 }
@@ -164,7 +196,7 @@ export default {
 .jump{
   display: inline-block;
   width: 140px;
-  line-height: 40px;
+  line-height: 38px;
   border-radius: 3px;
   font-size: 18px;
   text-align: center;

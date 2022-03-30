@@ -82,8 +82,14 @@ const routes = [
     component: () => import('@/views/home/cart/PayView')
   },
   {
+    path: '/payorder',
+    name: 'checkout',
+    meta: { title: '支付页面', requireAuth: true },
+    component: () => import('@/views/home/goods/CheckoutView')
+  },
+  {
     path: '/payorder/cashier',
-    name: 'payitem',
+    name: 'cashier',
     meta: { title: '结算页面', requireAuth: true },
     component: () => import('@/views/home/cart/PaySuccess')
   },

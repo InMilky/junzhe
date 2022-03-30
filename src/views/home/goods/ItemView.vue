@@ -209,7 +209,7 @@ export default {
     toOrder () {
       const ID = this.item.ID.toString()
       const buyNum = this.num.toString()
-      this.$router.push({ name: 'seckill_item', params: { ID: ID, buyNum: buyNum } })
+      this.$router.push({ name: 'checkout', params: { ID: ID, buyNum: buyNum } })
     },
     toCart () {
       const ID = this.item.ID.toString()
