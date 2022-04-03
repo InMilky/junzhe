@@ -16,7 +16,7 @@
       <el-col :span="20" style="margin: auto 0;display: flex">
         <div class="q-img"><img src="@/assets/img/index/erweima.png" alt="QRcode"></div>
         <div class="q-txt"><p>订单提交成功，请尽快付款！订单号：{{orderID}}</p>
-          <p style="color: #999999;font-size: 12px">请您在<span style="color: #e1251b">{{countdown}}</span>内完成支付，负责订单会被自动取消</p>
+          <p style="color: #999999;font-size: 12px">请您在<span style="color: #e1251b">{{countdown}}</span>内完成支付，否则订单会被自动取消</p>
         </div>
         <div class="q-price">应付金额
           <span style="color: #e1251b;font-size: 20px;padding: 0 5px">{{totalPrice}}</span>元</div>
@@ -25,7 +25,7 @@
     <el-row type="flex" justify="center" style="border-top: 1px solid #e6e6e6;padding: 10px 0">
       <el-col :span="20">
         <div>
-          <h4 style="font-weight: 500">订单详情</h4>
+          <h4 style="color: #e1251b">订单详情</h4>
           <p>收货人：{{receiver.name}} {{receiver.telphone}}</p>
           <p>收货地址：{{receiver.address}}</p>
           <p>商品名称：{{itemInfo}}</p>
@@ -67,15 +67,23 @@ export default {
     }
   },
   async mounted () {
-    this.orderID = this.$route.params.orderID
-    // this.totalPrice = this.$route.params.account
+    this.orderID = this.$route.query.orderID
     await this.getReceiver()
-    await this.getOrder()
+    await this.getOrderInfo()
     this.countDown()
   },
   methods: {
     countDown () {
-      // 5分钟倒计时
+      // 从redis中获取订单支付时间的剩余倒计时
+      this.$axios.post('/order/getTTl', { ID: this.orderID })
+        .then(res => {
+          if (res.status === 200) {
+            this.timer = res.data
+          }
+        }).catch(err => {
+          console.error(err)
+          Promise.reject(err)
+        })
       const timer = window.setInterval(() => {
         this.timer -= 1
         const minute = parseInt(this.timer / 60)
@@ -89,8 +97,8 @@ export default {
         }
       }, 1000)
     },
-    getOrder () {
-      this.$axios.get('/order/getOrderByID', { params: { orderID: this.orderID } })
+    getOrderInfo () {
+      this.$axios.post('/order/getOrderByID', { orderID: this.orderID })
         .then(res => {
           if (res.status === 200) {
             this.totalPrice = res.data[0].account
@@ -120,7 +128,15 @@ export default {
         })
     },
     toOrder () {
-      this.$router.replace('/order')
+      this.$axios.post('/order/payOrder', { orderID: this.orderID })
+        .then(res => {
+          if (res.status === 200) {
+            this.$router.replace('/order')
+          }
+        }).catch(err => {
+          console.error(err)
+          Promise.reject(err)
+        })
     },
     toIndex () {
       this.$router.replace('/index')

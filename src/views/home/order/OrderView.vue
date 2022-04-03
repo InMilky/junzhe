@@ -3,7 +3,7 @@
     <CartHeader :search="search" :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
     <div class="order">
-      <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~" v-if="orderList.length==0">
+      <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~" v-if="orderList.length===0">
         <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
       </el-empty>
       <div v-else>
@@ -11,25 +11,30 @@
           <el-tab-pane name="全部订单" label="全部订单">
             <div class="order-lists">
               <div class="order-header">
-                <div class="o-info">宝贝</div>
+                <div class="oitem-info">宝贝</div>
                 <div class="o-price">单价</div>
                 <div class="o-num">数量</div>
                 <div class="o-total">实付款</div>
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
-              <div class="order-item" v-for="item in orderList" :key="item.orderID">
+              <div class="order-item" v-for="(item,key) in orderList" :key="key">
                 <div class="o-head">
-                  <span style="font-weight: 700">订单号：{{item.orderID}}</span>
-                  <span>下单时间：{{item.order_time}}</span> </div>
+                  <span style="font-weight: 700">订单号：{{item.ID}}</span>
+                  <span>下单时间：{{item.ordertime}}</span> </div>
                 <div class="o-body">
-                  <div class="o-img">
-                  <img style="width:94px;max-height: 100%;" :src="item.img_url"/></div>
-                  <div class="o-title">{{item.title}}--{{item.description}}</div>
-                  <div class="o-price">￥{{item.price}}</div>
-                  <div class="o-num">{{item.num}}</div>
-                  <div class="o-total red">￥{{item.totalPrice}}</div>
-                  <div class="o-state">{{item.paystate}}</div>
+                  <div class="oitem-info">
+                    <div class="oinfo-item" v-for="(temp,index) in item.info" :key="index">
+                      <div class="o-img"><img :src="temp.img_url"/></div>
+                      <div class="o-title">
+                        <p>{{temp.title}}</p>
+                        <p style="color: #999999;font-size: 13px">{{temp.color}}</p></div>
+                      <div class="o-price">￥{{temp.price}}</div>
+                      <div class="o-num">{{temp.quantity}}</div>
+                    </div>
+                  </div>
+                  <div class="o-total red">￥{{item.account}}</div>
+                  <div class="o-state">{{payState[item.pay_state]}}</div>
                   <div class="o-action">评论</div>
                 </div>
               </div>
@@ -44,81 +49,83 @@
               </el-pagination>
             </div>
           </el-tab-pane>
-          <el-tab-pane name="待付款" label="待付款">
-            <div class="order-lists">
-              <div class="order-header">
-                <div class="o-info">宝贝</div>
-                <div class="o-price">单价</div>
-                <div class="o-num">数量</div>
-                <div class="o-total">实付款</div>
-                <div class="o-state">交易状态</div>
-                <div class="o-action">交易操作</div>
-              </div>
-              <el-empty description="你还没有相关订单~">
-                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
-              </el-empty>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane name="待发货" label="待发货">
-            <div class="order-lists">
-              <div class="order-header">
-                <div class="o-info">宝贝</div>
-                <div class="o-price">单价</div>
-                <div class="o-num">数量</div>
-                <div class="o-total">实付款</div>
-                <div class="o-state">交易状态</div>
-                <div class="o-action">交易操作</div>
-              </div>
-              <el-empty description="你还没有相关订单~" v-if="orderList.length===0">
-                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
-              </el-empty>
-              <div class="order-item" v-for="list in orderList" :key="list.orderID" v-else>
-                <div class="o-head">
-                  <span style="font-weight: 700">订单号：{{list.orderID}}</span>
-                  <span>下单时间：{{list.order_time}}</span> </div>
-                <div class="o-body">
-                  <div class="o-img">
-                    <img style="width:94px;max-height: 100%;" :src="list.img_url" /></div>
-                  <div class="o-title">{{list.title}}--{{list.description}}</div>
-                  <div class="o-price">￥{{list.price}}</div>
-                  <div class="o-num">{{list.num}}</div>
-                  <div class="o-total red">￥{{list.totalPrice}}</div>
-                  <div class="o-state">{{list.paystate}}</div>
-                  <div class="o-action">评论</div>
-                </div>
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane name="待收货" label="待收货">
-            <div class="order-lists">
-              <div class="order-header">
-                <div class="o-info">宝贝</div>
-                <div class="o-price">单价</div>
-                <div class="o-num">数量</div>
-                <div class="o-total">实付款</div>
-                <div class="o-state">交易状态</div>
-                <div class="o-action">交易操作</div>
-              </div>
-              <el-empty description="你还没有相关订单~">
-                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
-              </el-empty>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane name="评价" label="评价">
-            <div class="order-lists">
-              <div class="order-header">
-                <div class="o-info">宝贝</div>
-                <div class="o-price">单价</div>
-                <div class="o-num">数量</div>
-                <div class="o-total">实付款</div>
-                <div class="o-state">交易状态</div>
-                <div class="o-action">交易操作</div>
-              </div>
-              <el-empty description="你还没有相关订单哦~">
-                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
-              </el-empty>
-            </div>
-          </el-tab-pane>
+<!--          <el-tab-pane name="待付款" label="待付款">-->
+<!--            <div class="order-lists">-->
+<!--              <div class="order-header">-->
+<!--                <div class="o-info">宝贝</div>-->
+<!--                <div class="o-price">单价</div>-->
+<!--                <div class="o-num">数量</div>-->
+<!--                <div class="o-total">实付款</div>-->
+<!--                <div class="o-state">交易状态</div>-->
+<!--                <div class="o-action">交易操作</div>-->
+<!--              </div>-->
+<!--              <el-empty description="你还没有相关订单~">-->
+<!--                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>-->
+<!--              </el-empty>-->
+<!--            </div>-->
+<!--          </el-tab-pane>-->
+<!--          <el-tab-pane name="待发货" label="待发货">-->
+<!--            <div class="order-lists">-->
+<!--              <div class="order-header">-->
+<!--                <div class="o-info">宝贝</div>-->
+<!--                <div class="o-price">单价</div>-->
+<!--                <div class="o-num">数量</div>-->
+<!--                <div class="o-total">实付款</div>-->
+<!--                <div class="o-state">交易状态</div>-->
+<!--                <div class="o-action">交易操作</div>-->
+<!--              </div>-->
+<!--              <el-empty description="你还没有相关订单~" v-if="orderList.length===0">-->
+<!--                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>-->
+<!--              </el-empty>-->
+<!--              <div class="order-item" v-for="list in orderList" :key="list.orderID" v-else>-->
+<!--                <div class="o-head">-->
+<!--                  <span style="font-weight: 700">订单号：{{item.ID}}</span>-->
+<!--                  <span>下单时间：{{item.ordertime}}</span> </div>-->
+<!--                <div class="o-body">-->
+<!--                  <div class="o-img">-->
+<!--                    <img style="width:94px;max-height: 100%;" :src="item.info[0].img_url"/></div>-->
+<!--                  <div class="o-title">-->
+<!--                    <p>{{item.info[0].title}}</p>-->
+<!--                    <p>{{item.info[0].color}}</p></div>-->
+<!--                  <div class="o-price">￥{{item.info[0].price}}</div>-->
+<!--                  <div class="o-num">{{item.info[0].quantity}}</div>-->
+<!--                  <div class="o-total red">￥{{item.account}}</div>-->
+<!--                  <div class="o-state">{{payState[item.pay_state]}}</div>-->
+<!--                  <div class="o-action">评论</div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </el-tab-pane>-->
+<!--          <el-tab-pane name="待收货" label="待收货">-->
+<!--            <div class="order-lists">-->
+<!--              <div class="order-header">-->
+<!--                <div class="o-info">宝贝</div>-->
+<!--                <div class="o-price">单价</div>-->
+<!--                <div class="o-num">数量</div>-->
+<!--                <div class="o-total">实付款</div>-->
+<!--                <div class="o-state">交易状态</div>-->
+<!--                <div class="o-action">交易操作</div>-->
+<!--              </div>-->
+<!--              <el-empty description="你还没有相关订单~">-->
+<!--                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>-->
+<!--              </el-empty>-->
+<!--            </div>-->
+<!--          </el-tab-pane>-->
+<!--          <el-tab-pane name="评价" label="评价">-->
+<!--            <div class="order-lists">-->
+<!--              <div class="order-header">-->
+<!--                <div class="o-info">宝贝</div>-->
+<!--                <div class="o-price">单价</div>-->
+<!--                <div class="o-num">数量</div>-->
+<!--                <div class="o-total">实付款</div>-->
+<!--                <div class="o-state">交易状态</div>-->
+<!--                <div class="o-action">交易操作</div>-->
+<!--              </div>-->
+<!--              <el-empty description="你还没有相关订单哦~">-->
+<!--                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>-->
+<!--              </el-empty>-->
+<!--            </div>-->
+<!--          </el-tab-pane>-->
         </el-tabs>
       </div>
     </div>
@@ -131,30 +138,51 @@
 
 import CartHeader from '@/components/home/topfooter/CartHeader'
 import RecommendTemp from '@/components/home/recommand/RecommendTemp'
+import { SERVER_HOST } from '@/plugins/config'
 
 export default {
   data () {
     return {
       title: '订单',
       search: '',
-      activeName: '待发货',
-      orderList: [
-        {
-          orderID: '20220222-051129',
-          itemID: 'ef71b3ab-21d6-4ab8-b9b9-8e5651b40f76',
-          title: '迪奥全新烈艳蓝金单色腮红6.7G 新品',
-          description: '哑光#999',
-          price: '249.00',
-          num: '1',
-          totalPrice: '249.00',
-          paystate: '待发货',
-          img_url: 'http://localhost:51129/server/upload/dd3027f1c63c05160cd2dd705a380d2c.png',
-          order_time: '2022-03-17 17:11:29'
-        }],
+      activeName: '全部订单',
+      payState: ['已取消', '待付款', '待发货', '运输中', '已签收', '已评价'],
+      orderList: [{ ID: 1 }],
       currentPage: 1
     }
   },
+  async mounted () {
+    await this.getOrderList()
+  },
   methods: {
+    getOrderList () {
+      this.$axios.get('/order/allOrder')
+        .then(res => {
+          if (res.status === 200) {
+            console.log('data', res.data)
+            if (res.data.length > 0) {
+              res.data = res.data.map(item => {
+                if (item.info) {
+                  item.info = item.info.map(info => {
+                    info.img_url = SERVER_HOST + info.img_url
+                    return info
+                  })
+                }
+                return item
+              })
+            }
+            res.data = res.data.map(item => {
+              item.img_url = SERVER_HOST + item.img_url
+              return item
+            })
+            this.orderList = res.data
+            console.log('orderList', this.orderList)
+          }
+        }).catch(err => {
+          console.error(err)
+          Promise.reject(err)
+        })
+    },
     handleSizeChange () {
 
     },
@@ -199,19 +227,16 @@ export default {
   margin: auto;
 }
 .order-item{
-  height: 150px;
   border: 1px solid #e6e6e6;
   color: #606266;
   font-size: 14px;
-  display: flex;
-  flex-direction: column;
   margin: 10px 0;
 }
 .order-item:hover{
   border: 1px solid #666666;
 }
 .o-head{
-  flex:0 0 36px;
+  height: 36px;
   background-color: #e6e6e6;
   padding: 0 10px;
   display: flex;
@@ -222,18 +247,34 @@ export default {
   display: inline-block;
 }
 .o-body{
-  flex: 1;
   padding: 10px;
   overflow: hidden;
   display: flex;
   text-align: center;
 }
-.o-img{
-  width: 12%;
+.oitem-info{
+  flex: 6;
   height: 100%;
 }
+.oinfo-item{
+  width: 100%;
+  height: 90px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.o-img{
+  height: 100%;
+  width: 20%;
+}
+.o-img>img{
+  max-width:94px;
+  max-height: 100%;
+  height:auto;
+  width: auto;
+}
 .o-title{
-  flex: 1;
+  width: 65%;
+  text-align: left;
 }
 .o-title:hover{
   color: #e1251b;
@@ -245,14 +286,16 @@ export default {
   width: 5%;
 }
 .o-total{
-  width: 12%;
+  flex: 1;
+  height: 100%;
 }
 .o-total.red{
   font-weight: 700;
   color: #e1251b;
 }
 .o-state,.o-action{
-  width: 10%;
+  flex: 1;
+  height: 100%;
 }
 /deep/ .el-divider--horizontal {
   width: 30%;

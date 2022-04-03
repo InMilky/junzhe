@@ -82,8 +82,8 @@ export default {
     }
   },
   async mounted () {
-    this.carts_id = this.$route.params.ID
-    this.account = this.$route.params.account
+    this.carts_id = this.$route.query.ID
+    this.account = this.$route.query.account
     await this.getOrderItem()
   },
   methods: {
@@ -108,7 +108,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             const orderID = res.data
-            this.$router.push({ name: 'cashier', params: { orderID: orderID, account: this.account } })
+            this.$router.push({ name: 'cashier', query: { orderID: orderID, account: this.account } })
           }
         }).catch(err => {
           console.error(err)

@@ -200,7 +200,7 @@ export default {
           confirmButtonClass: 'confirmbtn'
         })
       } else {
-        this.$router.push({ name: 'payorder', params: { ID: this.checkGoods, account: this.account } })
+        this.$router.push({ name: 'payorder', query: { ID: this.checkGoods, account: this.account } })
       }
     }
   },
