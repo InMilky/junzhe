@@ -7,7 +7,7 @@
           <div style="float: left">
             <span style="margin-right: 10px;display: inline-block">全部商品</span>/
           <span style="margin: 0 5px;display: inline-block">{{keyword}}</span></div>
-          <div style="float: right;display: flex"><span>价格区间：</span></div>
+          <div style="float: right;display: flex"><span>价格区间：00 - 00</span></div>
         </div>
         <div class="search-content">
           <el-result icon="warning" title="抱歉" subTitle="msg" v-if="emptyMsg">

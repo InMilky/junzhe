@@ -58,7 +58,7 @@
 export default {
   data () {
     return {
-      countdown: '',
+      countdown: '00分钟00秒',
       timer: 300,
       orderID: '',
       totalPrice: '',
@@ -72,10 +72,13 @@ export default {
     await this.getOrderInfo()
     this.countDown()
   },
+  beforeDestroy () {
+    this.$axios.get('/order/delTTl', { params: { ID: this.orderID } })
+  },
   methods: {
     countDown () {
       // 从redis中获取订单支付时间的剩余倒计时
-      this.$axios.post('/order/getTTl', { ID: this.orderID })
+      this.$axios.get('/order/getTTl', { params: { ID: this.orderID } })
         .then(res => {
           if (res.status === 200) {
             this.timer = res.data

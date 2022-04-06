@@ -676,3 +676,17 @@ p{
 .re-link:hover .re-info-name{
     color: #e1251b;
 }
+.cancelbtn{
+    width: 78px;
+    color: #e1251b!important;
+    border: 1px solid #e1251b!important;
+}
+.cancelbtn:hover{
+    background: #e1251b!important;
+    color: #FFF!important;
+}
+.confirmbtn{
+    width: 80px;
+    background: #e1251b!important;
+    border: 1px solid #e1251b!important;
+}

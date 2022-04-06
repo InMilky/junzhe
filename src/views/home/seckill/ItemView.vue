@@ -1,6 +1,6 @@
 <template>
   <div class="goods-view">
-    <SeckillTop></SeckillTop>
+    <SeckillTop @search="searchGoods"></SeckillTop>
     <el-row class="goods-info">
       <div class="nav-top">
         <el-row type="flex" justify="center" style="width: 100%">
@@ -37,11 +37,9 @@
                 <div class="p-header">
                   <div>
                     <i class="el-icon-alarm-clock" style="font-size: 21px;padding-right: 5px;position: relative;top: 2px"></i>
-                    <span style="display: inline-block">橘栀秒杀活动</span></div>
-                  <div>距离结束
-                    <span class="timer-unit">{{time.hour|addZero}}</span> :
-                    <span class="timer-unit">{{time.minute|addZero}}</span> :
-                    <span class="timer-unit">{{time.second|addZero}}</span></div>
+                    <span style="display: inline-block">橘栀秒杀活动 {{timer.start_date}}</span></div>
+                  <div v-if="activityFlag!==2">距离活动{{eflag}}还有 {{countdown}}</div>
+                  <div v-else>{{eflag}}</div>
                 </div>
                 <div class="p-body">
                   <div>秒杀价：<span style="color: #e1251b">￥</span>
@@ -60,7 +58,7 @@
               <div class="p-sth">
                   <div class="p-sth-item"><p>月销量</p><p class="count">{{info.sold_num}}+</p></div>
                   <div class="p-sth-item"><p>累计评论</p><p class="count">1640+</p></div>
-                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ info.amount }}</p></div>
+                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ stock }}</p></div>
               </div>
               <div class="addnum">
                 数量：<el-input-number v-model="num" :min="1" :max="1"></el-input-number>
@@ -143,19 +141,25 @@ export default {
   data () {
     return {
       num: 1,
-      ID: '',
+      itemID: '',
+      activityFlag: 0,
+      btn_values: ['敬请期待', '立即购买', '活动已结束', '已购买', '已售罄'],
       btn_value: '敬请期待',
-      time: {
+      eflag_names: ['开始', '结束', '活动已结束'],
+      eflag: '开始',
+      countdown: '00:00:00',
+      diffTime: 0,
+      timer: {
         interval: '',
-        timeGap: 0,
-        hour: 0,
-        minute: 0,
-        second: 0,
-        start: false,
-        end: false,
-        done: false
+        start_date: '',
+        end_date: '',
+        hours: '',
+        minutes: '',
+        seconds: ''
       },
+      limitClick: false,
       info: { brand: '首页' },
+      stock: '',
       rate: 4.9,
       radio: '0',
       isFixed: false,
@@ -170,29 +174,18 @@ export default {
       }
     }
   },
-  // async created () {
-  //   const serverTime = await this.getServerTime()
-  //   this.time.timeGap = Date.now() - serverTime// 当前时间和服务器时间差
-  //   this.updateState()
-  //   this.timeInterval = setInterval(() => {
-  //     this.updateState()
-  //   }, 1000)
-  // },
-  // updated () {
-  //   if (this.end || this.done) {
-  //     clearInterval(this.timeInterval)
-  //   }
-  // },
   async mounted () {
     window.addEventListener('scroll', this.getScrollTop)
-    this.ID = this.$route.params.ID
-    this.setTimer()
+    this.itemID = this.$route.params.ID
     await this.getItem()
-    this.countDown()
+    await this.getSecTime()
+  },
+  beforeDestroy () { // 当离开页面时，清除倒计时
+    clearInterval(this.timer.interval)
   },
   computed: {
     disabled () {
-      return !(this.time.start && this.time.end && this.time.done)
+      return (this.activityFlag !== 1 || this.limitClick)
     }
   },
   methods: {
@@ -205,12 +198,11 @@ export default {
       }
     },
     searchGoods (key) {
-      // alert(key)
-      // axios请求
+      this.$router.push({ name: 'list_item', query: { key: key } })
     },
     getItem () {
-      const ID = this.ID
-      this.$axios.post('/miaosha/getItem', { ID: ID })
+      const itemID = this.itemID
+      this.$axios.post('/miaosha/getItem', { itemID: itemID })
         .then(res => {
           if (res.status === 200) {
             const item = res.data
@@ -243,39 +235,94 @@ export default {
           this.$message.error(err)
         })
     },
-    setTimer () {
-      // const _this = this
-      this.interval = setInterval(function () {
-
-      }, 1000)
+    getSecTime () {
+      const itemID = this.itemID
+      this.$axios.get('/miaosha/getSecTime', { params: { itemID: itemID } })
+        .then(res => {
+          if (res.status === 200) {
+            this.timer.start_date = res.data.start_date
+            this.timer.end_date = res.data.end_date
+            this.diffTime = res.data.diffTime
+            this.activityFlag = res.data.activityFlag
+            this.stock = res.data.stock
+            this.eflag = this.eflag_names[this.activityFlag]
+            this.btn_value = this.btn_values[this.activityFlag]
+            if (this.diffTime > 0) {
+              this.setTimer()
+            } else {
+              clearInterval(this.timer.interval)
+            }
+            console.log('diffTime', this.diffTime)
+            console.log('activityFlag', this.activityFlag)
+            console.log('eflag', this.eflag)
+            console.log('btn_value', this.btn_value)
+          }
+        }).catch(err => {
+          this.$message.error(err)
+        })
     },
     countDown () {
-      const timer = window.setInterval(() => {
-        this.timer -= 1
-        const minute = parseInt(this.timer / 60)
-        const second = parseInt(this.timer % 60)
-        this.countdown = `${minute}分钟${second}秒`
-        if (minute === 0 && second === 0) {
-          window.clearInterval(timer)
-          this.$router.push('/order')
+      const hour = parseInt(this.diffTime / 1000 / 60 / 60 % 24)
+      const minute = parseInt(this.diffTime / 1000 / 60 % 60)
+      const second = parseInt(this.diffTime / 1000 % 60)
+      const hours = hour < 10 ? '0' + hour : hour
+      const minutes = minute < 10 ? '0' + minute : minute
+      const seconds = second < 10 ? '0' + second : second
+      this.countdown = `${hours}:${minutes}:${seconds}`
+    },
+    setTimer () {
+      this.timer.interval = window.setInterval(() => {
+        this.diffTime = this.diffTime - 1000
+        this.countDown()
+        if (this.diffTime <= 0) {
+          window.clearInterval(this.timer.interval)
+          this.getSecTime()
         }
       }, 1000)
     },
     toOrder () {
       const ID = this.info.ID.toString()
-      const buyNum = this.num.toString()
-      this.$router.push({ name: 'checkout', params: { ID: ID, buyNum: buyNum } })
+      // const buyNum = this.num.toString()
+      // this.$router.push({ name: 'checkout', params: { ID: ID, buyNum: buyNum } })
+      this.$axios.post('/miaosha/order', { itemID: ID })
+        .then(res => {
+          if (res.status === 200) {
+            if (res.code === 1) {
+              this.limitClick = true
+              this.btn_value = this.btn_values[3]
+            }
+            this.stock -= 1
+            this.$message.success(res.msg)
+          } else {
+            this.$message.error(res.msg)
+          }
+        })
+        .catch(err => {
+          console.error(err)
+          this.$message.error(err)
+        })
     },
     toCart () {
       const ID = this.info.ID.toString()
       const buyNum = this.num.toString()
-      this.$router.push({ name: 'cart', params: { ID: ID, buy_num: buyNum } })
-    }
-  },
-  filters: {
-    addZero (val) {
-      val = val < 10 ? '0' + val : val
-      return val
+      // 若没登陆先登陆-回到该页面，否则先插入或更新购物车再跳转到购物车页面
+      if (!localStorage.getItem('jwt_token')) {
+        this.$router.push({
+          path: '/login',
+          query: {
+            redirectURL: this.$route.fullPath
+          }
+        })
+      } else {
+        this.$axios.post('/cart/updateCart', { item_id: ID, buyNum: buyNum })
+          .then(res => {
+            if (res.status === 200) {
+              this.$router.push({ name: 'cart' })
+            }
+          }).catch(err => {
+            Promise.reject(err)
+          })
+      }
     }
   },
   components: {

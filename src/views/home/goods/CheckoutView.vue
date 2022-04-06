@@ -110,7 +110,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             const orderID = res.data
-            this.$router.push({ name: 'cashier', params: { orderID: orderID, account: this.account } })
+            this.$router.push({ name: 'cashier', query: { orderID: orderID, account: this.account } })
           }
         }).catch(err => {
           console.error(err)

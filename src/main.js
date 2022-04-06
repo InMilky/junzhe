@@ -26,12 +26,13 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   function (response) {
     NProgress.done()
+    if (response.data.status === 401) {
+      localStorage.removeItem('jwt_token')
+      router.push('/login?redirectURL=' + encodeURIComponent(router.currentRoute.fullPath))
+    }
     return response.data
   },
   function (error) {
-    // if (error.response.status === 401) {
-    //   localStorage.removeItem('jwt_token')
-    // }
     NProgress.done()
     return Promise.reject(error.data.msg)
   }

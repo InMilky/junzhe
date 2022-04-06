@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <CartHeader :search="search" :title="title"></CartHeader>
+    <CartHeader :search="keyword" @search="searchItem"  :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
     <div class="order">
       <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~" v-if="orderList.length===0">
@@ -20,8 +20,10 @@
               </div>
               <div class="order-item" v-for="(item,key) in orderList" :key="key">
                 <div class="o-head">
-                  <span style="font-weight: 700">订单号：{{item.ID}}</span>
-                  <span>下单时间：{{item.ordertime}}</span> </div>
+                  <div><span style="font-weight: 700;margin-right: 20px">订单号：{{item.ID}}</span>
+                  <span>下单时间：{{item.ordertime}}</span></div>
+                  <div class="delbtn" @click="deleteOrder(item.ID)"><i class="el-icon-delete"></i></div>
+                </div>
                 <div class="o-body">
                   <div class="oitem-info">
                     <div class="oinfo-item" v-for="(temp,index) in item.info" :key="index">
@@ -144,7 +146,7 @@ export default {
   data () {
     return {
       title: '订单',
-      search: '',
+      keyword: '',
       activeName: '全部订单',
       payState: ['已取消', '待付款', '待发货', '运输中', '已签收', '已评价'],
       orderList: [{ ID: 1 }],
@@ -159,7 +161,6 @@ export default {
       this.$axios.get('/order/allOrder')
         .then(res => {
           if (res.status === 200) {
-            console.log('data', res.data)
             if (res.data.length > 0) {
               res.data = res.data.map(item => {
                 if (item.info) {
@@ -176,18 +177,58 @@ export default {
               return item
             })
             this.orderList = res.data
-            console.log('orderList', this.orderList)
           }
         }).catch(err => {
           console.error(err)
           Promise.reject(err)
         })
     },
+    deleteOrder (orderID) {
+      this.$confirm('是否确定删除该订单？', '', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        cancelButtonClass: 'cancelbtn',
+        confirmButtonClass: 'confirmbtn',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        const index = this.orderList.findIndex(function (val) {
+          return val.ID === orderID
+        })
+        if (index !== -1) {
+          this.orderList.splice(index, 1)
+        }
+        this.$axios.post('/order/deleteOrder', { orderID: orderID })
+      })
+    },
     handleSizeChange () {
 
     },
     handleCurrentChange () {
 
+    },
+    searchItem (key) {
+      this.keyword = key
+      this.$router.replace({
+        name: 'list_item',
+        query: { key: key }
+      })
+      this.$axios.get('/item/search', { params: { key: key } })
+        .then(res => {
+          if (res.status === 200) {
+            res.data = res.data.map((item) => {
+              item.img_url = SERVER_HOST + item.img_url
+              return item
+            })
+            this.item = res.data
+            this.emptyMsg = ''
+          } else {
+            this.item = []
+            this.emptyMsg = res.msg
+          }
+        }).catch(err => {
+          Promise.reject(err)
+        })
     }
   },
   components: {
@@ -240,11 +281,15 @@ export default {
   background-color: #e6e6e6;
   padding: 0 10px;
   display: flex;
+  justify-content: space-between;
   overflow: hidden;
 }
-.o-head>span{
+.o-head>div{
   margin: auto 20px auto 0;
   display: inline-block;
+}
+.delbtn:hover{
+  color: #e1251b;
 }
 .o-body{
   padding: 10px;
@@ -327,7 +372,4 @@ export default {
 /deep/ .el-pagination.is-background .el-pager li.active:hover {
    color: #FFFFFF;
  }
-/deep/ .el-input__inner:focus {
-  border: 1px solid #e1251b;
-}
 </style>

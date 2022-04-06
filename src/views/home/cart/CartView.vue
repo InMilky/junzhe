@@ -355,18 +355,4 @@ export default {
 /deep/ .el-input-number--mini {
   width: 90px;
 }
-.cancelbtn{
-  width: 78px;
-  color: #e1251b!important;
-  border: 1px solid #e1251b!important;
-}
-.cancelbtn:hover{
-  background: #e1251b!important;
-  color: #FFF!important;
-}
-.confirmbtn{
-  width: 80px;
-  background: #e1251b!important;
-  border: 1px solid #e1251b!important;
-}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="seckill">
-    <SeckillTop></SeckillTop>
+    <SeckillTop @search="searchGoods"></SeckillTop>
     <el-row type="flex" justify="center">
     <div class="headerbg"></div>
       <el-col :span="20">
@@ -50,7 +50,8 @@ export default {
   },
   methods: {
     toGoodsInfo (id) {
-      return this.$router.push({ name: 'seckill_item', params: { ID: id } })
+      const itemID = id
+      this.$router.push({ name: 'seckill_item', params: { ID: itemID } })
     },
     getMiaosha () {
       this.$axios.get('/miaosha/getSeckill').then(res => {
@@ -66,6 +67,9 @@ export default {
       }).catch(err => {
         this.$message.error(err)
       })
+    },
+    searchGoods (key) {
+      this.$router.push({ name: 'list_item', query: { key: key } })
     }
   },
   components: {

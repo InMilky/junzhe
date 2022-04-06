@@ -1,6 +1,6 @@
 <template>
   <div class="goods-view">
-    <SeckillTop></SeckillTop>
+    <SeckillTop @search="searchGoods"></SeckillTop>
     <el-row class="goods-info">
       <div class="nav-top">
         <el-row type="flex" justify="center" style="width: 100%">
@@ -187,8 +187,7 @@ export default {
       }
     },
     searchGoods (key) {
-      // alert(key)
-      // axios请求
+      this.$router.push({ name: 'list_item', query: { key: key } })
     },
     toOrder () {
       const ID = this.info.ID.toString()
