@@ -251,11 +251,8 @@ export default {
               this.setTimer()
             } else {
               clearInterval(this.timer.interval)
+              this.$axios.post('/miaosha/insertOrders', { itemID: itemID })
             }
-            console.log('diffTime', this.diffTime)
-            console.log('activityFlag', this.activityFlag)
-            console.log('eflag', this.eflag)
-            console.log('btn_value', this.btn_value)
           }
         }).catch(err => {
           this.$message.error(err)
