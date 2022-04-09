@@ -142,10 +142,11 @@ export default {
     return {
       num: 1,
       itemID: '',
+      doSeckillKey: '',
       activityFlag: 0,
       btn_values: ['敬请期待', '立即购买', '活动已结束', '已购买', '已售罄'],
       btn_value: '敬请期待',
-      eflag_names: ['开始', '结束', '活动已结束'],
+      eflag_names: ['开始', '结束', '活动已结束', '活动尚未开启，敬请期待'],
       eflag: '开始',
       countdown: '00:00:00',
       diffTime: 0,
@@ -237,7 +238,7 @@ export default {
     },
     getSecTime () {
       const itemID = this.itemID
-      this.$axios.get('/miaosha/getSecTime', { params: { itemID: itemID } })
+      this.$axios.post('/miaosha/getSecTime', { itemID: itemID })
         .then(res => {
           if (res.status === 200) {
             this.timer.start_date = res.data.start_date
@@ -247,12 +248,22 @@ export default {
             this.stock = res.data.stock
             this.eflag = this.eflag_names[this.activityFlag]
             this.btn_value = this.btn_values[this.activityFlag]
+            if (this.activityFlag === 1) {
+              this.doSeckillKey = res.data.doSeckillKey
+            }
             if (this.diffTime > 0) {
               this.setTimer()
+            } else if (this.activityFlag === 2) {
+              clearInterval(this.timer.interval)
+              this.doSeckillKey = ''
+              this.$axios.post('/miaosha/insertOrders', { itemID: itemID })
             } else {
               clearInterval(this.timer.interval)
-              this.$axios.post('/miaosha/insertOrders', { itemID: itemID })
             }
+          } else {
+            this.activityFlag = 2
+            this.eflag = this.eflag_names[3]
+            this.limitClick = true
           }
         }).catch(err => {
           this.$message.error(err)
@@ -278,26 +289,32 @@ export default {
       }, 1000)
     },
     toOrder () {
-      const ID = this.info.ID.toString()
-      // const buyNum = this.num.toString()
-      // this.$router.push({ name: 'checkout', params: { ID: ID, buyNum: buyNum } })
-      this.$axios.post('/miaosha/order', { itemID: ID })
-        .then(res => {
-          if (res.status === 200) {
-            if (res.code === 1) {
-              this.limitClick = true
-              this.btn_value = this.btn_values[3]
+      const doSeckillKey = this.doSeckillKey
+      if (doSeckillKey) {
+        const ID = this.info.ID.toString()
+        const nowtime = Date.now()
+        // const buyNum = this.num.toString()
+        // this.$router.push({ name: 'checkout', params: { ID: ID, buyNum: buyNum } })
+        this.$axios.post('/miaosha/order/' + this.doSeckillKey, { itemID: ID, nowtime: nowtime })
+          .then(res => {
+            if (res.status === 200) {
+              if (res.code === 1) {
+                this.limitClick = true
+                this.btn_value = this.btn_values[3]
+              }
+              this.stock -= 1
+              this.$message.success(res.msg)
+            } else {
+              this.$alert(res.msg)
             }
-            this.stock -= 1
-            this.$message.success(res.msg)
-          } else {
-            this.$message.error(res.msg)
-          }
-        })
-        .catch(err => {
-          console.error(err)
-          this.$message.error(err)
-        })
+          })
+          .catch(err => {
+            console.error(err)
+            this.$message.error(err)
+          })
+      } else {
+        this.$alert('该秒杀活动尚未开始或者已经结束')
+      }
     },
     toCart () {
       const ID = this.info.ID.toString()

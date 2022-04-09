@@ -4,9 +4,9 @@
             v-if="!relogin"></TopNav>
 <!--  缓存激活的组件状态  -->
     <transition>
-<!--      <keep-alive>-->
-        <router-view />
-<!--      </keep-alive>-->
+      <keep-alive>
+        <router-view :key="routerKey"/>
+      </keep-alive>
     </transition>
     <FooterView v-if="!relogin"></FooterView>
   </div>
@@ -39,11 +39,16 @@ export default {
       const url = to.path
       const path = url.split('/')[1]
       this.getUserInfo()
-      if (path === 'login' || path === 'signup' || path.startsWith('/admin')) {
+      if (path === 'login' || path === 'signup') { // path.startsWith('/admin')
         this.relogin = true
       } else {
         this.relogin = false
       }
+    }
+  },
+  computed: {
+    routerKey () {
+      return this.$route.fullPath
     }
   },
   methods: {
