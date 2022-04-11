@@ -6,7 +6,7 @@
         <el-row type="flex" justify="center" style="width: 100%">
           <el-col :span="20" style="display:flex;overflow: hidden;justify-content: space-between">
             <el-breadcrumb separator-class="el-icon-arrow-right" class="left-breadrum">
-              <el-breadcrumb-item to="/">{{info.brand}}</el-breadcrumb-item>
+              <el-breadcrumb-item to="/seckill">{{info.brand}}</el-breadcrumb-item>
               <el-breadcrumb-item>{{info.title}}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="right-action">
@@ -58,7 +58,7 @@
               <div class="p-sth">
                   <div class="p-sth-item"><p>月销量</p><p class="count">{{info.sold_num}}+</p></div>
                   <div class="p-sth-item"><p>累计评论</p><p class="count">1640+</p></div>
-                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ stock }}</p></div>
+                  <div class="p-sth-item"><p>库存量</p><p class="count">{{ stock || 0}}</p></div>
               </div>
               <div class="addnum">
                 数量：<el-input-number v-model="num" :min="1" :max="1"></el-input-number>
@@ -295,7 +295,7 @@ export default {
         const nowtime = Date.now()
         // const buyNum = this.num.toString()
         // this.$router.push({ name: 'checkout', params: { ID: ID, buyNum: buyNum } })
-        this.$axios.post('/miaosha/order/' + this.doSeckillKey, { itemID: ID, nowtime: nowtime })
+        this.$axios.post(`/miaosha/order/${this.doSeckillKey}`, { itemID: ID, nowtime: nowtime })
           .then(res => {
             if (res.status === 200) {
               if (res.code === 1) {

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import NProgress from 'nprogress'
+import router from '@/router'
 
 // axios.defaults.baseURL = '/server'
 // axios.defaults.headers['Authorization'] = AUTH_TOKEN;
@@ -27,10 +29,16 @@ service.interceptors.request.use(
 // Add a response interceptor
 service.interceptors.response.use(
   response => {
-    return response
+    NProgress.done()
+    if (response.data.status === 401) {
+      localStorage.removeItem('jwt_token')
+      router.push('/login?redirectURL=' + encodeURIComponent(router.currentRoute.fullPath))
+    }
+    return response.data
   },
   error => {
-    return Promise.reject(error)
+    NProgress.done()
+    return Promise.reject(error.data)
   }
 )
 export default service
