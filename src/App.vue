@@ -5,8 +5,11 @@
 <!--  缓存激活的组件状态  -->
     <transition>
       <keep-alive>
-        <router-view :key="routerKey"/>
+        <router-view :key="routerKey" v-if="$route.meta.keepAlive"/>
       </keep-alive>
+    </transition>
+    <transition>
+      <router-view :key="routerKey" v-if="!$route.meta.keepAlive"/>
     </transition>
     <FooterView v-if="!relogin"></FooterView>
   </div>

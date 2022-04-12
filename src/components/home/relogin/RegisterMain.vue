@@ -117,7 +117,7 @@ export default {
             } else if (response.status === 400) {
               this.$alert(response.msg)
             }
-          }).catch((err) => console.log(err))
+          })
         } else {
           this.$message.error('请完整填写注册信息，才能完成注册')
           return false

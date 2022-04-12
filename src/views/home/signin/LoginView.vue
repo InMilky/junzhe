@@ -95,7 +95,7 @@ export default {
               this.hasError = true
               this.errMsg = response.msg
             }
-          }).catch((err) => console.log(err))
+          })
         } else {
           this.$message.error('请完整填写登录信息')
           return false
@@ -112,13 +112,18 @@ export default {
           }).then((response) => {
             if (response.status === 200) {
               localStorage.setItem('jwt_token', response.token)
-              const redirectURL = decodeURIComponent(this.$route.query.redirectURL || '/')
+              let path = this.$route.query.redirectURL
+              const Whitelists = ['/payorder', '/payorder/cashier'] // 若属于这几个路径，则重新登录后直接进入首页
+              if (Whitelists.indexOf(path) !== -1) {
+                path = '/'
+              }
+              const redirectURL = decodeURIComponent(path || '/')
               this.$router.push({ path: redirectURL })
             } else if (response.status === 400) {
               this.hasError = true
               this.errMsg = response.msg
             }
-          }).catch((err) => console.log(err))
+          })
         } else {
           this.$message.error('请完整填写登录信息')
           return false

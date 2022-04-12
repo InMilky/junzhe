@@ -28,11 +28,13 @@ const routes = [
   {
     path: '/error_request_404',
     name: 'error_request_404',
+    meta: { title: 'Not Found', keepAlive: true },
     component: () => import('@/views/home/error/ErrorPage404')
   },
   {
     path: '/index',
     name: 'index',
+    meta: { title: 'JZ.COM', keepAlive: true },
     component: IndexView
   },
   {
@@ -102,7 +104,7 @@ const routes = [
   {
     path: '/seckill',
     name: 'seckill',
-    meta: { title: '商品秒杀' },
+    meta: { title: '商品秒杀', keepAlive: true },
     component: () => import('@/views/home/seckill/IndexView')
   },
   {
@@ -113,18 +115,19 @@ const routes = [
   {
     path: '/item/item_list',
     name: 'list_item',
-    meta: { title: '商品列表' },
+    meta: { title: '商品列表', keepAlive: true },
     component: () => import('@/views/home/goods/IndexView')
   },
   {
     path: '/item/:ID',
     name: 'goods_item',
-    meta: { title: '商品列表' },
+    meta: { title: '商品列表', keepAlive: true },
     component: () => import('@/views/home/goods/ItemView')
   },
   {
     path: '/item_default/:ID',
     name: 'default_item',
+    meta: { title: '商品页面', keepAlive: true },
     component: () => import('@/views/home/goods/DefaultItem')
   },
   {

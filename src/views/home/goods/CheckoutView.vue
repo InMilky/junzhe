@@ -113,7 +113,6 @@ export default {
             this.$router.push({ name: 'cashier', query: { orderID: orderID, account: this.account } })
           }
         }).catch(err => {
-          console.error(err)
           Promise.reject(err)
         })
     },

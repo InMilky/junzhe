@@ -3,7 +3,7 @@
     <CartHeader :search="keyword" @search="searchItem"  :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
     <div class="order">
-      <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~" v-if="orderList.length===0">
+      <el-empty description="最近没有下过订单哦~，去看看心仪的商品吧~" v-if="orderList.length===0 && emptyFlag === 1">
         <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
       </el-empty>
       <div v-else>
@@ -18,7 +18,10 @@
                 <div class="o-state">交易状态</div>
                 <div class="o-action">交易操作</div>
               </div>
-              <div class="order-item" v-for="(item,key) in orderList" :key="key">
+              <el-empty description="你还没有相关订单~" v-if="orderList.length===0 && flag===2">
+                <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去首页逛逛></router-link>
+              </el-empty>
+              <div class="order-item" v-for="(item,key) in orderList" :key="key" v-loading="flag===0">
                 <div class="o-head">
                   <div><span style="font-weight: 700;margin-right: 20px">订单号：{{item.ID}}</span>
                   <span>下单时间：{{item.ordertime}}</span></div>
@@ -147,6 +150,7 @@ export default {
     return {
       title: '订单',
       keyword: '',
+      flag: 0, // 0-loading,1-list,2-empty
       activeName: '全部订单',
       payState: ['已取消', '待付款', '待发货', '运输中', '已签收', '已评价'],
       orderList: [{ ID: 1 }],
@@ -158,10 +162,12 @@ export default {
   },
   methods: {
     getOrderList () {
+      this.flag = 0
       this.$axios.get('/order/allOrder')
         .then(res => {
           if (res.status === 200) {
             if (res.data.length > 0) {
+              this.flag = 1
               res.data = res.data.map(item => {
                 if (item.info) {
                   item.info = item.info.map(info => {
@@ -171,15 +177,18 @@ export default {
                 }
                 return item
               })
+              res.data = res.data.map(it => {
+                it.img_url = SERVER_HOST + it.img_url
+                return it
+              })
+            } else {
+              this.flag = 2
             }
-            res.data = res.data.map(item => {
-              item.img_url = SERVER_HOST + item.img_url
-              return item
-            })
             this.orderList = res.data
+          } else {
+            this.flag = 2
           }
         }).catch(err => {
-          console.error(err)
           Promise.reject(err)
         })
     },

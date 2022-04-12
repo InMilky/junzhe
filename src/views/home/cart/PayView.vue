@@ -19,14 +19,17 @@
           <div class="receiver-info">
             <div class="rec-title">
               <span>确认收货地址</span>
-              <el-link :underline="false" style="float: right;font-size: 12px">管理收货地址</el-link></div>
-            <div class="rec-info">
+              <el-link :underline="false" style="float: right;font-size: 12px" @click="dialogFormVisible = true">管理收货地址</el-link></div>
+            <div class="rec-info" v-if="receiver">
               <span class="checked" style="margin-right: 8px;position:relative;">
                 {{ receiver.name }}
                 <label class="el-upload-list__item-status-label"><i class="el-icon-upload-success el-icon-check"></i></label>
               </span>
               <span>{{ receiver.name }} {{receiver.telphone}} {{receiver.address}}</span>
               <el-tag type="danger" size="mini">默认地址</el-tag>
+            </div>
+            <div class="rec-info" v-if="!receiver">
+              <span style="color: #e1251b">暂无收货地址</span>
             </div>
             <span class="rec-link">更多地址<i class="el-icon-arrow-down"></i></span>
           </div>
@@ -58,13 +61,37 @@
           <div>运费：免费配送 快递 免邮费</div>
           <div>
             <div>应付总金额：<span style="color: #e1251b;font-size: 24px;font-weight: bold;line-height: 54px">￥{{totalPrice|dot }}</span></div>
-            <div style="color: #606266;font-size: 12px;line-height: 16px;margin-top: 8px">寄送至：{{receiver.address}}</div>
-            <div style="color: #606266;font-size: 12px;line-height: 16px">收货人：{{receiver.name}} {{receiver.telphone}}</div>
+            <div style="color: #606266;font-size: 12px;line-height: 16px;margin-top: 8px" v-if="receiver">寄送至：{{receiver.address||'- -'}}</div>
+            <div style="color: #606266;font-size: 12px;line-height: 16px" v-if="receiver">收货人：{{receiver.name || '-'}} {{receiver.telphone || '-'}}</div>
           </div>
         </div>
-          <div><el-link class="topay" @click.native="checkout" :underline="false">提交订单</el-link></div>
+          <div style="overflow: hidden">
+            <el-link class="topay" @click.native="checkout" :underline="false" :disabled="!receiver">提交订单</el-link>
+            </div>
+        <div style="overflow: hidden"><b v-if="!receiver" style="font-size: 14px;color: #e1251b;float: right;position: relative;right: 36px;top: -15px"><i class="el-icon-error"></i> 请填写收货地址</b>
+        </div>
       </el-col>
     </el-row>
+    <el-dialog title="添加收货地址" :visible.sync="dialogFormVisible">
+      <el-form :rules="rules" :model="form" ref="form" onsubmit="return false;">
+        <el-form-item label="收货人" :label-width="'80px'" prop="name">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" :label-width="'80px'" prop="phone">
+          <el-input v-model="form.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="详细地址" :label-width="'80px'" prop="address">
+          <el-input v-model="form.address" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="设为默认收货地址">
+          <el-switch v-model="form.isDefault"></el-switch>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button class="cancelbtn" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button class="confirmbtn" type="warming" @click="addReceiver('form')">添 加</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -72,19 +99,53 @@ import { SERVER_HOST } from '@/plugins/config'
 
 export default {
   data () {
+    const phoneValidate = (rule, value, callback) => {
+      const reg = /^1[3456789]\d{9}$/
+      if (reg.test(value)) {
+        callback()
+      } else if (!value) {
+        callback(new Error('请输入手机号'))
+      } else {
+        callback(new Error('手机号格式错误'))
+      }
+    }
     return {
       carts_id: '',
       account: '',
       orderList: [],
+      dialogFormVisible: false,
+      form: {
+        name: '',
+        phone: '',
+        address: '',
+        isDefault: true
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入收货人名称', trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '收货地址不能为空', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '手机号不能为空', trigger: 'blur' },
+          { validator: phoneValidate, trigger: 'change' }
+        ]
+      },
       receiver: {},
       onlineClass: 'checked',
       deliverClass: 'non-checked'
     }
   },
   async mounted () {
-    this.carts_id = this.$route.query.ID
+    let ids = this.$route.query.ID
+    if (ids.includes(',')) {
+      ids = ids.split(',')
+    }
+    this.carts_id = ids
     this.account = this.$route.query.account
     await this.getOrderItem()
+    await this.getReceiver()
   },
   methods: {
     getOrderItem () {
@@ -111,7 +172,6 @@ export default {
             this.$router.push({ name: 'cashier', query: { orderID: orderID, account: this.account } })
           }
         }).catch(err => {
-          console.error(err)
           Promise.reject(err)
         })
     },
@@ -123,6 +183,37 @@ export default {
         this.deliverClass = 'checked'
         this.onlineClass = 'non-checked'
       }
+    },
+    getReceiver () {
+      this.$axios.get('/user/getReceiver')
+        .then(res => {
+          if (res.status === 200) {
+            this.receiver = res.data[0]
+          }
+        }).catch(err => {
+          Promise.reject(err)
+        })
+    },
+    addReceiver (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.dialogFormVisible = false
+          this.$axios.post('/user/addReceiver', {
+            telphone: this.form.phone,
+            name: this.form.name,
+            address: this.form.address,
+            is_default: this.form.isDefault
+          }).then((response) => {
+            if (response.status === 200) {
+              this.receiver = response.data[0]
+              this.dialogFormVisible = false
+            }
+          })
+        } else {
+          this.$message.error('请完整填写收货信息')
+          return false
+        }
+      })
     }
   },
   computed: {
@@ -296,5 +387,28 @@ export default {
 .topay:hover{
   color: #FFFFFF;
   background: rgba(225,37,27,.9);
+}
+/deep/ .is-disabled{
+  background-color: #DCDFE6;
+  color: #f4f4f4!important;
+}
+/deep/ .is-disabled:hover{
+  background-color: #DCDFE6;
+  color: #f4f4f4!important;
+}
+.cancelbtn{
+  width: 78px;
+  color: #e1251b!important;
+  border: 1px solid #e1251b!important;
+}
+.cancelbtn:hover{
+  background: #e1251b!important;
+  color: #FFF!important;
+}
+.confirmbtn{
+  color: #fff;
+  width: 80px;
+  background: #e1251b!important;
+  border: 1px solid #e1251b!important;
 }
 </style>

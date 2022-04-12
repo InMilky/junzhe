@@ -84,7 +84,6 @@ export default {
             this.timer = res.data
           }
         }).catch(err => {
-          console.error(err)
           Promise.reject(err)
         })
       const timer = window.setInterval(() => {
@@ -115,18 +114,16 @@ export default {
             this.itemInfo = itemInfo
           }
         }).catch(err => {
-          console.error(err)
           Promise.reject(err)
         })
     },
     getReceiver () {
-      this.$axios.get('/order/getReceiver')
+      this.$axios.get('/user/getReceiver')
         .then(res => {
           if (res.status === 200) {
             this.receiver = res.data[0]
           }
         }).catch(err => {
-          console.error(err)
           Promise.reject(err)
         })
     },
@@ -137,7 +134,6 @@ export default {
             this.$router.replace('/order')
           }
         }).catch(err => {
-          console.error(err)
           Promise.reject(err)
         })
     },

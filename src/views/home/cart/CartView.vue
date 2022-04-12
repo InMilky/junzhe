@@ -3,7 +3,7 @@
     <CartHeader :search="keyword" @search="searchItem" :title="title"></CartHeader>
     <el-row type="flex" justify="center"><el-col :span="20">
       <div class="cart">
-        <el-empty description="购物车空空的哦~，去看看心仪的商品吧~" v-if="cartList.length==0">
+        <el-empty description="购物车空空的哦~，去看看心仪的商品吧~" v-if="cartList.length===0 && flag === 2">
           <router-link :underline="false" to="/index" style="color: #e1251b;font-size: 14px">去购物></router-link>
         </el-empty>
         <div class="cart-list" v-else>
@@ -17,7 +17,7 @@
             <div class="goods-amount">小计</div>
             <div class="goods-action">操作</div>
           </div>
-          <div class="cart-tbody">
+          <div class="cart-tbody" v-loading="flag===0">
               <div class="cart-item" v-for="list in cartList" :key="list.ID">
                 <input type="checkbox" class="el-checkbox__inner goods-checkbox" v-model="checkGoods" :value="list.ID" />
                 <div class="goods-img">
@@ -69,6 +69,7 @@ export default {
       title: '购物车',
       keyword: '',
       account: '',
+      flag: 0,
       checkAll: false,
       checkedCount: 0,
       checkGoods: [],
@@ -119,18 +120,24 @@ export default {
       }
     },
     getCart () {
+      this.flag = 0
       this.$axios.get('/cart/getCart').then(res => {
         if (res.status === 200) {
-          res.data = res.data.map((item) => {
-            item.img_url = SERVER_HOST + item.img_url
-            return item
-          })
+          if (res.data.length > 0) {
+            this.flag = 1
+            res.data = res.data.map((item) => {
+              item.img_url = SERVER_HOST + item.img_url
+              return item
+            })
+          } else {
+            this.flag = 2
+          }
           this.cartList = res.data
           // 默认全选
           this.checkAll = true
           this.chooseAll()
         } else {
-          this.$message.error(res.msg)
+          this.flag = 2
         }
       }).catch(err => {
         this.$message.error(err)
@@ -200,7 +207,8 @@ export default {
           confirmButtonClass: 'confirmbtn'
         })
       } else {
-        this.$router.push({ name: 'payorder', query: { ID: this.checkGoods, account: this.account } })
+        const cartIDs = this.checkGoods.length === 1 ? this.checkGoods : this.checkGoods.join(',')
+        this.$router.push({ name: 'payorder', query: { ID: cartIDs, account: this.account } })
       }
     }
   },
