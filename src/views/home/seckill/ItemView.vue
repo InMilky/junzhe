@@ -18,59 +18,59 @@
       <el-row type="flex" justify="center" style="width: 100%">
         <el-col :span="20">
           <div class="main-info">
-          <el-row type="flex" style="width: 100%">
-            <el-col :span="9" class="p-img">
-              <div class="main-img"><img :src="info.img_url" alt="main-img"/></div>
-              <div class="bottom-img">
-                <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
-                  <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
-                  <el-col :span="5"><div class="b-img active"><img :src="info.img_url" :alt="info.img_url"/></div></el-col>
-                  <el-col :span="5"><div class="b-img"><img :src="info.img_url" alt="main-img"/></div></el-col>
-                  <el-col :span="5"><div class="b-img"><img :src="info.img_url" alt="main-img"/></div></el-col>
-                  <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-right"></i></el-col>
-                </el-row>
-              </div>
-            </el-col>
-            <el-col :span="14" :push="1" class="p-info">
-              <div class="p-title">{{info.title}}</div>
-              <div class="p-price">
-                <div class="p-header">
-                  <div>
-                    <i class="el-icon-alarm-clock" style="font-size: 21px;padding-right: 5px;position: relative;top: 2px"></i>
-                    <span style="display: inline-block">橘栀秒杀活动 {{timer.start_date}}</span></div>
-                  <div v-if="activityFlag!==2">距离活动{{eflag}}还有 {{countdown}}</div>
-                  <div v-else>{{eflag}}</div>
+            <el-row type="flex" style="width: 100%">
+              <el-col :span="9" class="p-img">
+                <div class="main-img"><img :src="info.img_url" alt="main-img"/></div>
+                <div class="bottom-img">
+                  <el-row type="flex" justify="space-between" align="center" style="width: 100%;height: 100%">
+                    <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-left"></i></el-col>
+                    <el-col :span="5"><div class="b-img active"><img :src="info.img_url" :alt="info.img_url"/></div></el-col>
+                    <el-col :span="5"><div class="b-img"><img :src="info.img_url" alt="main-img"/></div></el-col>
+                    <el-col :span="5"><div class="b-img"><img :src="info.img_url" alt="main-img"/></div></el-col>
+                    <el-col :span="3" class="rl-icon"><i class="el-icon-arrow-right"></i></el-col>
+                  </el-row>
                 </div>
-                <div class="p-body">
-                  <div>秒杀价：<span style="color: #e1251b">￥</span>
-                    <span class="mprice">{{info.m_price}}</span>
-                    <span class="oprice">￥{{info.price}}</span></div>
-                  <div>促  销：限购1件，超出数量以结算价为准</div>
-                  <div class="discount">
-                    <el-tag type="danger">领券购买</el-tag>
+              </el-col>
+              <el-col :span="14" :push="1" class="p-info">
+                <div class="p-title">{{info.title}}</div>
+                <div class="p-price">
+                  <div class="p-header">
+                    <div>
+                      <i class="el-icon-alarm-clock" style="font-size: 21px;padding-right: 5px;position: relative;top: 2px"></i>
+                      <span style="display: inline-block">橘栀秒杀活动 {{timer.show_date}}</span></div>
+                    <div v-if="activityFlag!==2">距离活动{{eflag}}还有 {{countdown}}</div>
+                    <div v-else>{{eflag}}</div>
+                  </div>
+                  <div class="p-body">
+                    <div>秒杀价：<span style="color: #e1251b">￥</span>
+                      <span class="mprice">{{info.m_price}}</span>
+                      <span class="oprice">￥{{info.price}}</span></div>
+                    <div>促  销：限购1件，超出数量以结算价为准</div>
+                    <div class="discount">
+                      <el-tag type="danger">领券购买</el-tag>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="p-tip">服 务：支持极速审核、运费险、闪电退款，包邮免运费（限中国内地）</div>
-              <div class="p-description">
-                描述：<span>{{info.description}}</span>
-              </div>
-              <div class="p-sth">
+                <div class="p-tip">服 务：支持极速审核、运费险、闪电退款，包邮免运费（限中国内地）</div>
+                <div class="p-description">
+                  描述：<span>{{info.description}}</span>
+                </div>
+                <div class="p-sth">
                   <div class="p-sth-item"><p>月销量</p><p class="count">{{info.sold_num}}+</p></div>
                   <div class="p-sth-item"><p>累计评论</p><p class="count">1640+</p></div>
                   <div class="p-sth-item"><p>库存量</p><p class="count">{{ stock || 0}}</p></div>
-              </div>
-              <div class="addnum">
-                数量：<el-input-number v-model="num" :min="1" :max="1"></el-input-number>
-              </div>
-              <div class="btn-group">
-                <button type="button" class="paybtn" @click="toOrder" :disabled="disabled">{{btn_value}}</button>
-                <button type="button" class="cartbtn" @click="toCart">
-                  <i class="el-icon-shopping-cart-2" style="font-size: 20px;padding-right: 5px"></i>
-                  加入购物车</button>
-              </div>
-            </el-col>
-          </el-row>
+                </div>
+                <div class="addnum">
+                  数量：<el-input-number v-model="num" :min="1" :max="1"></el-input-number>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="paybtn" @click="toOrder" :disabled="disabled">{{btn_value}}</button>
+                  <button type="button" class="cartbtn" @click="toCart">
+                    <i class="el-icon-shopping-cart-2" style="font-size: 20px;padding-right: 5px"></i>
+                    加入购物车</button>
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
       </el-row>
@@ -89,7 +89,7 @@
             </el-descriptions>
           </div>
           <div class="info-img" v-for="(img,index) in info.brief_img" :key="index">
-              <img :src="img" :alt="index" />
+            <img :src="img" :alt="index" />
           </div>
           <div class="evaluate">
             <div class="evaluate_title">评论</div>
@@ -152,8 +152,7 @@ export default {
       diffTime: 0,
       timer: {
         interval: '',
-        start_date: '',
-        end_date: '',
+        show_date: '',
         hours: '',
         minutes: '',
         seconds: ''
@@ -241,8 +240,7 @@ export default {
       this.$axios.post('/miaosha/getSecTime', { itemID: itemID })
         .then(res => {
           if (res.status === 200) {
-            this.timer.start_date = res.data.start_date
-            this.timer.end_date = res.data.end_date
+            this.timer.show_date = res.data.start_date
             this.diffTime = res.data.diffTime
             this.activityFlag = res.data.activityFlag
             this.stock = res.data.stock
@@ -250,18 +248,21 @@ export default {
             this.btn_value = this.btn_values[this.activityFlag]
             if (this.activityFlag === 1) {
               this.doSeckillKey = res.data.doSeckillKey
+              this.timer.show_date = res.data.end_date
             }
             if (this.diffTime > 0) {
               this.setTimer()
             } else if (this.activityFlag === 2) {
               clearInterval(this.timer.interval)
               this.doSeckillKey = ''
+              this.timer.show_date = ''
               this.$axios.post('/miaosha/insertOrders', { itemID: itemID })
             } else {
               clearInterval(this.timer.interval)
             }
           } else {
             this.activityFlag = 2
+            this.timer.show_date = ''
             this.eflag = this.eflag_names[3]
             this.limitClick = true
           }
@@ -553,8 +554,8 @@ export default {
 }
 
 /deep/ .el-breadcrumb__inner.is-link {
-   font-weight: 500;
- }
+  font-weight: 500;
+}
 
 .info-title{
   width: 100%;
