@@ -9,7 +9,7 @@
           <el-step title="注册成功"></el-step>
         </el-steps>
         <div class="my-card" id="getopt">
-          <el-form class="my-form" :model="data" :rules="rules" ref="data" onsubmit="return false;">
+          <el-form action="#" class="my-form" :model="data" :rules="rules" ref="data">
             <el-form-item prop="phone">
               <el-input class="my-input" type="text"
                         v-model="data.phone"
@@ -17,11 +17,11 @@
                         autocomplete="off"><template slot="prepend">手机号</template></el-input>
             </el-form-item>
             <el-form-item>
-                <button class="default-btn" @click="validatePhone">点击按钮进行验证</button>
+                <button type="button" class="default-btn" @click="validatePhone()">点击按钮进行验证</button>
                 <div class="el-form-item_error" v-show="!data.isClick"><i class="el-icon-warning"></i> 请先进行手机号验证</div>
             </el-form-item>
             <el-form-item>
-              <button class="my-btn" @click="toSignup">下一步</button>
+              <button type="button" class="my-btn" @click="toSignup()">下一步</button >
             </el-form-item>
           </el-form>
         </div>
@@ -84,14 +84,16 @@ export default {
         } else {
           this.$message.error('请输入正确的手机号进行验证')
         }
+        return false
       })
     },
     toSignup () {
       if (this.isValidate) {
-        this.$router.replace('/signup/person2')
+        this.$router.push({ name: 'register', params: { phone: this.data.phone } })
       } else {
         this.data.isClick = false
         this.$message.error('请先进行手机号验证')
+        return false
       }
     }
   }
@@ -146,20 +148,4 @@ export default {
   line-height: 33px;
 }
 
-</style>
-<style>
-.cancel{
-  width: 78px;
-  color: #e1251b!important;
-  border: 1px solid #e1251b!important;
-}
-.cancel:hover{
-  background: #e1251b!important;
-  color: #FFF!important;
-}
-.confirmation{
-  width: 80px;
-  background: #e1251b!important;
-  border: 1px solid #e1251b!important;
-}
 </style>

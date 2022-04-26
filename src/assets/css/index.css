@@ -173,6 +173,7 @@ p{
     width: 136px;
     height: 136px;
     margin: 28px auto 0;
+    overflow: hidden;
 }
 .miaosha-zone .slide-wrapper .seckill-item h6.seckill-item-name{
     width: 156px;

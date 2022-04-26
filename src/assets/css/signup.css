@@ -29,6 +29,7 @@
 }
 .my-btn:hover {
     background: #e1251b;
+    color: white;
     border-radius: 0;
 }
 .my-index-btn{
@@ -52,6 +53,7 @@
 .default-btn:focus, .default-btn:hover {
     border-color: #666;
     border-radius: 0;
+    color: #e1251b;
 }
 
 .default-btn {

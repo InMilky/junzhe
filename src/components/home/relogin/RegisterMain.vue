@@ -97,10 +97,11 @@ export default {
   },
   created () {
     // 得到手机号
-    let param = ''
-    param = this.$emit('sendPhone', param)
-    param = param.$attrs.phone
-    this.ruleForm.phone = param
+    // let param = ''
+    // param = this.$emit('sendPhone', param)
+    // param = param.$attrs.phone
+    // console.log(param, this.$route.params.phone)
+    this.ruleForm.phone = this.$route.params.phone
   },
   methods: {
     submitForm (formName) {
