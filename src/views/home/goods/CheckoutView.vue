@@ -66,7 +66,7 @@
           </div>
         </div>
         <div style="overflow: hidden">
-          <el-link class="topay" @click.native="checkout" :underline="false" :disabled="JSON.stringify(receiver) !== '{}'">>提交订单</el-link>
+          <el-link class="topay" @click.native="checkout" :underline="false" :disabled="JSON.stringify(receiver) === '{}'">提交订单</el-link>
         </div>
         <div style="overflow: hidden">
           <b v-if="JSON.stringify(receiver) === '{}'" style="font-size: 14px;color: #e1251b;float: right;position: relative;right: 36px;">
@@ -389,5 +389,28 @@ export default {
 .topay:hover{
   color: #FFFFFF;
   background: rgba(225,37,27,.9);
+}
+/deep/ .is-disabled{
+  background-color: #DCDFE6;
+  color: #f4f4f4!important;
+}
+/deep/ .is-disabled:hover{
+  background-color: #DCDFE6;
+  color: #f4f4f4!important;
+}
+.cancelbtn{
+  width: 78px;
+  color: #e1251b!important;
+  border: 1px solid #e1251b!important;
+}
+.cancelbtn:hover{
+  background: #e1251b!important;
+  color: #FFF!important;
+}
+.confirmbtn{
+  color: #fff;
+  width: 80px;
+  background: #e1251b!important;
+  border: 1px solid #e1251b!important;
 }
 </style>

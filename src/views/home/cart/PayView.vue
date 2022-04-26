@@ -297,9 +297,6 @@ export default {
   margin-top: 15px;
   line-height: 24px;
 }
-/*.detail>div{*/
-/*  margin: 5px 0;*/
-/*}*/
 .rec-title>span,.pay-title,.order-title{
   font-weight: 700;
 }
